@@ -1,0 +1,41 @@
+﻿<button id="btnNewUser" class="btn btn-success">جدید</button>
+
+<table id="numberTable">
+    <thead>
+        <tr>
+            
+            <th>آپدیت</th>
+            <th>حذف</th>
+            <th>اسم</th>
+            <th>نام خوانوادگی</th>
+            <th>تلفن</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in ViewBag.UserList)
+        {
+            <tr data-id="@i.Id" data-name="@i.Name" data-lname="@i.LName" data-phone="@i.PhoneNumber">
+                <td><button class="btn btn-sm btn-info btn-update">آپدیت</button></td>
+                <td><button class="btn btn-sm btn-danger btn-delete" data-id="@i.Id">حذف</button></td>
+                <td>@i.Name</td>
+                <td>@i.LName</td>
+                <td>@i.PhoneNumber</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="userModal" style="display:none;">
+    <div>
+        <h2 id="modalTitle">افزودن مقدار جدید</h2>
+        <form id="userForm">
+            <input type="hidden" id="Id" name="Id" value="0" />
+            <input type="text" id="Name" name="Name" placeholder="اسم" required />
+            <input type="text" id="LName" name="LName" placeholder="نام خوانوادگی" required />
+            <input type="text" id="PhoneNumber" name="PhoneNumber" placeholder="تلفن" required />
+            <button type="submit">ثبت</button>
+            <button type="button" id="btnCloseModal">×</button>
+        </form>
+        <div class="error" id="errorMessage" style="display:none;"></div>
+    </div>
+</div>

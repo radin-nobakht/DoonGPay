@@ -1,0 +1,85 @@
+﻿@{
+    Layout = "_Layout2";
+}
+
+<style>
+    .hide{
+        display:none;
+    }
+</style>
+<div class="form-container">
+    <h2>عضویت</h2>
+    <div id="errorMsg"></div>
+    <form id="loginForm" method="post" action="/Home/Login">
+        <label for="name">نام:</label>
+        <input type="text" id="name" name="name" placeholder="نام" />
+
+        <label for="LName">نام خوانوادگی:</label>
+        <input type="text" id="LName" name="LName" placeholder="نام خوانوادگی" />
+
+        <label for="phoneNumber">شماره تلفن:</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="شماره تلفن" />
+
+        <input type="text" id="code" name="code" class="hide" placeholder="کد را وارد کنید (مثلاً 1234)" />
+
+        <button type="button" id="send">ارسال</button>
+        <button type="button" class="hide" id="sendCode">ارسال کد</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#send").click(function () {
+            var name = $("#name").val();
+            var lastName = $("#LName").val();
+            var phoneNumber = $("#phoneNumber").val();
+
+            if (name && lastName && phoneNumber) {
+                $("#name, #LName, #phoneNumber").prop("disabled", true);
+                $("#code, #sendCode").show();
+                $("#send").hide();
+                $("#errorMsg").text(""); // پاک کردن خطای قبلی
+            } else {
+                $("#errorMsg").text("لطفا فرم را کامل پر کنید.");
+            }
+        });
+
+        $("#sendCode").click(function () {
+            var code = $("#code").val();
+            if (code !== "1234") {
+                $("#errorMsg").text("کد وارد شده نادرست است، لطفاً عدد 1234 را وارد کنید.");
+                return;
+            }
+
+            var name = $("#name").val();
+            var lastName = $("#LName").val();
+            var phoneNumber = $("#phoneNumber").val();
+
+            $.ajax({
+                url: '/Home/Signin',
+                type: 'POST',
+                data: {
+                    Name: name,
+                    LName: lastName,
+                    PhoneNumber: phoneNumber
+                },
+                success: function (response) {
+                    if (response.redirectUrl) {
+                        $('#errorMsg').text("با موفقیت ذخیره شد، در حال انتقال...");
+                        setTimeout(function () {
+                            window.location.href = response.redirectUrl;
+                        }, 1000);
+                    } else {
+                        $('#errorMsg').text("ذخیره انجام شد اما مسیر بازگشتی یافت نشد.");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $('#errorMsg').text('خطا در ذخیره اطلاعات: ' + error);
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>

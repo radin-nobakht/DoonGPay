@@ -1,0 +1,128 @@
+﻿/* دکمه جدید */
+#btnNewUser {
+    margin: 20px;
+}
+
+/* جدول شماره‌ها */
+#numberTable {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Tahoma, sans-serif;
+}
+
+    /* سطرهای سر ستون جدول */
+    #numberTable thead th {
+        background-color: #FFA500;
+        color: white;
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    /* سطرهای بدنه جدول */
+    #numberTable tbody tr {
+        border: 1px solid #ddd;
+    }
+
+    /* سلول‌های جدول */
+    #numberTable tbody td {
+        padding: 10px;
+        text-align: center;
+    }
+
+/* دکمه به‌روزرسانی */
+.btn-update {
+    background-color: #2196f3 !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 5px 10px !important;
+    border-radius: 5px !important;
+    cursor: pointer;
+}
+
+/* دکمه حذف */
+.btn-delete {
+    background-color: #e64a19 !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 5px 10px !important;
+    border-radius: 5px !important;
+    cursor: pointer;
+}
+
+/* پنجره مودال */
+#userModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+    /* محتوای داخلی مودال */
+    #userModal > div {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        width: 400px;
+        position: relative;
+    }
+
+/* عنوان مودال */
+#modalTitle {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #e65100;
+}
+
+/* فیلدهای فرم */
+#userForm input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    font-family: 'B Nazanin', Tahoma, sans-serif;
+    font-size: 16px;
+    border: 1px solid #ffb74d;
+    border-radius: 8px;
+    background: #fff8e1;
+    color: #5d4037;
+    box-sizing: border-box;
+}
+
+/* دکمه ثبت فرم */
+#userForm button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* دکمه بستن مودال */
+#btnCloseModal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #ff9800;
+}
+
+/* پیام خطا */
+#errorMessage {
+    color: #d32f2f;
+    margin-top: 10px;
+    font-size: 14px;
+    display: none;
+}
