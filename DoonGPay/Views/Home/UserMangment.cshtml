@@ -1,41 +1,61 @@
-﻿<button id="btnNewUser" class="btn btn-success">جدید</button>
+﻿<style>
+    table {
+        width: 60%;
+        border-collapse: collapse;
+        margin: 20px auto;
+        font-family: sans-serif;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
 
-<table id="numberTable">
-    <thead>
-        <tr>
-            
-            <th>آپدیت</th>
-            <th>حذف</th>
-            <th>اسم</th>
-            <th>نام خوانوادگی</th>
-            <th>تلفن</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var i in ViewBag.UserList)
-        {
-            <tr data-id="@i.Id" data-name="@i.Name" data-lname="@i.LName" data-phone="@i.PhoneNumber">
-                <td><button class="btn btn-sm btn-info btn-update">آپدیت</button></td>
-                <td><button class="btn btn-sm btn-danger btn-delete" data-id="@i.Id">حذف</button></td>
-                <td>@i.Name</td>
-                <td>@i.LName</td>
-                <td>@i.PhoneNumber</td>
-            </tr>
-        }
-    </tbody>
+    th, td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #ff9900;
+    }
+
+    th {
+        background-color: #ff8000;
+        color: white;
+    }
+
+    tr:nth-child(odd) {
+        background-color: #ffe0b2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #fff3e0;
+    }
+
+    tr:hover {
+        background-color: #ffcc80;
+        cursor: pointer;
+    }
+</style>
+
+<table>
+    <tr>
+        <th>شماره</th>
+        <th>نام</th>
+        <th>سن</th>
+    </tr>
+    <tr>
+        <td>۱</td>
+        <td>علی</td>
+        <td>۱۵</td>
+    </tr>
+    <tr>
+        <td>۲</td>
+        <td>زهرا</td>
+        <td>۱۴</td>
+    </tr>
+    <tr>
+        <td>۳</td>
+        <td>رضا</td>
+        <td>۱۶</td>
+    </tr>
+    <tr>
+        <td>۴</td>
+        <td>مریم</td>
+        <td>۱۳</td>
+    </tr>
 </table>
-
-<div id="userModal" style="display:none;">
-    <div>
-        <h2 id="modalTitle">افزودن مقدار جدید</h2>
-        <form id="userForm">
-            <input type="hidden" id="Id" name="Id" value="0" />
-            <input type="text" id="Name" name="Name" placeholder="اسم" required />
-            <input type="text" id="LName" name="LName" placeholder="نام خوانوادگی" required />
-            <input type="text" id="PhoneNumber" name="PhoneNumber" placeholder="تلفن" required />
-            <button type="submit">ثبت</button>
-            <button type="button" id="btnCloseModal">×</button>
-        </form>
-        <div class="error" id="errorMessage" style="display:none;"></div>
-    </div>
-</div>
