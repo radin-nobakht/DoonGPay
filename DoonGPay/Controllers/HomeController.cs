@@ -31,10 +31,10 @@ namespace DoonGPay.Controllers
         public ActionResult Login(UsersEntity entity)
         {
 
-          var model=  _userService.ShowUsers();
-            foreach(var i in model)
+            var model = _userService.ShowUsers();
+            foreach (var i in model)
             {
-                if(i.Name == entity.Name && i.LName == entity.LName && i.PhoneNumber == entity.PhoneNumber)
+                if (i.Name == entity.Name && i.LName == entity.LName && i.PhoneNumber == entity.PhoneNumber)
                 {
                     return Redirect("Index");
                 }
@@ -53,7 +53,7 @@ namespace DoonGPay.Controllers
         public IActionResult Signin(UsersEntity entity)
         {
 
-          _userService.AddUser(entity);
+            _userService.AddUser(entity);
             var redirectUrl = Url.Action("Index", "Home");
             return Json(new
             {
@@ -72,34 +72,34 @@ namespace DoonGPay.Controllers
             return View();
         }
 
-        //[HttpGet]
-        //public IActionResult AddOrEditUser(int? id)
-        //{
-        //    if (id == null)
-        //        return View(new UsersEntity());
+        [HttpGet]
+        public IActionResult AddOrEditUser(int? id)
+        {
+            if (id == null)
+                return View(new UsersEntity());
 
-        //    var entity = _userService.GetById(id.Value);
-        //    if (entity == null)
-        //        return NotFound();
+            var entity = _userService.GetById(id.Value);
+            if (entity == null)
+                return NotFound();
 
-        //    return View(entity);
-        //}
+            return View(entity);
+        }
 
-        //[HttpPost]
-        //public IActionResult AddOrEditUser(UsersEntity model)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return Json(new { success = false, message = "مدل نامعتبر است" });
+        [HttpPost]
+        public IActionResult AddOrEditUser(UsersEntity model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "مدل نامعتبر است" });
 
-        //    if (model.Id == 0)
-        //        _userService.AddUser(model);
-        //    else
-        //        _userService.UpdateUser(model);
-        //    ViewBag.UserList = _userService.ShowUsers();
+            if (model.Id == 0)
+                _userService.AddUser(model);
+            else
+                _userService.UpdateUser(model);
+            ViewBag.UserList = _userService.ShowUsers();
 
-        //    var redirectUrl = Url.Action("UserMangment", "Home");
-        //    return RedirectToAction("UserMangment");
-        //}
+            var redirectUrl = Url.Action("UserMangment", "Home");
+            return RedirectToAction("UserMangment");
+        }
 
         [HttpPost]
         public JsonResult Delete(int id)

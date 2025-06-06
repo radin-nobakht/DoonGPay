@@ -1,61 +1,203 @@
-﻿<style>
-    table {
-        width: 60%;
-        border-collapse: collapse;
-        margin: 20px auto;
-        font-family: sans-serif;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>مدیریت کاربران</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    th, td {
-        padding: 12px;
-        text-align: center;
-        border: 1px solid #ff9900;
-    }
+    <style>
+        body {
+            direction: rtl;
+            font-family: 'B Nazanin', Tahoma, sans-serif;
+            background-color: #fff8e1;
+        }
 
-    th {
-        background-color: #ff8000;
-        color: white;
-    }
+        .custom-modal {
+            border: 1px solid #ff9800;
+            box-shadow: 0 0 10px rgba(255, 152, 0, 0.3);
+            border-radius: 10px;
+        }
 
-    tr:nth-child(odd) {
-        background-color: #ffe0b2;
-    }
+        .modal-title {
+            color: #e65100;
+            font-weight: bold;
+        }
 
-    tr:nth-child(even) {
-        background-color: #fff3e0;
-    }
+        .form-control {
+            font-family: 'B Nazanin', Tahoma, sans-serif;
+            font-size: 16px;
+            border: 1px solid #ffb74d;
+            border-radius: 8px;
+            background-color: #fff8e1;
+            color: #5d4037;
+            transition: border-color 0.3s;
+        }
 
-    tr:hover {
-        background-color: #ffcc80;
-        cursor: pointer;
-    }
-</style>
+            .form-control:focus {
+                border-color: #ff6f00;
+                background-color: #fff3e0;
+                box-shadow: none;
+            }
 
-<table>
-    <tr>
-        <th>شماره</th>
-        <th>نام</th>
-        <th>سن</th>
-    </tr>
-    <tr>
-        <td>۱</td>
-        <td>علی</td>
-        <td>۱۵</td>
-    </tr>
-    <tr>
-        <td>۲</td>
-        <td>زهرا</td>
-        <td>۱۴</td>
-    </tr>
-    <tr>
-        <td>۳</td>
-        <td>رضا</td>
-        <td>۱۶</td>
-    </tr>
-    <tr>
-        <td>۴</td>
-        <td>مریم</td>
-        <td>۱۳</td>
-    </tr>
-</table>
+        .btn-orange {
+            padding: 10px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .btn-orange:hover {
+                background-color: #ef6c00;
+            }
+
+        .error {
+            color: #d32f2f;
+            margin-top: 10px;
+            font-size: 14px;
+            display: none;
+        }
+
+        table {
+            width: 60%;
+            border-collapse: collapse;
+            margin: 20px auto;
+            font-family: sans-serif;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ff9900;
+        }
+
+        th {
+            background-color: #ff8000;
+            color: white;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffe0b2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fff3e0;
+        }
+
+        tr:hover {
+            background-color: #ffcc80;
+            cursor: pointer;
+        }
+
+        .btn-update {
+            background-color: #fb8c00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        .btn-delete {
+            background-color: #e64a19;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        .btn-update:hover {
+            background-color: #ef6c00;
+        }
+
+        .btn-delete:hover {
+            background-color: #bf360c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container text-center mt-4">
+        <button class="btn btn-orange" data-bs-toggle="modal" data-bs-target="#userModal">افزودن کاربر</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>نام</th>
+                <th>نام خانوادگی</th>
+                <th>شماره موبایل</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+            <!-- پر می‌شود از طریق Razor یا Ajax -->
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content custom-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userModalLabel">افزودن / ویرایش کاربر</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="userForm">
+                        <input type="hidden" id="Id" name="Id" />
+                        <input type="text" id="Name" name="Name" class="form-control mb-2" placeholder="نام" required />
+                        <input type="text" id="LName" name="LName" class="form-control mb-2" placeholder="نام خانوادگی" required />
+                        <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control mb-3" placeholder="شماره موبایل" required />
+                        <button type="submit" class="btn btn-orange w-100">ثبت</button>
+                    </form>
+                    <div class="error" id="errorMessage"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#userForm').on('submit', function (e) {
+            $.ajax({
+                url: '/Home/AddOrEditUser',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (res) {
+                    if (res.success) {
+                        $('#userModal').modal('hide');
+                        $('#userForm')[0].reset();
+                        location.reload();
+                    } else {
+                        $('#errorMessage').text(res.message).show();
+                    }
+                }
+            });
+        });
+
+        function editUser(id, name, lname, phone) {
+            $('#Id').val(id);
+            $('#Name').val(name);
+            $('#LName').val(lname);
+            $('#PhoneNumber').val(phone);
+            var modal = new bootstrap.Modal(document.getElementById('userModal'));
+            modal.show();
+        }
+
+        function deleteUser(id) {
+            if (confirm("آیا مطمئن هستید؟")) {
+                $.post("/Home/Delete", { id: id }, function (res) {
+                    if (res.success) {
+                        location.reload();
+                    }
+                });
+            }
+        }
+    </script>
+
+</body>
+</html>
