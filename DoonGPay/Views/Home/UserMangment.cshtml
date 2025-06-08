@@ -1,37 +1,71 @@
 ﻿<style>
-    a {
-        text-decoration: none;
-    }
-
-    html {
-        font-size: 16px;
-        position: relative;
-        min-height: 100%;
-    }
-
     body {
         direction: rtl;
         font-family: 'B Nazanin', Tahoma, sans-serif;
-        background-color: white;
+        background-color: white; /* نارنجی بسیار روشن */
         margin-bottom: 60px;
     }
 
-    .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-        box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-    }
-
+    /* فرم */
     .form-container {
         width: 400px;
         margin: 50px auto 30px;
-        background-color: white;
+        background-color: white; /* نارنجی روشن */
         padding: 20px;
         border-radius: 10px;
-        border: 1px solid #ff9800;
+        border: 1px solid #ff9800; /* نارنجی */
         box-shadow: 0 0 10px rgba(255, 152, 0, 0.3);
     }
 
-        
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #e65100; /* نارنجی تیره */
+        }
 
+        .form-container input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            font-family: 'B Nazanin', Tahoma, sans-serif;
+            font-size: 16px;
+            border: 1px solid #ffb74d; /* نارنجی روشن */
+            border-radius: 8px;
+            background-color: #fff8e1; /* پس‌زمینه خیلی روشن نارنجی */
+            color: #5d4037; /* قهوه‌ای تیره برای متن */
+            transition: border-color 0.3s;
+        }
+
+            .form-container input:focus {
+                border-color: #ff6f00; /* نارنجی پررنگ */
+                outline: none;
+                background-color: #fff3e0;
+            }
+
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ff9800; /* نارنجی */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .form-container button:hover {
+                background-color: #ef6c00; /* نارنجی تیره */
+            }
+
+    .error {
+        color: #d32f2f; /* قرمز تیره */
+        margin-bottom: 10px;
+        font-size: 14px;
+        display: none;
+    }
+
+    /* جدول نارنجی */
     table {
         border-collapse: collapse;
         width: 100%;
@@ -42,7 +76,7 @@
     }
 
     th {
-        background-color: #ff9800;
+        background-color: #ff9800; /* نارنجی */
         color: white;
         padding: 10px;
         border: 1px solid #ffa726;
@@ -56,11 +90,15 @@
         color: #5d4037;
     }
 
-
-    tbody tr:hover {
-        background-color: #ffcc80;
+    tbody tr:nth-child(even) {
+        background-color: #ffe0b2; /* نارنجی خیلی روشن */
     }
 
+    tbody tr:hover {
+        background-color: #ffcc80; /* نارنجی متوسط */
+    }
+
+    /* دکمه‌ها داخل جدول */
     .btn {
         padding: 5px 10px;
         border-radius: 5px;
@@ -72,20 +110,80 @@
     }
 
     .btn-update {
-        background-color: #fb8c00;
+        background-color: #fb8c00; /* نارنجی */
     }
-
-        .btn-update:hover {
-            background-color: #ef6c00;
-        }
 
     .btn-delete {
-        background-color: #e64a19;
+        background-color: #e64a19; /* نارنجی قرمز */
     }
 
-        .btn-delete:hover {
-            background-color: #bf360c;
-        }
+    .btn-update:hover {
+        background-color: #ef6c00; /* نارنجی تیره */
+    }
+
+    .btn-delete:hover {
+        background-color: #bf360c; /* نارنجی تیره */
+    }
+
+    img.img {
+        max-width: 100px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(255, 152, 0, 0.5);
+    }
+        
+
+ 
+
+    .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+        box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    }
+
+    html {
+        position: relative;
+        min-height: 100%;
+    }
+
+    body {
+        margin-bottom: 60px;
+    }
+
+    body {
+        direction: rtl;
+        font-family: 'B Nazanin';
+    }
+
+
+
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-family: Tahoma, sans-serif;
+    }
+
+    th {
+        background-color: orange;
+        color: white;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+    td {
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f2f6fc;
+    }
+
+    tbody tr:hover {
+        background-color: #d0e7ff;
+    }
+
 </style>
 <button class="btn btn-success mb-3" id="btnAdd">کاربر جدید</button>
 

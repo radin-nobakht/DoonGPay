@@ -8,30 +8,30 @@ namespace DoonGPay.Service
     {
         public void AddUser(UsersEntity usersEntity)
         {
-            context.usrsEntities.Add(usersEntity);
+            context.usersEntities.Add(usersEntity);
             context.SaveChanges();
         }
         public List<UsersEntity> ShowUsers()
         {
-            return context.usrsEntities.ToList();
+            return context.usersEntities.ToList();
         }
         public void UpdateUser(UsersEntity usersEntity)
         {
-            context.usrsEntities.Update(usersEntity);
+            context.usersEntities.Update(usersEntity);
             context.SaveChanges();
         }
         public void DeleteUser(int id)
         {
-            var model = context.usrsEntities.FirstOrDefault(x => x.Id == id);
+            var model = context.usersEntities.FirstOrDefault(x => x.Id == id);
             if (model != null)
             {
-                context.usrsEntities.Remove(model);
+                context.usersEntities.Remove(model);
                 context.SaveChanges();
             }
         }
         public UsersEntity GetById(int id)
         {
-            return context.usrsEntities.FirstOrDefault(x => x.Id == id);
+            return context.usersEntities.FirstOrDefault(x => x.Id == id);
         }
     }
 }

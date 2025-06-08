@@ -1,0 +1,18 @@
+﻿<style></style>
+<button></button>
+<table>
+    <tr>
+    <th>اسم هزینه</th>           
+    <th>اعضای هزینه</th>           
+    <th>هزینه ها</th>           
+    <th>سهم هر نفر</th>           
+    </tr>
+    <tr>
+        @foreach (var i in ViewBag.PayList) {
+            <td>@i.Name</td>
+            <td><a href="Pay/FriendTable.cshtml">جدول اعضای هزینه</a></td>
+            <td><a href="Pay/ReasonList.cshtml">جدول هزینه ها</a></td>
+            <td>@i.Share</td>
+        }
+    </tr>
+</table>
