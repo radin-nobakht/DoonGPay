@@ -77,10 +77,10 @@
 
     th {
         background-color: #ff9800; /* نارنجی */
+        color: white;
         padding: 10px;
         border: 1px solid #ffa726;
         text-align: center;
-        color:black;
     }
 
     td {
@@ -205,7 +205,7 @@
                 <td>
                     <button class="btn btn-danger btn-sm btn-delete" data-id="@i.Id">حذف</button>
                 </td>
-                <td>@i.Name</td>
+               <td>@i.Name</td>
             </tr>
         }
     </tbody>
@@ -222,6 +222,8 @@
                 <form id="userForm">
                     <input type="hidden" name="Id" id="Id" />
                     <input type="text" name="Name" id="Name" class="form-control mb-2" placeholder="نام" required />
+                    <input type="text" name="LName" id="LName" class="form-control mb-2" placeholder="نام خانوادگی" required />
+                    <input type="text" name="PhoneNumber" id="PhoneNumber" class="form-control mb-2" placeholder="تلفن" required />
                     <div class="text-danger" id="errorMessage" style="display:none;"></div>
                 </form>
             </div>

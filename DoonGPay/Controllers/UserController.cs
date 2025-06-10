@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using DoonGPay.Entity;
 using DoonGPay.INteface;
 using DoonGPay.Models;
@@ -7,14 +7,12 @@ using DoonGPay.Dto;
 
 namespace DoonGPay.Controllers
 {
-    public class HomeController : Controller
+    public class UserController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IUserService _userService;
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService)
+        public UserController( IUserService userService)
         {
-            _logger = logger;
             _userService = userService;
         }
 
@@ -39,7 +37,7 @@ namespace DoonGPay.Controllers
             {
                 if (i.Name == entity.Name && i.LName == entity.LName && i.PhoneNumber == entity.PhoneNumber)
                 {
-                    return RedirectToAction("UserMangment", "Home");
+                    return RedirectToAction("UserMangment", "User");
                 }
             }
             ViewBag.eror = "کاربری با این مشخصات یافت نشد.";
@@ -60,21 +58,21 @@ namespace DoonGPay.Controllers
             return Json(new
             {
                 success = true,
-                redirectUrl = Url.Action("UserMangment", "Home")
+                redirectUrl = Url.Action("UserMangment", "User")
             });
         }
 
         public IActionResult UserMangment()
         {
-            ViewBag.UserList = _userService.ShowUsers();
-            return View();
+       
+            return View(_userService.ShowUsers());
         }
 
         [HttpGet]
         public IActionResult AddOrEditUser(int? id)
         {
             if (id == null)
-                return Json(new TravelEntity());
+                return Json(new UsersEntity());
 
             var entity = _userService.GetById(id.Value);
             if (entity == null)
@@ -83,24 +81,7 @@ namespace DoonGPay.Controllers
             return Json(entity);
         }
 
-        [HttpPost]
-        public IActionResult AddOrEditUser(UserDto user)
-        {
-
-            if (!ModelState.IsValid)
-                return Json(new { success = false, message = "مدل نامعتبر است" });
-
-            if (user.Id == 0)
-                _userService.AddUser(user);
-            else
-                _userService.UpdateUser(user);
-
-            return Json(new
-            {
-                success = true,
-                message = "ذخیره شد"
-            });
-        }
+      
 
         [HttpPost]
         public JsonResult Delete(int id)
@@ -109,10 +90,7 @@ namespace DoonGPay.Controllers
             return Json(new { success = true });
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -1,4 +1,6 @@
-﻿<style>
+﻿@using DoonGPay.Dto
+@model List<UserDto>
+<style>
     body {
         direction: rtl;
         font-family: 'B Nazanin', Tahoma, sans-serif;
@@ -198,7 +200,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var user in ViewBag.UserList)
+        @foreach (var user in Model)
         {
             <tr data-id="@user.Id">
                 <td>
@@ -254,7 +256,7 @@
             // ویرایش
             $(".btn-edit").click(function () {
                 var id = $(this).data("id");
-                $.get("/Home/AddOrEditUser", { id: id }, function (data) {
+                $.get("/User/AddOrEditUser", { id: id }, function (data) {
                     $("#Id").val(data.id);
                     $("#Name").val(data.name);
                     $("#Name").val(data.name);
@@ -270,7 +272,7 @@
             $("#userForm").submit(function (e) {
                 e.preventDefault();
                 $.ajax({
-                    url: "/Home/AddOrEditUser",
+                    url: "/User/AddOrEditUser",
                     type: "POST",
                     data: $(this).serialize(),
                     success: function (res) {
@@ -293,7 +295,7 @@
                 var id = $(this).data("id");
                 if (!confirm("آیا از حذف اطمینان دارید؟")) return;
 
-                $.post("/Home/Delete", { id: id }, function (res) {
+                $.post("/User/Delete", { id: id }, function (res) {
                     if (res.success) {
                         row.fadeOut(300, function () {
                             $(this).remove();

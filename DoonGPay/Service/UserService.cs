@@ -1,37 +1,64 @@
-﻿using DoonGPay.Adapter;
+﻿using AutoMapper;
+using DoonGPay.Adapter;
+using DoonGPay.Dto;
 using DoonGPay.Entity;
 using DoonGPay.INteface;
 using System.Security.Principal;
 namespace DoonGPay.Service
 {
-    public class UserService(MyContext context) : IUserService
+    public class UserService(MyContext db,IMapper mapper) : IUserService
     {
-        public void AddUser(UsersEntity usersEntity)
+        public void AddUser(UserDto user)
         {
-            context.usersEntities.Add(usersEntity);
-            context.SaveChanges();
+            var model = mapper.Map<UsersEntity>(user);
+
+            db.usersEntities.Add(model);
+            db.SaveChanges();
         }
-        public List<UsersEntity> ShowUsers()
+        public List<UserDto> ShowUsers()
         {
-            return context.usersEntities.ToList();
+            List<string> ids = db.usersEntities.ToList().Select(x => x.Name + " " + x.LName).ToList();
+
+            var data = db.usersEntities.ToList();
+
+            return mapper.Map<List<UserDto>>(data);
+
+
+            return data.Select(x => new UserDto
+            {
+                Id = x.Id,
+                LName = x.LName,
+                Name = x.Name,
+                PhoneNumber = x.PhoneNumber
+            }).ToList();
         }
-        public void UpdateUser(UsersEntity usersEntity)
+        public void UpdateUser(UserDto user)
         {
-            context.usersEntities.Update(usersEntity);
-            context.SaveChanges();
+            var model = mapper.Map<UsersEntity>(user);
+            db.usersEntities.Update(model);
+            db.SaveChanges();
         }
         public void DeleteUser(int id)
         {
-            var model = context.usersEntities.FirstOrDefault(x => x.Id == id);
+            var model = db.usersEntities.FirstOrDefault(x => x.Id == id);
             if (model != null)
             {
-                context.usersEntities.Remove(model);
-                context.SaveChanges();
+                db.usersEntities.Remove(model);
+                db.SaveChanges();
             }
         }
-        public UsersEntity GetById(int id)
+        public UserDto GetById(int id)
         {
-            return context.usersEntities.FirstOrDefault(x => x.Id == id);
+            return mapper.Map<UserDto>(db.usersEntities.FirstOrDefault(x => x.Id == id));
+        }
+
+        public void Save(UserDto user)
+        {
+            var model = mapper.Map<UsersEntity>(user);
+            if (model.Id > 0)
+                db.Add(model);
+            else db.Update(model);
+            db.SaveChanges();
         }
     }
 }

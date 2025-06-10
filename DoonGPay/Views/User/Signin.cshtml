@@ -10,7 +10,7 @@
 <div class="form-container">
     <h2>عضویت</h2>
     <div id="errorMsg"></div>
-    <form id="loginForm" method="post" action="/Home/Login">
+    <form id="loginForm" method="post" action="/User/Login">
         <label for="name">نام:</label>
         <input type="text" id="name" name="name" placeholder="نام" />
 
@@ -58,7 +58,7 @@
             var phoneNumber = $("#phoneNumber").val();
 
             $.ajax({
-                url: '/Home/Signin',
+                url: '/User/Signin',
                 type: 'POST',
                 data: {
                     Name: name,

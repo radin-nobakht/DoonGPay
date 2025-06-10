@@ -1,13 +1,15 @@
-﻿using DoonGPay.Entity;
+﻿using DoonGPay.Dto;
+using DoonGPay.Entity;
 
 namespace DoonGPay.INteface
 {
     public interface IUserService
     {
-        void AddUser(UsersEntity usersEntity);
+        void AddUser(UserDto user);
         void DeleteUser(int id);
-        List<UsersEntity> ShowUsers();
-        void UpdateUser(UsersEntity usersEntity);
-        UsersEntity GetById(int id);
+        List<UserDto> ShowUsers();
+        void UpdateUser(UserDto usersEntity);
+        UserDto GetById(int id);
+        void Save(UserDto user);
     }
 }

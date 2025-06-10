@@ -1,7 +1,8 @@
-using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 using DoonGPay.Adapter;
 using DoonGPay.INteface;
 using DoonGPay.Service;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,13 @@ builder.Services.AddDbContext<MyContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("SqlCs"));
 });
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITravelService, TravelService>();
+
+var mapperConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new MappingProfile());
+});
+builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 var app = builder.Build();
 
