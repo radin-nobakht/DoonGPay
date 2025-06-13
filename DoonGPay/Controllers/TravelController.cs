@@ -5,17 +5,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers
 {
-    public class TravelController : Controller
+    public class travelController : Controller
     {
-        private readonly ITravelService _travelService;
-        public TravelController(ITravelService travelService)
+        private readonly ItravelService _travelService;
+        public travelController(ItravelService travelService)
         {
             _travelService = travelService;
         }
        
         public IActionResult Index()
         {
-            ViewBag.TravelList = _travelService.ShowTravel();
+            ViewBag.travelList = _travelService.travels();
             return View();
         }
 
@@ -23,7 +23,7 @@ namespace DoonGPay.Controllers
         public IActionResult AddOrEditUser(int? id)
         {
             if (id == null)
-                return Json(new TravelEntity());
+                return Json(new travels());
 
             var entity = _travelService.GetById(id.Value);
             if (entity == null)
@@ -33,15 +33,15 @@ namespace DoonGPay.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddOrEditUser(TravelEntity model)
+        public IActionResult AddOrEditUser(travels model)
         {
             if (!ModelState.IsValid)
                 return Json(new { success = false, message = "مدل نامعتبر است" });
 
             if (model.Id == 0)
-                _travelService.AddTravel(model);
+                _travelService.Addtravel(model);
             else
-                _travelService.UpdateTravel(model);
+                _travelService.Updatetravel(model);
 
             return Json(new
             {
@@ -53,7 +53,7 @@ namespace DoonGPay.Controllers
         [HttpPost]
         public JsonResult Delete(int id)
         {
-            _travelService.DeleteTravel(id);
+            _travelService.Deletetravel(id);
             return Json(new { success = true });
         }
 

@@ -1,11 +1,11 @@
 ﻿namespace DoonGPay.Dto
 {
-    public class TravelFellowTravelerDto
+    public class TravelFellowtravelerDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string LName { get; set; }
-        public int PhoneNumber { get; set; }
+        public required string Name { get; set; }
+        public required string LName { get; set; }
+        public required string PhoneNumber { get; set; }
         public int Share { get; set; }
     }
 }

@@ -13,7 +13,7 @@ builder.Services.AddDbContext<MyContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("SqlCs"));
 });
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ITravelService, TravelService>();
+builder.Services.AddScoped<ItravelService, travelService>();
 
 var mapperConfig = new MapperConfiguration(mc =>
 {

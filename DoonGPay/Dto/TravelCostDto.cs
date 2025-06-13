@@ -4,6 +4,6 @@
     {
         public int id { get; set; }
         public string Reason { get; set; }
-        public int Fare { get; set; }
+        public int Cost { get; set; }
     }
 }

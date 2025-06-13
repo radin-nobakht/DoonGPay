@@ -8,9 +8,9 @@ namespace DoonGPay.Service
     {
         public MappingProfile()
         {
-            CreateMap<UserDto, UsersEntity>().ReverseMap();
-            CreateMap<TravelDto, TravelEntity>().ReverseMap();
-            CreateMap<TravelFellowTravelerDto, TravelFellowTravelerEntity>().ReverseMap();
+            CreateMap<UserDto, UserEntity>().ReverseMap();
+            CreateMap<TravelDto,TravelEntity >().ReverseMap();
+            CreateMap<TravelFellowtravelerDto, TravelFellowtravelerEntity>().ReverseMap();
             CreateMap<TravelCostDto, TravelCostEntity>().ReverseMap();
 
         }

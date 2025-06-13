@@ -34,7 +34,7 @@ namespace DoonGPay.Controllers
         [HttpPost]
         public ActionResult Login(UsersEntity entity)
         {
-            var model = _userService.ShowUsers();
+            var model = _userService.Users();
             foreach (var i in model)
             {
                 if (i.Name == entity.Name && i.LName == entity.LName && i.PhoneNumber == entity.PhoneNumber)
@@ -66,7 +66,7 @@ namespace DoonGPay.Controllers
 
         public IActionResult UserMangment()
         {
-            ViewBag.UserList = _userService.ShowUsers();
+            ViewBag.UserList = _userService.Users();
             return View();
         }
 
@@ -74,7 +74,7 @@ namespace DoonGPay.Controllers
         public IActionResult AddOrEditUser(int? id)
         {
             if (id == null)
-                return Json(new TravelEntity());
+                return Json(new travels());
 
             var entity = _userService.GetById(id.Value);
             if (entity == null)

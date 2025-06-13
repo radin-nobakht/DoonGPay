@@ -7,7 +7,7 @@ namespace DoonGPay.INteface
     {
         void AddUser(UserDto user);
         void DeleteUser(int id);
-        List<UserDto> ShowUsers();
+        List<UserDto> Users();
         void UpdateUser(UserDto usersEntity);
         UserDto GetById(int id);
         void Save(UserDto user);

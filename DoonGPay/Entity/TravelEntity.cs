@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DoonGPay.Entity
 {
-    [Table("Travel")]
+    [Table("travel")]
     public class TravelEntity
     {
         [Key]

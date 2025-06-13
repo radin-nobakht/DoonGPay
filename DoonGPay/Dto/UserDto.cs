@@ -3,9 +3,9 @@
     public class UserDto
     {
         public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? LName { get; set; }
-        public int PhoneNumber { get; set; }
+        public required string FristName { get; set; }
+        public required string LastName { get; set; }
+        public required string PhoneNumber { get; set; }
 
     }
 }
