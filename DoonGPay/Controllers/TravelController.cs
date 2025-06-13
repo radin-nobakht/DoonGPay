@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers
 {
-    public class PayController : Controller
+    public class TravelController : Controller
     {
         private readonly ITravelService _travelService;
-        public PayController(ITravelService travelService)
+        public TravelController(ITravelService travelService)
         {
             _travelService = travelService;
         }
