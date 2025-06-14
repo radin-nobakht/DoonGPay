@@ -7,6 +7,8 @@ namespace DoonGPay.Service
     {
         public int? UserId => int.TryParse(httpContextAccessor?.HttpContext?.User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value, out int id) ? id : null;
 
+        public bool IsLogin => UserId > 0;
+        public string? FullName => IsLogin ? $"{FirstName} {LastName}" : null;
         public string? FirstName
         {
             get

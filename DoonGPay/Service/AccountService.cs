@@ -28,7 +28,7 @@ namespace DoonGPay.Service
 
             var claims = new List<Claim>
             {
-             new ("UserId", user.Id.ToString()),
+             new (ClaimTypes.NameIdentifier, user.Id.ToString()),
              new ("LastName", user.LastName),
              new ("FirstName", user.FirstName)
             };

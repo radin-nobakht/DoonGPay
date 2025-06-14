@@ -1,0 +1,10 @@
+﻿@using DoonGPay.ViewModel
+@model UserViewModel
+@if (Model.IsLogin)
+{
+    <label>@Model.Name</label>
+}
+else
+{
+    <a  id="login"  href="/Login">ورود</a>
+}

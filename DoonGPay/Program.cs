@@ -3,6 +3,7 @@ using DoonGPay.Adapter;
 using DoonGPay.Inteface;
 using DoonGPay.INteface;
 using DoonGPay.Service;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +26,16 @@ var mapperConfig = new MapperConfiguration(mc =>
     mc.AddProfile(new MappingProfile());
 });
 builder.Services.AddSingleton(mapperConfig.CreateMapper());
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login"; // مسیر لاگین
+        options.LogoutPath = "/Logout"; // مسیر لاگ‌اوت
+        options.ExpireTimeSpan = TimeSpan.FromDays(7); // مدت انقضا کوکی
+        options.SlidingExpiration = true; // تمدید خودکار در صورت فعالیت
+    });
+
+
 builder.Services.AddHttpContextAccessor();
 
 
