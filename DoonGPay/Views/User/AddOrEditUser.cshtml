@@ -141,8 +141,8 @@
     <h2>@(Model.Id == 0 ? "افزودن مقدار جدید" : "ویرایش مقدار")</h2>
     <form id="dicForm" method="post">
         <input type="hidden" id="Id" name="Id" value="@Model.Id" />
-        <input type="text" id="Type" name="Name" placeholder="اسم" value="@Model.Name" required />
-        <input type="text" id="Name" name="LName" placeholder="نام خوانوادگی" value="@Model.LName" required />
+        <input type="text" id="Type" name="Name" placeholder="اسم" value="@Model.FirstName" required />
+        <input type="text" id="Name" name="LName" placeholder="نام خوانوادگی" value="@Model.LastName" required />
         <input type="text" id="Img" name="PhoneNumber" placeholder="تلفن" value="@Model.PhoneNumber" required />
         <button type="submit">ثبت</button>
     </form>

@@ -1,4 +1,5 @@
-﻿using DoonGPay.Entity;
+﻿using DoonGPay.Dto;
+using DoonGPay.Entity;
 using DoonGPay.INteface;
 using DoonGPay.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ namespace DoonGPay.Controllers
         public IActionResult AddOrEditUser(int? id)
         {
             if (id == null)
-                return Json(new travels());
+                return Json(new TravelDto());
 
             var entity = _travelService.GetById(id.Value);
             if (entity == null)
@@ -33,7 +34,7 @@ namespace DoonGPay.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddOrEditUser(travels model)
+        public IActionResult AddOrEditUser(TravelDto model)
         {
             if (!ModelState.IsValid)
                 return Json(new { success = false, message = "مدل نامعتبر است" });

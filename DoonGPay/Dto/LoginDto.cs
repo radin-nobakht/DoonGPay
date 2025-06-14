@@ -4,6 +4,6 @@
     {
         public string PhoneNumber { get; set; }
         public string Code { get; set; }
-        public string Remember { get; set; }
+        public bool Remember { get; set; }
     }
 }

@@ -4,6 +4,7 @@ namespace DoonGPay.Inteface
 {
     public interface IAccountService
     {
-        IBaseResult Login(LoginDto login);
+        IBaseResult LoginOtp(LoginDto login);
+        IBaseResult LoginSendCode(string phoneNumber);
     }
 }

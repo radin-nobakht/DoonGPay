@@ -1,5 +1,6 @@
 using AutoMapper;
 using DoonGPay.Adapter;
+using DoonGPay.Inteface;
 using DoonGPay.INteface;
 using DoonGPay.Service;
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +15,18 @@ builder.Services.AddDbContext<MyContext>(option =>
 });
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ItravelService, travelService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ISmsService, SmsService>();
+builder.Services.AddScoped<IMySession, MySession>();
+
 
 var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new MappingProfile());
 });
 builder.Services.AddSingleton(mapperConfig.CreateMapper());
+builder.Services.AddHttpContextAccessor();
+
 
 var app = builder.Build();
 

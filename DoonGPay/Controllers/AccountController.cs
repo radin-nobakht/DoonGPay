@@ -8,10 +8,13 @@ namespace DoonGPay.Controllers
     {
         [Route("Login")]
         [HttpGet]
-        public IActionResult Login() => View();
+        public IActionResult Login() => View("LoginOtp");
         [HttpPost]
-        public JsonResult Login(LoginDto login) => Json(accountService.Login(login));
-
+        public JsonResult LoginOtp(LoginDto login) => Json(accountService.LoginOtp(login));
+        [HttpPost]
+        public JsonResult LoginSendCode(string phoneNumber)=> Json(accountService.LoginSendCode(phoneNumber));
+   
+        
 
     }
 }

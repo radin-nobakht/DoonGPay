@@ -29,12 +29,12 @@ namespace DoonGPay.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(UsersEntity entity)
+        public ActionResult Login(UserEntity entity)
         {
             var model = _userService.Users();
             foreach (var i in model)
             {
-                if (i.Name == entity.Name && i.LName == entity.LName && i.PhoneNumber == entity.PhoneNumber)
+                if (i.FristName == entity.FirstName && i.LastName == entity.LastName && i.PhoneNumber == entity.PhoneNumber)
                 {
                     return RedirectToAction("UserMangment", "User");
                 }
@@ -71,7 +71,7 @@ namespace DoonGPay.Controllers
         public IActionResult AddOrEditUser(int? id)
         {
             if (id == null)
-                return Json(new UsersEntity());
+                return Json(new UserDto());
 
             var entity = _userService.GetById(id.Value);
             if (entity == null)
