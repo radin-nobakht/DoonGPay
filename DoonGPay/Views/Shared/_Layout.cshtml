@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+      @*   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DoonGPay</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -38,13 +38,22 @@
 
                      
                          
-                    </ul>
+                    </ul> 
                 </div>
-                <div class="d-flex">
-                    @await Component.InvokeAsync("User")
-                </div>
-            </div>
-        </nav>
+        <div class="d-block">
+            @await Component.InvokeAsync("Links")
+        </div>
+        <div class="d-block">
+            @await Component.InvokeAsync("Search")
+        </div>
+       
+            
+               
+          </div>
+        </nav> *@
+        <div class="d-flex">
+            @await Component.InvokeAsync("User")
+        </div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
