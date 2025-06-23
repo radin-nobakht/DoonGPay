@@ -8,8 +8,8 @@ namespace DoonGPay.Controllers
 {
     public class travelController : Controller
     {
-        private readonly ItravelService _travelService;
-        public travelController(ItravelService travelService)
+        private readonly ITravelService _travelService;
+        public travelController(ITravelService travelService)
         {
             _travelService = travelService;
         }

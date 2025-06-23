@@ -15,7 +15,7 @@ builder.Services.AddDbContext<MyContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("SqlCs"));
 });
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ItravelService, travelService>();
+builder.Services.AddScoped<ITravelService, TravelService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ISmsService, SmsService>();
 builder.Services.AddScoped<IMySession, MySession>();

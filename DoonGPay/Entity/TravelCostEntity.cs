@@ -4,10 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DoonGPay.Entity
 {
     [Table("TravelCost")]
-    public class TravelCostEntity
+    public class TravelCostEntity : BaseEntity<int>
     {
-        [Key]
-        public int id {  get; set; }
+
         public string Title { get; set; }
         public int Value { get; set; }
     }

@@ -4,13 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DoonGPay.Entity
 {
     [Table("travel")]
-    public class TravelEntity
+    public class TravelEntity :BaseEntity<int>
     {
-        [Key]
-        public int Id { get; set; }
+        public int UserId { get; set; }
         public string Name { get; set; }
         public DateTime Date { get; set; }
         public DateTime InsertDate { get; set; }
-
+         
     }
 }

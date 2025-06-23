@@ -7,13 +7,13 @@ using DoonGPay.INteface;
 
 namespace DoonGPay.Service
 {
-    public class travelService(MyContext db,IMapper mapper) : ItravelService
+    public class TravelService(MyContext db, IMapper mapper) : ITravelService
     {
         public void Addtravel(TravelDto travel)
         {
             travel.InsertDate = DateTime.Now;
 
-             var model = mapper.Map<TravelEntity>(travel);
+            var model = mapper.Map<TravelEntity>(travel);
             db.travels.Add(model);
             db.SaveChanges();
         }
@@ -98,7 +98,7 @@ namespace DoonGPay.Service
         }
         public void DeleteCost(int id)
         {
-            var model = db.travelCosts.FirstOrDefault(x => x.id == id);
+            var model = db.travelCosts.FirstOrDefault(x => x.Id == id);
             if (model != null)
             {
                 db.travelCosts.Remove(model);
@@ -107,7 +107,7 @@ namespace DoonGPay.Service
         }
         public TravelCostDto GetByIdCost(int id)
         {
-            return mapper.Map<TravelCostDto>(db.travelCosts.FirstOrDefault(x => x.id == id));
+            return mapper.Map<TravelCostDto>(db.travelCosts.FirstOrDefault(x => x.Id == id));
         }
 
 

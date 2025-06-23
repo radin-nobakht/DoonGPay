@@ -3,7 +3,7 @@ using DoonGPay.Entity;
 
 namespace DoonGPay.INteface
 {
-    public interface ItravelService
+    public interface ITravelService
     {
         void AddFellowtraveler(TravelFellowtravelerDto  travelFellowtraveler);
         void Addtravel(TravelDto travel);
