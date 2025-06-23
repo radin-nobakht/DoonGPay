@@ -16,7 +16,7 @@ namespace DoonGPay.INteface
         TravelCostDto GetByIdCost(int id);
         List<TravelFellowtravelerDto> Fellowtravelers();
         List<TravelCostDto> Costs();
-        List<TravelDto> travels();
+        List<TravelDto> Travels();
         void Updatetravel(TravelDto travel);
         void UpdateFellowtraveler(TravelFellowtravelerDto travelFellowtravelers);
         void UpdateCost(TravelCostDto travelCost);

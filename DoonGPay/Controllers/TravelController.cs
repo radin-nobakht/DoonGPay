@@ -6,17 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers
 {
-    public class travelController : Controller
+    public class TravelController(ITravelService travelService) : Controller
     {
-        private readonly ITravelService _travelService;
-        public travelController(ITravelService travelService)
-        {
-            _travelService = travelService;
-        }
+
+
         //Travel
         public IActionResult Index()
         {
-           ViewBag.travelList= _travelService.travels();
+           ViewBag.travelList= travelService.Travels();
             return View();
         }
 
@@ -26,7 +23,7 @@ namespace DoonGPay.Controllers
             if (id == null)
                 return Json(new TravelDto());
 
-            var entity = _travelService.GetByIdTravel(id.Value);
+            var entity = travelService.GetByIdTravel(id.Value);
             if (entity == null)
                 return Json(new { success = false, message = "کاربر یافت نشد" });
 
@@ -40,9 +37,9 @@ namespace DoonGPay.Controllers
                 return Json(new { success = false, message = "مدل نامعتبر است" });
 
             if (model.Id == 0)
-                _travelService.Addtravel(model);
+                travelService.Addtravel(model);
             else
-                _travelService.Updatetravel(model);
+                travelService.Updatetravel(model);
 
             return Json(new
             {
@@ -54,7 +51,7 @@ namespace DoonGPay.Controllers
         [HttpPost]
         public JsonResult DeleteTravel(int id)
         {
-            _travelService.Deletetravel(id);
+            travelService.Deletetravel(id);
             return Json(new { success = true });
         }
         //Cost
@@ -65,7 +62,7 @@ namespace DoonGPay.Controllers
 
         public IActionResult Cost()
         {
-            ViewBag.costList= _travelService.Costs();
+            ViewBag.costList= travelService.Costs();
             return View();
         }
 
@@ -75,7 +72,7 @@ namespace DoonGPay.Controllers
             if (id == null)
                 return Json(new TravelCostDto());
 
-            var entity = _travelService.GetByIdCost(id.Value);
+            var entity = travelService.GetByIdCost(id.Value);
             if (entity == null)
                 return Json(new { success = false, message = "کاربر یافت نشد" });
 
@@ -89,9 +86,9 @@ namespace DoonGPay.Controllers
                 return Json(new { success = false, message = "مدل نامعتبر است" });
 
             if (model.Id == 0)
-                _travelService.AddCost(model);
+                travelService.AddCost(model);
             else
-                _travelService.UpdateCost(model);
+                travelService.UpdateCost(model);
 
             return Json(new
             {
@@ -103,7 +100,7 @@ namespace DoonGPay.Controllers
         [HttpPost]
         public JsonResult DeleteCost(int id)
         {
-            _travelService.DeleteCost(id);
+            travelService.DeleteCost(id);
             return Json(new { success = true });
         }
 
@@ -113,7 +110,7 @@ namespace DoonGPay.Controllers
 
         public IActionResult Fellowtraveler()
         {
-            ViewBag.FellowtravelerList = _travelService.Fellowtravelers();
+            ViewBag.FellowtravelerList = travelService.Fellowtravelers();
             return View();
         }
 
@@ -123,7 +120,7 @@ namespace DoonGPay.Controllers
             if (id == null)
                 return Json(new TravelFellowtravelerDto());
 
-            var entity = _travelService.GetByIdFellowtraveler(id.Value);
+            var entity = travelService.GetByIdFellowtraveler(id.Value);
             if (entity == null)
                 return Json(new { success = false, message = "کاربر یافت نشد" });
 
@@ -137,9 +134,9 @@ namespace DoonGPay.Controllers
                 return Json(new { success = false, message = "مدل نامعتبر است" });
 
             if (model.Id == 0)
-                _travelService.AddFellowtraveler(model);
+                travelService.AddFellowtraveler(model);
             else
-                _travelService.UpdateFellowtraveler(model);
+                travelService.UpdateFellowtraveler(model);
 
             return Json(new
             {
@@ -151,7 +148,7 @@ namespace DoonGPay.Controllers
         [HttpPost]
         public JsonResult DeleteFellowtraveler(int id)
         {
-            _travelService.DeleteFellowtraveler(id);
+            travelService.DeleteFellowtraveler(id);
             return Json(new { success = true });
         }
     }

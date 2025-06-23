@@ -11,8 +11,8 @@ namespace DoonGPay.Adapter
             Database.SetCommandTimeout(30);
         }
         public DbSet<UserEntity> Users { get; set; }
-        public DbSet<TravelCostEntity> travelCosts { get; set; }
-        public DbSet<TravelFellowtravelerEntity> travelFellowtravelers { get; set; }
-        public DbSet<TravelEntity> travels { get; set; }
+        public DbSet<TravelCostEntity> TravelCosts { get; set; }
+        public DbSet<TravelFellowtravelerEntity> TravelFellowtravelers { get; set; }
+        public DbSet<TravelEntity> Travels { get; set; }
     }
 }

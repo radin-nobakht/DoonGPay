@@ -14,100 +14,100 @@ namespace DoonGPay.Service
             travel.InsertDate = DateTime.Now;
 
             var model = mapper.Map<TravelEntity>(travel);
-            db.travels.Add(model);
+            db.Travels.Add(model);
             db.SaveChanges();
         }
-        public List<TravelDto> travels()
+        public List<TravelDto> Travels()
         {
 
-            var data = db.travels.ToList();
+            var data = db.Travels.ToList();
 
             return mapper.Map<List<TravelDto>>(data);
         }
         public void Updatetravel(TravelDto travel)
         {
             var model = mapper.Map<TravelEntity>(travel);
-            db.travels.Update(model);
+            db.Travels.Update(model);
             db.SaveChanges();
         }
         public void Deletetravel(int id)
         {
-            var model = db.travels.FirstOrDefault(x => x.Id == id);
+            var model = db.Travels.FirstOrDefault(x => x.Id == id);
             if (model != null)
             {
-                db.travels.Remove(model);
+                db.Travels.Remove(model);
                 db.SaveChanges();
             }
         }
         public TravelDto GetByIdTravel(int id)
         {
-            return mapper.Map<TravelDto>(db.travels.FirstOrDefault(x => x.Id == id));
+            return mapper.Map<TravelDto>(db.Travels.FirstOrDefault(x => x.Id == id));
         }
         public void AddFellowtraveler(TravelFellowtravelerDto travelFellowtravelers)
         {
             var model = mapper.Map<TravelFellowtravelerEntity>(travelFellowtravelers);
 
-            db.travelFellowtravelers.Add(model);
+            db.TravelFellowtravelers.Add(model);
             db.SaveChanges();
         }
         public List<TravelFellowtravelerDto> Fellowtravelers()
         {
 
-            var data = db.travelFellowtravelers.ToList();
+            var data = db.TravelFellowtravelers.ToList();
 
             return mapper.Map<List<TravelFellowtravelerDto>>(data);
         }
         public void UpdateFellowtraveler(TravelFellowtravelerDto travelFellowtravelers)
         {
             var model = mapper.Map<TravelFellowtravelerEntity>(travelFellowtravelers);
-            db.travelFellowtravelers.Update(model);
+            db.TravelFellowtravelers.Update(model);
             db.SaveChanges();
         }
         public void DeleteFellowtraveler(int id)
         {
-            var model = db.travelFellowtravelers.FirstOrDefault(x => x.Id == id);
+            var model = db.TravelFellowtravelers.FirstOrDefault(x => x.Id == id);
             if (model != null)
             {
-                db.travelFellowtravelers.Remove(model);
+                db.TravelFellowtravelers.Remove(model);
                 db.SaveChanges();
             }
         }
         public TravelFellowtravelerDto GetByIdFellowtraveler(int id)
         {
-            return mapper.Map<TravelFellowtravelerDto>(db.travelFellowtravelers.FirstOrDefault(x => x.Id == id));
+            return mapper.Map<TravelFellowtravelerDto>(db.TravelFellowtravelers.FirstOrDefault(x => x.Id == id));
         }
         public void AddCost(TravelCostDto travelCost)
         {
             var model = mapper.Map<TravelCostEntity>(travelCost);
 
-            db.travelCosts.Add(model);
+            db.TravelCosts.Add(model);
             db.SaveChanges();
         }
         public List<TravelCostDto> Costs()
         {
 
-            var data = db.travelCosts.ToList();
+            var data = db.TravelCosts.ToList();
 
             return mapper.Map<List<TravelCostDto>>(data);
         }
         public void UpdateCost(TravelCostDto travelCost)
         {
             var model = mapper.Map<TravelCostEntity>(travelCost);
-            db.travelCosts.Update(model);
+            db.TravelCosts.Update(model);
             db.SaveChanges();
         }
         public void DeleteCost(int id)
         {
-            var model = db.travelCosts.FirstOrDefault(x => x.Id == id);
+            var model = db.TravelCosts.FirstOrDefault(x => x.Id == id);
             if (model != null)
             {
-                db.travelCosts.Remove(model);
+                db.TravelCosts.Remove(model);
                 db.SaveChanges();
             }
         }
         public TravelCostDto GetByIdCost(int id)
         {
-            return mapper.Map<TravelCostDto>(db.travelCosts.FirstOrDefault(x => x.Id == id));
+            return mapper.Map<TravelCostDto>(db.TravelCosts.FirstOrDefault(x => x.Id == id));
         }
 
 
