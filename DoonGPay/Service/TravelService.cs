@@ -11,8 +11,9 @@ namespace DoonGPay.Service
     {
         public void Addtravel(TravelDto travel)
         {
-            var model = mapper.Map<TravelEntity>(travel);
+            travel.InsertDate = DateTime.Now;
 
+             var model = mapper.Map<TravelEntity>(travel);
             db.travels.Add(model);
             db.SaveChanges();
         }
@@ -38,7 +39,7 @@ namespace DoonGPay.Service
                 db.SaveChanges();
             }
         }
-        public TravelDto GetById(int id)
+        public TravelDto GetByIdTravel(int id)
         {
             return mapper.Map<TravelDto>(db.travels.FirstOrDefault(x => x.Id == id));
         }
@@ -75,27 +76,27 @@ namespace DoonGPay.Service
         {
             return mapper.Map<TravelFellowtravelerDto>(db.travelFellowtravelers.FirstOrDefault(x => x.Id == id));
         }
-        public void AddPay(TravelCostDto travelCost)
+        public void AddCost(TravelCostDto travelCost)
         {
             var model = mapper.Map<TravelCostEntity>(travelCost);
 
             db.travelCosts.Add(model);
             db.SaveChanges();
         }
-        public List<TravelCostDto> Pays()
+        public List<TravelCostDto> Costs()
         {
 
             var data = db.travelCosts.ToList();
 
             return mapper.Map<List<TravelCostDto>>(data);
         }
-        public void UpdatePay(TravelCostDto travelCost)
+        public void UpdateCost(TravelCostDto travelCost)
         {
             var model = mapper.Map<TravelCostEntity>(travelCost);
             db.travelCosts.Update(model);
             db.SaveChanges();
         }
-        public void DeletePay(int id)
+        public void DeleteCost(int id)
         {
             var model = db.travelCosts.FirstOrDefault(x => x.id == id);
             if (model != null)
@@ -104,7 +105,7 @@ namespace DoonGPay.Service
                 db.SaveChanges();
             }
         }
-        public TravelCostDto GetByIdPay(int id)
+        public TravelCostDto GetByIdCost(int id)
         {
             return mapper.Map<TravelCostDto>(db.travelCosts.FirstOrDefault(x => x.id == id));
         }

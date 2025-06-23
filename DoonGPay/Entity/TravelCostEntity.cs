@@ -8,7 +8,7 @@ namespace DoonGPay.Entity
     {
         [Key]
         public int id {  get; set; }
-        public string Reason { get; set; }
-        public int Cost { get; set; }
+        public string Title { get; set; }
+        public int Value { get; set; }
     }
 }

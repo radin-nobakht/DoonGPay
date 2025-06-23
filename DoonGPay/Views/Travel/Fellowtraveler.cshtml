@@ -113,7 +113,7 @@
         background-color: #fb8c00; /* نارنجی */
     }
 
-    .btn-DeleteTravel {
+    .btn-DeleteCost {
         background-color: #e64a19; /* نارنجی قرمز */
     }
 
@@ -121,7 +121,7 @@
         background-color: #ef6c00; /* نارنجی تیره */
     }
 
-    .btn-DeleteTravel:hover {
+    .btn-DeleteCost:hover {
         background-color: #bf360c; /* نارنجی تیره */
     }
 
@@ -187,29 +187,33 @@
     }
 
 </style>
-<button class="btn btn-success mb-3" id="btnAdd">سفر جدید</button>
+<button class="btn btn-success mb-3" id="btnAdd">هزینه جدید</button>
 
 <table class="table table-bordered text-center" id="userTable">
     <thead class="thead-dark">
         <tr>
             <th>ویرایش</th>
             <th>حذف</th>
-            <th>نام</th>
-            <th>تاریخ</th>
+            <th>اسم</th>
+            <th>نام خوانوادگی</th>
+            <th>تلفن</th>
+            <th>سهم</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var i in ViewBag.travelList)
+        @foreach (var i in ViewBag.List)
         {
             <tr data-id="@i.Id">
                 <td>
                     <button class="btn btn-info btn-sm btn-edit" data-id="@i.Id">ویرایش</button>
                 </td>
                 <td>
-                    <button class="btn btn-danger btn-sm btn-DeleteTravel" data-id="@i.Id">حذف</button>
+                    <button class="btn btn-danger btn-sm btn-DeleteCost" data-id="@i.Id">حذف</button>
                 </td>
                 <td>@i.Name</td>
-                <td>@i.Date</td>
+                <td>@i.Lastname</td>
+                <td>@i.PhoneNumber</td>
+                <td>@i.Share</td>
             </tr>
         }
     </tbody>
@@ -220,13 +224,15 @@
     <div class="modal-dialog" role="document">"
         <div class="modal-content form-container">
             <div class="modal-header">
-                <h5 class="modal-title" id="userModalLabel">افزودن / ویرایش کاربر</h5>
+                <h5 class="modal-title" id="userModalLabel">افزودن / ویرایش هزینه</h5>
             </div>
             <div class="modal-body">
                 <form id="userForm">
                     <input type="hidden" name="Id" id="Id" />
                     <input type="text" name="Name" id="Name" class="form-control mb-2" placeholder="نام" required />
-                    <input type="date" name="Date" id="Date" class="form-control mb-2" placeholder="تاریخ وارد شدن" required />
+                    <input type="text" name="LastName" id="LastName" class="form-control mb-2" placeholder=" نام خوانوادگی" required />
+                    <input type="number" name="PhoneNumber" id="PhoneNumber" class="form-control mb-2" placeholder=" تلفن " required />
+                   
                     <div class="text-danger" id="errorMessage" style="display:none;"></div>
                 </form>
             </div>
@@ -245,7 +251,7 @@
             $("#btnAdd").click(function () {
                 $("#userForm")[0].reset();
                 $("#Id").val(0);
-                $("#userModalLabel").text("افزودن سفر");
+                $("#userModalLabel").text("افزودن همسفر");
                 $("#errorMessage").hide();
                 $("#userModal").modal("show");
             });
@@ -253,11 +259,11 @@
             // ویرایش
             $(".btn-edit").click(function () {
                 var id = $(this).data("id");
-                $.get("/travel/AddOrEditTravel", { id: id }, function (data) {
+                $.get("/travel/AddOrEditFellowtraveler", { id: id }, function (data) {
                     $("#Id").val(data.id);
                     $("#Name").val(data.name);
-                    $("#Date").val(data.lName);
-                    $("#userModalLabel").text("ویرایش سفر");
+                    $("#LastName").val(data.lastName);
+                    $("#userModalLabel").text("ویرایش همسفر");
                     $("#errorMessage").hide();
                     $("#userModal").modal("show");
                 });
@@ -267,7 +273,7 @@
             $("#userForm").submit(function (e) {
                 e.preventDefault();
                 $.ajax({
-                    url: "/travel/AddOrEditTravel",
+                    url: "/travel/AddOrEditFellowtraveler",
                     type: "POST",
                     data: $(this).serialize(),
                     success: function (res) {
@@ -285,12 +291,12 @@
             });
 
             // حذف
-            $(".btn-DeleteTravel").click(function () {
+            $(".btn-DeleteCost").click(function () {
                 var row = $(this).closest("tr");
                 var id = $(this).data("id");
                 if (!confirm("آیا از حذف اطمینان دارید؟")) return;
 
-                $.post("/travel/DeleteTravel", { id: id }, function (res) {
+                $.post("/travel/DeleteFellowtraveler", { id: id }, function (res) {
                     if (res.success) {
                         row.fadeOut(300, function () {
                             $(this).remove();

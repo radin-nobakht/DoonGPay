@@ -9,6 +9,8 @@ namespace DoonGPay.Entity
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
+        public DateTime InsertDate { get; set; }
+
     }
 }
