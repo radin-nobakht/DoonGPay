@@ -1,0 +1,23 @@
+﻿@model List<DoonGPay.Dto.TravelDto>
+<table class="table table-bordered text-center" >
+    <thead class="thead-dark">
+        <tr>
+            <th>نام</th>
+            <th>تاریخ</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in Model)
+        {
+            <tr data-id="@i.Id" class="travel">
+                <td>@i.Name</td>
+                <td>@i.Date</td>
+                <td>
+                    <button class="btn btn-info btn-sm btnEditTravel" data-id="@i.Id">ویرایش</button>
+                    <button class="btn btn-danger btn-sm btnDeleteTravel" data-id="@i.Id">حذف</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

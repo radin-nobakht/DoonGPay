@@ -1,279 +1,123 @@
-﻿<style>
-    body {
-        direction: rtl;
-        font-family: 'B Nazanin', Tahoma, sans-serif;
-        background-color: white; /* نارنجی بسیار روشن */
-        margin-bottom: 60px;
-    }
+﻿
+<button class="btn btn-success mb-3" id="btnAddTravel">سفر جدید</button>
 
-    /* فرم */
-    .form-container {
-        width: 400px;
-        margin: 50px auto 30px;
-        background-color: white; /* نارنجی روشن */
-        padding: 20px;
-        border-radius: 10px;
-        border: 1px solid #ff9800; /* نارنجی */
-        box-shadow: 0 0 10px rgba(255, 152, 0, 0.3);
-    }
-
-        .form-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #e65100; /* نارنجی تیره */
-        }
-
-        .form-container input {
-            width: 100%;
-            padding: 8px;
-            margin: 10px 0;
-            font-family: 'B Nazanin', Tahoma, sans-serif;
-            font-size: 16px;
-            border: 1px solid #ffb74d; /* نارنجی روشن */
-            border-radius: 8px;
-            background-color: #fff8e1; /* پس‌زمینه خیلی روشن نارنجی */
-            color: #5d4037; /* قهوه‌ای تیره برای متن */
-            transition: border-color 0.3s;
-        }
-
-            .form-container input:focus {
-                border-color: #ff6f00; /* نارنجی پررنگ */
-                outline: none;
-                background-color: #fff3e0;
-            }
-
-        .form-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #ff9800; /* نارنجی */
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-            .form-container button:hover {
-                background-color: #ef6c00; /* نارنجی تیره */
-            }
-
-    .error {
-        color: #d32f2f; /* قرمز تیره */
-        margin-bottom: 10px;
-        font-size: 14px;
-        display: none;
-    }
-
-    /* جدول نارنجی */
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        max-width: 900px;
-        margin: 0 auto 50px;
-        font-family: Tahoma, sans-serif;
-        box-shadow: 0 0 8px rgba(255, 152, 0, 0.4);
-    }
-
-    th {
-        background-color: #ff9800; /* نارنجی */
-        padding: 10px;
-        border: 1px solid #ffa726;
-        text-align: center;
-        color:black;
-    }
-
-    td {
-        padding: 10px;
-        border: 1px solid #ffcc80;
-        text-align: center;
-        color: #5d4037;
-    }
-
-    tbody tr:nth-child(even) {
-        background-color: #ffe0b2; /* نارنجی خیلی روشن */
-    }
-
-    tbody tr:hover {
-        background-color: #ffcc80; /* نارنجی متوسط */
-    }
-
-    /* دکمه‌ها داخل جدول */
-    .btn {
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 14px;
-        cursor: pointer;
-        border: none;
-        color: white;
-        transition: background-color 0.3s;
-    }
-
-    .btn-update {
-        background-color: #fb8c00; /* نارنجی */
-    }
-
-    .btn-DeleteTravel {
-        background-color: #e64a19; /* نارنجی قرمز */
-    }
-
-    .btn-update:hover {
-        background-color: #ef6c00; /* نارنجی تیره */
-    }
-
-    .btn-DeleteTravel:hover {
-        background-color: #bf360c; /* نارنجی تیره */
-    }
-
-    img.img {
-        max-width: 100px;
-        height: auto;
-        display: block;
-        margin: 0 auto;
-        border-radius: 5px;
-        box-shadow: 0 0 5px rgba(255, 152, 0, 0.5);
-    }
-
-
-
-
-    .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-        box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-    }
-
-    html {
-        position: relative;
-        min-height: 100%;
-    }
-
-    body {
-        margin-bottom: 60px;
-    }
-
-    body {
-        direction: rtl;
-        font-family: 'B Nazanin';
-    }
-
-
-
-
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        font-family: Tahoma, sans-serif;
-    }
-
-    th {
-        background-color: yellow;
-        color: black;
-        padding: 10px;
-        border: 1px solid black;
-        border-top: 1px solid black;
-        border-bottom: 1px solid black;
-    }
-
-    td {
-        padding: 10px;
-        border: 1px solid #ddd;
-    }
-
-    tbody tr:nth-child(even) {
-        background-color: #f2f6fc;
-    }
-
-    tbody tr:hover {
-        background-color: #d0e7ff;
-    }
-
-</style>
-<button class="btn btn-success mb-3" id="btnAdd">سفر جدید</button>
-
-<table class="table table-bordered text-center" id="userTable">
-    <thead class="thead-dark">
-        <tr>
-            <th>ویرایش</th>
-            <th>حذف</th>
-            <th>نام</th>
-            <th>تاریخ</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var i in ViewBag.travelList)
-        {
-            <tr data-id="@i.Id">
-                <td>
-                    <button class="btn btn-info btn-sm btn-edit" data-id="@i.Id">ویرایش</button>
-                </td>
-                <td>
-                    <button class="btn btn-danger btn-sm btn-DeleteTravel" data-id="@i.Id">حذف</button>
-                </td>
-                <td>@i.Name</td>
-                <td>@i.Date</td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<!-- Modal -->
-<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">"
-        <div class="modal-content form-container">
-            <div class="modal-header">
-                <h5 class="modal-title" id="userModalLabel">افزودن / ویرایش کاربر</h5>
-            </div>
-            <div class="modal-body">
-                <form id="userForm">
-                    <input type="hidden" name="Id" id="Id" />
-                    <input type="text" name="Name" id="Name" class="form-control mb-2" placeholder="نام" required />
-                    <input type="date" name="Date" id="Date" class="form-control mb-2" placeholder="تاریخ وارد شدن" required />
-                    <div class="text-danger" id="errorMessage" style="display:none;"></div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" form="userForm" class="btn btn-primary">ثبت</button>
-            </div>
-        </div>
-    </div>
-</div>
-
+<div id="travels"></div>
+<div id="travelCosts"></div>
+<div id="travelFriend"></div>
 @section Scripts {
     <script>
-        $(function () {
 
-            // افزودن
-            $("#btnAdd").click(function () {
-                $("#userForm")[0].reset();
-                $("#Id").val(0);
-                $("#userModalLabel").text("افزودن سفر");
-                $("#errorMessage").hide();
-                $("#userModal").modal("show");
+        //#region Travel
+
+
+
+        function travels()
+        {
+             $.ajax({
+                    url: "/travel/Travels",
+                    type: "POST",
+                    success: function (result) {
+                       $("#travels").html(result)
+                    },
+                    error: function () {
+
+                    }
+                });
+        }
+        $(document).on("click","tr.travel" ,function(){
+            var travelId=$(this).attr("data-id");
+            travelCosts(travelId);
+            travelFriends(travelId);
+        })
+
+
+        function travelFriends(travelId)
+        {
+             $.ajax({
+                    url: "/travel/Friend",
+                    type: "POST",
+                    data: {travelId:travelId},
+                    success: function (result) {
+                       $("#travelFriend").html(result)
+                    },
+                    error: function () {
+                        $("#errorMessage").text("خطا در ثبت اطلاعات").show();
+                    }
+                });
+        }
+        function travelCosts(travelId)
+        {
+             $.ajax({
+                    url: "/travel/TravelCosts",
+                    type: "POST",
+                    data: {travelId:travelId},
+                    success: function (result) {
+                       $("#travelCosts").html(result)
+                    },
+                    error: function () {
+                        $("#errorMessage").text("خطا در ثبت اطلاعات").show();
+                    }
+                });
+        }
+        $(function () {
+            travels();
+        });
+
+
+            $(document).on("click",".btnDeleteTravel",function(){
+              var row = $(this).closest("tr");
+                var id = $(this).data("id");
+                if (!confirm("آیا از حذف اطمینان دارید؟")) return;
+
+                $.post("/travel/DeleteTravel", { id: id }, function (res) {
+                    if (res.success) {
+                        row.fadeOut(300, function () {
+                            $(this).remove();
+                        });
+                    } else {
+                        alert("حذف ناموفق بود.");
+                    }
+                });
+
+                });
+
+
+          $("#btnAddTravel").click(function () {
+
+             editTravel(null);
             });
+            $(document).on("click",".btnEditTravel",function(){
+                var id=$(this).data("id");
+                 editTravel(id);
+            })
+            function editTravel(id)            {
+                 $.ajax({
+                    url: "/travel/EditTravel",
+                    type: "POST",
+                    data: {id:id},
+                    success: function (result) {
+                       $("#modal").html(result)
+                          $("#editTravel").modal("show");
+                    },
+                    error: function () {
+                        $("#errorMessage").text("خطا در ثبت اطلاعات").show();
+                    }
+                });
+            }
 
             // ویرایش
-            $(".btn-edit").click(function () {
-                var id = $(this).data("id");
-                $.get("/travel/AddOrEditTravel", { id: id }, function (data) {
-                    $("#Id").val(data.id);
-                    $("#Name").val(data.name);
-                    $("#Date").val(data.lName);
-                    $("#userModalLabel").text("ویرایش سفر");
-                    $("#errorMessage").hide();
-                    $("#userModal").modal("show");
-                });
-            });
 
-            // ارسال فرم
-            $("#userForm").submit(function (e) {
-                e.preventDefault();
-                $.ajax({
-                    url: "/travel/AddOrEditTravel",
+            $(document).on("click","#btnSaveTravel",function(){
+
+              $.ajax({
+                    url: "/travel/SaveTravel",
                     type: "POST",
-                    data: $(this).serialize(),
+                    data: $("#travelForm").serialize(),
+
                     success: function (res) {
                         if (res.success) {
-                            $("#userModal").modal("hide");
-                            location.reload(); // در صورت نیاز به رفرش جدول بدون reload بگو تا اونم پیاده‌سازی کنم
+                            $("#editTravel").modal("hide");
+                        travels();
                         } else {
                             $("#errorMessage").text(res.message).show();
                         }
@@ -281,8 +125,9 @@
                     error: function () {
                         $("#errorMessage").text("خطا در ثبت اطلاعات").show();
                     }
-                });
-            });
+                });})
+
+
 
             // حذف
             $(".btn-DeleteTravel").click(function () {
@@ -300,7 +145,186 @@
                     }
                 });
             });
+            //#endregion
 
-        });
+        //#region Cost
+
+            $(document).on("click",".btnDeleteTravelCost",function(){
+              var row = $(this).closest("tr");
+                var id = $(this).data("id");
+                if (!confirm("آیا از حذف اطمینان دارید؟")) return;
+
+                $.post("/travel/DeleteTravelCost", { id: id }, function (res) {
+                    if (res.success) {
+                        row.fadeOut(300, function () {
+                            $(this).remove();
+                        });
+                    } else {
+                        alert("حذف ناموفق بود.");
+                    }
+                });
+
+                });
+
+
+            $(document).on("click","#btnAddCost",function(){
+                   var travelId=$(this).data("travel-id");
+             editTravelCost(null,travelId);
+            });
+            $(document).on("click",".btnEditTravelCost",function(){
+
+                var travelCostId=$(this).data("id");
+                var travelId=$(this).data("travel-id");
+                 editTravelCost(travelCostId,travelId);
+            })
+            function editTravelCost(travelCostId,travelId)            {
+                 $.ajax({
+                    url: "/travel/EditTravelCost",
+                    type: "POST",
+                    data: {
+                        travelCostId:travelCostId,
+                        travelId:travelId
+                    },
+                    success: function (result) {
+                       $("#modal").html(result)
+                          $("#editCost").modal("show");
+                    },
+                    error: function () {
+                        $("#errorMessage").text("خطا در ثبت اطلاعات").show();
+                    }
+                });
+            }
+
+            // ویرایش
+             
+            $(document).on("click","#btnSaveCost",function(){
+                var travelId=$("#CostForm #TravelId").val();
+              $.ajax({
+                    url: "/Travel/SaveCost",
+                    type: "POST",
+                    data: $("#CostForm").serialize(),
+
+                    success: function (res) {
+                        if (res.success) {
+                            $("#editCost").modal("hide");
+                       travelCosts(travelId);
+                         } else {
+                            $("#errorMessage").text(res.message).show();
+                        }
+                    },
+                    error: function () {
+                        $("#errorMessage").text("خطا در ثبت اطلاعات").show();
+                    }
+                });})
+
+
+
+            // حذف
+            $(".btnDeleteTravelCost").click(function () {
+                var row = $(this).closest("tr");
+                var id = $(this).data("id");
+                if (!confirm("آیا از حذف اطمینان دارید؟")) return;
+
+                $.post("/travel/DeleteTravelCost", { id: id }, function (res) {
+                    if (res.success) {
+                        row.fadeOut(300, function () {
+                            $(this).remove();
+                        });
+                    } else {
+                        alert("حذف ناموفق بود.");
+                    }
+                });
+            });
+            //#endregion
+
+        //#region Friend
+            $(document).on("click",".btn-deleteFriend",function(){
+              var row = $(this).closest("tr");
+                var id = $(this).data("id");
+                if (!confirm("آیا از حذف اطمینان دارید؟")) return;
+
+                $.post("/travel/DeleteFriend", { id: id }, function (res) {
+                    if (res.success) {
+                        row.fadeOut(300, function () {
+                            $(this).remove();
+                        });
+                    } else {
+                        alert("حذف ناموفق بود.");
+                    }
+                });
+
+                });
+
+
+            $(document).on("click","#btnAddFriend",function(){
+                   var travelId=$(this).data("travel-id");
+             travelFriends(null,travelId);
+            });
+            $(document).on("click",".btn-editFriend",function(){
+
+                var travelFriendId=$(this).data("id");
+                var travelId=$(this).data("travel-id");
+                 editTravelFriend(travelFriendId,travelId);
+            })
+            function editTravelFriend(travelFriendId,travelId)            {
+                 $.ajax({
+                    url: "/travel/EditTravelCost",
+                    type: "POST",
+                    data: {
+                        travelFriendId:travelFriendId,
+                        travelId:travelId
+                    },
+                    success: function (result) {
+                       $("#modal").html(result)
+                          $("#editCost").modal("show");
+                    },
+                    error: function () {
+                        $("#errorMessage").text("خطا در ثبت اطلاعات").show();
+                    }
+                });
+            }
+
+            // ویرایش
+             
+            $(document).on("click","#btnSaveCost",function(){
+                var travelId=$("#CostForm #TravelId").val();
+              $.ajax({
+                    url: "/Travel/SaveCost",
+                    type: "POST",
+                    data: $("#CostForm").serialize(),
+
+                    success: function (res) {
+                        if (res.success) {
+                            $("#editCost").modal("hide");
+                       travelCosts(travelId);
+                         } else {
+                            $("#errorMessage").text(res.message).show();
+                        }
+                    },
+                    error: function () {
+                        $("#errorMessage").text("خطا در ثبت اطلاعات").show();
+                    }
+                });})
+
+
+
+            // حذف
+            $(".btnDeleteTravelCost").click(function () {
+                var row = $(this).closest("tr");
+                var id = $(this).data("id");
+                if (!confirm("آیا از حذف اطمینان دارید؟")) return;
+
+                $.post("/travel/DeleteTravelCost", { id: id }, function (res) {
+                    if (res.success) {
+                        row.fadeOut(300, function () {
+                            $(this).remove();
+                        });
+                    } else {
+                        alert("حذف ناموفق بود.");
+                    }
+                });
+            });
+            //#endregion
+
     </script>
 }

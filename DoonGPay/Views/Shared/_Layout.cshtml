@@ -8,11 +8,13 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/DoonGPay.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body dir="rtl">
     @await Component.InvokeAsync("Navbar")
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
+            <!-- Modal -->
+            <div id="modal"></div>
         </main>
     </div>
 

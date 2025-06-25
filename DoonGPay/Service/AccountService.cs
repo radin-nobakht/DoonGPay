@@ -36,7 +36,8 @@ namespace DoonGPay.Service
             var principal = new ClaimsPrincipal(identity);
             var properties = new AuthenticationProperties
             {
-                IsPersistent = login.Remember,
+                //IsPersistent = login.Remember,
+                IsPersistent=true,
                 ExpiresUtc = DateTime.UtcNow.AddDays(7)
             };
             httpContextAccessor.HttpContext?.SignInAsync(principal, properties);

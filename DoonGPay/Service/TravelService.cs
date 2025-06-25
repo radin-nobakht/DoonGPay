@@ -2,31 +2,35 @@
 using DoonGPay.Adapter;
 using DoonGPay.Dto;
 using DoonGPay.Entity;
+using DoonGPay.Inteface;
 using DoonGPay.INteface;
 
 
 namespace DoonGPay.Service
 {
-    public class TravelService(MyContext db, IMapper mapper) : ITravelService
+    public class TravelService(MyContext db, IMapper mapper, IMySession mySession) :ITravelService
+, ITravelService
     {
+        #region Travel
         public void Addtravel(TravelDto travel)
         {
-            travel.InsertDate = DateTime.Now;
-
             var model = mapper.Map<TravelEntity>(travel);
+            model.InsertDate = DateTime.Now;
+            model.UserId = (int)mySession.UserId;
             db.Travels.Add(model);
             db.SaveChanges();
         }
         public List<TravelDto> Travels()
         {
-
-            var data = db.Travels.ToList();
+            var data = db.Travels.Where(x => x.UserId == mySession.UserId).ToList();
 
             return mapper.Map<List<TravelDto>>(data);
         }
         public void Updatetravel(TravelDto travel)
         {
+
             var model = mapper.Map<TravelEntity>(travel);
+            model.InsertDate = DateTime.Now;
             db.Travels.Update(model);
             db.SaveChanges();
         }
@@ -39,43 +43,52 @@ namespace DoonGPay.Service
                 db.SaveChanges();
             }
         }
-        public TravelDto GetByIdTravel(int id)
+        public TravelDto Travel(int id)
         {
             return mapper.Map<TravelDto>(db.Travels.FirstOrDefault(x => x.Id == id));
         }
-        public void AddFellowtraveler(TravelFellowtravelerDto travelFellowtravelers)
-        {
-            var model = mapper.Map<TravelFellowtravelerEntity>(travelFellowtravelers);
+        #endregion
 
-            db.TravelFellowtravelers.Add(model);
+        #region Friend
+        public void AddFriend(TravelFriendDto travelFriends)
+        {
+            var model = mapper.Map<TravelFriendEntity>(travelFriends);
+
+            db.TravelFriends.Add(model);
             db.SaveChanges();
         }
-        public List<TravelFellowtravelerDto> Fellowtravelers()
+        public List<TravelFriendDto> Friends(int travelId)
         {
 
-            var data = db.TravelFellowtravelers.ToList();
-
-            return mapper.Map<List<TravelFellowtravelerDto>>(data);
+            var data = db.TravelFriends.Where(x => x.TravelId == travelId).ToList();
+            return mapper.Map<List<TravelFriendDto>>(data);
         }
-        public void UpdateFellowtraveler(TravelFellowtravelerDto travelFellowtravelers)
+
+        public TravelFriendDto Friend(int FriendId)
         {
-            var model = mapper.Map<TravelFellowtravelerEntity>(travelFellowtravelers);
-            db.TravelFellowtravelers.Update(model);
+
+            var data = db.TravelFriends.Where(x => x.Id == FriendId).ToList();
+
+            return mapper.Map<TravelFriendDto>(data);
+        }
+        public void UpdateFriend(TravelFriendDto travelFriends)
+        {
+            var model = mapper.Map<TravelFriendEntity>(travelFriends);
+            db.TravelFriends.Update(model);
             db.SaveChanges();
         }
-        public void DeleteFellowtraveler(int id)
+        public void DeleteFriend(int id)
         {
-            var model = db.TravelFellowtravelers.FirstOrDefault(x => x.Id == id);
+            var model = db.TravelFriends.FirstOrDefault(x => x.Id == id);
             if (model != null)
             {
-                db.TravelFellowtravelers.Remove(model);
+                db.TravelFriends.Remove(model);
                 db.SaveChanges();
             }
         }
-        public TravelFellowtravelerDto GetByIdFellowtraveler(int id)
-        {
-            return mapper.Map<TravelFellowtravelerDto>(db.TravelFellowtravelers.FirstOrDefault(x => x.Id == id));
-        }
+        #endregion
+
+        #region Cost
         public void AddCost(TravelCostDto travelCost)
         {
             var model = mapper.Map<TravelCostEntity>(travelCost);
@@ -83,12 +96,19 @@ namespace DoonGPay.Service
             db.TravelCosts.Add(model);
             db.SaveChanges();
         }
-        public List<TravelCostDto> Costs()
+        public List<TravelCostDto> TravelCosts(int travelId)
         {
 
-            var data = db.TravelCosts.ToList();
-
+            var data = db.TravelCosts.Where(x => x.TravelId == travelId).ToList();
             return mapper.Map<List<TravelCostDto>>(data);
+        }
+
+        public TravelCostDto TravelCost(int travelCostId)
+        {
+
+            var data = db.TravelCosts.Where(x => x.Id == travelCostId).ToList();
+
+            return mapper.Map<TravelCostDto>(data);
         }
         public void UpdateCost(TravelCostDto travelCost)
         {
@@ -109,7 +129,7 @@ namespace DoonGPay.Service
         {
             return mapper.Map<TravelCostDto>(db.TravelCosts.FirstOrDefault(x => x.Id == id));
         }
-
+        #endregion
 
 
     }

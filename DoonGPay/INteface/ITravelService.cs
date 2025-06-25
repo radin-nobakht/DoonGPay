@@ -1,24 +1,24 @@
 ﻿using DoonGPay.Dto;
-using DoonGPay.Entity;
 
-namespace DoonGPay.INteface
+namespace DoonGPay.Inteface
 {
     public interface ITravelService
     {
-        void AddFellowtraveler(TravelFellowtravelerDto  travelFellowtraveler);
-        void Addtravel(TravelDto travel);
         void AddCost(TravelCostDto travelCost);
-        void DeleteFellowtraveler(int id);
+        void AddFriend(TravelFriendDto travelFriends);
+        void Addtravel(TravelDto travel);
         void DeleteCost(int id);
+        void DeleteFriend(int id);
         void Deletetravel(int id);
-        TravelDto GetByIdTravel(int id);
-        TravelFellowtravelerDto GetByIdFellowtraveler(int id);
+        TravelFriendDto Friend(int FriendId);
+        List<TravelFriendDto> Friends(int travelId);
         TravelCostDto GetByIdCost(int id);
-        List<TravelFellowtravelerDto> Fellowtravelers();
-        List<TravelCostDto> Costs();
+        TravelDto Travel(int id);
+        TravelCostDto TravelCost(int travelCostId);
+        List<TravelCostDto> TravelCosts(int travelId);
         List<TravelDto> Travels();
-        void Updatetravel(TravelDto travel);
-        void UpdateFellowtraveler(TravelFellowtravelerDto travelFellowtravelers);
         void UpdateCost(TravelCostDto travelCost);
+        void UpdateFriend(TravelFriendDto travelFriends);
+        void Updatetravel(TravelDto travel);
     }
 }

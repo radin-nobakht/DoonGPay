@@ -1,7 +1,7 @@
 ﻿using DoonGPay.Dto;
 using DoonGPay.Entity;
+using DoonGPay.Inteface;
 using DoonGPay.INteface;
-using DoonGPay.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers
@@ -10,31 +10,31 @@ namespace DoonGPay.Controllers
     {
 
 
-        //Travel
+
+        #region Travel
         public IActionResult Index()
         {
-           ViewBag.travelList= travelService.Travels();
             return View();
         }
 
-        [HttpGet]
-        public IActionResult AddOrEditTravel(int? id)
+        public IActionResult Travels()
         {
-            if (id == null)
-                return Json(new TravelDto());
+            return PartialView("_Travels", travelService.Travels());
+        }
+        [HttpPost]
+        public IActionResult EditTravel(int? id)
+        {
+            TravelDto travelDto = new() { Date = DateTime.Now };
 
-            var entity = travelService.GetByIdTravel(id.Value);
-            if (entity == null)
-                return Json(new { success = false, message = "کاربر یافت نشد" });
-
-            return Json(entity);
+            if (id > 0)
+                travelDto = travelService.Travel(id.Value);
+            return PartialView("_EditTravel", travelDto);
         }
 
         [HttpPost]
-        public IActionResult AddOrEditTravel(TravelDto model)
+        public IActionResult SaveTravel(TravelDto model)
         {
-            if (!ModelState.IsValid)
-                return Json(new { success = false, message = "مدل نامعتبر است" });
+
 
             if (model.Id == 0)
                 travelService.Addtravel(model);
@@ -54,37 +54,30 @@ namespace DoonGPay.Controllers
             travelService.Deletetravel(id);
             return Json(new { success = true });
         }
-        //Cost
+        #endregion
 
 
+        #region Cost
 
-
-
-        public IActionResult Cost()
+        public IActionResult TravelCosts(int travelId)
         {
-            ViewBag.costList= travelService.Costs();
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult AddOrEditCost(int? id)
-        {
-            if (id == null)
-                return Json(new TravelCostDto());
-
-            var entity = travelService.GetByIdCost(id.Value);
-            if (entity == null)
-                return Json(new { success = false, message = "کاربر یافت نشد" });
-
-            return Json(entity);
+            ViewData["travelId"] = travelId;
+            return PartialView("_TravelCost", travelService.TravelCosts(travelId));
         }
 
         [HttpPost]
-        public IActionResult AddOrEditCost(TravelCostDto model)
+        public IActionResult EditTravelCost(int? travelCostId,int travelId)
         {
-            if (!ModelState.IsValid)
-                return Json(new { success = false, message = "مدل نامعتبر است" });
+            TravelCostDto CostDto = new() { TravelId=travelId};
 
+            if (travelCostId > 0)
+                CostDto = travelService.GetByIdCost(travelCostId.Value);
+            return PartialView("_EditTravelCost", CostDto);
+        }
+
+        [HttpPost]
+        public IActionResult SaveCost(TravelCostDto model)
+        {
             if (model.Id == 0)
                 travelService.AddCost(model);
             else
@@ -98,45 +91,41 @@ namespace DoonGPay.Controllers
         }
 
         [HttpPost]
-        public JsonResult DeleteCost(int id)
+        public JsonResult DeleteTravelCost(int id)
         {
             travelService.DeleteCost(id);
             return Json(new { success = true });
         }
 
+        #endregion
 
-        //Fellowtraveler
 
 
-        public IActionResult Fellowtraveler()
+        #region Friend
+
+        public IActionResult Friend(int travelId)
         {
-            ViewBag.FellowtravelerList = travelService.Fellowtravelers();
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult AddOrEditFellowtraveler(int? id)
-        {
-            if (id == null)
-                return Json(new TravelFellowtravelerDto());
-
-            var entity = travelService.GetByIdFellowtraveler(id.Value);
-            if (entity == null)
-                return Json(new { success = false, message = "کاربر یافت نشد" });
-
-            return Json(entity);
+            ViewData["travelId"] = travelId;
+            return PartialView("_TravelFellow", travelService.Friends(travelId));
         }
 
         [HttpPost]
-        public IActionResult AddOrEditFellowtraveler(TravelFellowtravelerDto model)
+        public IActionResult EditFriend(int? friendId, int travelId)
         {
-            if (!ModelState.IsValid)
-                return Json(new { success = false, message = "مدل نامعتبر است" });
+            TravelFriendDto fellowDto = new() { TravelId = travelId };
 
+            if (friendId > 0)
+                fellowDto = travelService.Friend(friendId.Value);
+            return PartialView("_EditFriend", fellowDto);
+        }
+
+        [HttpPost]
+        public IActionResult SaveFriend(TravelFriendDto model)
+        {
             if (model.Id == 0)
-                travelService.AddFellowtraveler(model);
+                travelService.AddFriend(model);
             else
-                travelService.UpdateFellowtraveler(model);
+                travelService.UpdateFriend(model);
 
             return Json(new
             {
@@ -146,10 +135,12 @@ namespace DoonGPay.Controllers
         }
 
         [HttpPost]
-        public JsonResult DeleteFellowtraveler(int id)
+        public JsonResult DeleteFriend(int id)
         {
-            travelService.DeleteFellowtraveler(id);
+            travelService.DeleteFriend(id);
             return Json(new { success = true });
         }
+
+        #endregion
     }
 }

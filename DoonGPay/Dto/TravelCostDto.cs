@@ -1,8 +1,11 @@
-﻿namespace DoonGPay.Dto
+﻿using DoonGPay.Entity;
+
+namespace DoonGPay.Dto
 {
-    public class TravelCostDto
+    public class TravelCostDto: BaseEntity<int>
     {
-        public int Id { get; set; }
+       
+        public int TravelId { get; set; }
         public string Title { get; set; }
         public int Value { get; set; }
     }

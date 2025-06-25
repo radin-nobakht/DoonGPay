@@ -12,7 +12,7 @@ namespace DoonGPay.Adapter
         }
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<TravelCostEntity> TravelCosts { get; set; }
-        public DbSet<TravelFellowtravelerEntity> TravelFellowtravelers { get; set; }
+        public DbSet<TravelFriendEntity> TravelFriends { get; set; }
         public DbSet<TravelEntity> Travels { get; set; }
     }
 }

@@ -1,0 +1,22 @@
+﻿@model DoonGPay.Dto.TravelCostDto
+<div class="modal fade" aria-hidden="true" id="editCost">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content form-container">
+            <div class="modal-header">
+                <h5 class="modal-title">افزودن / ویرایش هزینه</h5>
+            </div>
+            <div class="modal-body">
+                <form id="CostForm">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="TravelId" />
+                    <input type="text" asp-for=Title class="form-control mb-2" placeholder="عنوان" required >
+                    <input type="number" asp-for=Value class="form-control mb-2" placeholder="مقدار" required />
+                    <div class="text-danger" id="errorMessage" style="display:none;"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSaveCost" class="btn btn-primary">ثبت</button>
+            </div>
+        </div>
+    </div>
+</div>
