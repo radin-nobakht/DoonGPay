@@ -10,8 +10,10 @@
                 <form id="CostForm">
                     <input type="hidden" asp-for="Id" />
                     <input type="hidden" asp-for="TravelId" />
-                    <input type="text" asp-for=Title class="form-control mb-2" placeholder="عنوان" required >
+                    <input type="text" asp-for=Title class="form-control mb-2" placeholder="عنوان" required>
                     <input type="number" asp-for=Value class="form-control mb-2" placeholder="مقدار" required />
+                 
+                    @Html.DropDownListFor(model => model.Type, Model.CostTypes, new {@class= "form-control mb-2"})
                     <div class="text-danger" id="errorMessage" style="display:none;"></div>
                 </form>
             </div>

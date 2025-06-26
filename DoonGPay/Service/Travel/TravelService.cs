@@ -5,6 +5,7 @@ using DoonGPay.Entity.Travel;
 using DoonGPay.Inteface;
 using DoonGPay.Inteface.Travel;
 using DoonGPay.INteface;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json.Linq;
 using System.CodeDom;
 using System.Linq;
@@ -12,7 +13,7 @@ using System.Linq;
 
 namespace DoonGPay.Service.Travel
 {
-    public class TravelService(MyContext db, IMapper mapper, IMySession mySession) : ITravelService,ICostTravelService,IFriendTravelService
+    public class TravelService(MyContext db, IMapper mapper, IMySession mySession) : ITravelService, ICostTravelService, IFriendTravelService
     {
         #region Travel
         public void Addtravel(TravelDto travel)
@@ -98,7 +99,7 @@ namespace DoonGPay.Service.Travel
 
 
                 // محاسبه سهم هر فرد
-                decimal onePersonShare =(decimal) totalValue / (decimal)countPerson;
+                decimal onePersonShare = (decimal)totalValue / (decimal)countPerson;
 
                 foreach (var friend in model)
                 {
@@ -147,15 +148,40 @@ namespace DoonGPay.Service.Travel
         {
 
             var data = db.TravelCosts.Where(x => x.TravelId == travelId).ToList();
-            return mapper.Map<List<TravelCostDto>>(data);
-        }
+            var list= mapper.Map<List<TravelCostDto>>(data);
+            var costTypes = CostTypes();
 
-        public TravelCostDto TravelCost(int travelCostId)
+            foreach (var tc in list)
+                tc.TypeStr = costTypes.First(x => x.Value == tc.Type.ToString()).Text;
+
+
+
+            return list;
+        }
+        private List<SelectListItem> CostTypes()
+        {
+            return [
+                new() { Value = "1" ,Text = "به صورت مساوی" },
+                new() { Value = "2", Text = "بر حسب نفرات"  },
+                new() { Value = "3", Text = "بر حسب نفرات دستی"  },
+                new() { Value = "4",Text = "درصد"  },
+                new() { Value = "5",Text = "دستی"  },
+            ];
+        }
+        public TravelCostDto TravelCost(int? travelCostId, int travelId)
         {
 
-            var data = db.TravelCosts.FirstOrDefault(x => x.Id == travelCostId);
+            TravelCostDto costDto = new() { TravelId = travelId };
 
-            return mapper.Map<TravelCostDto>(data);
+            if (travelCostId > 0)
+            {
+                var data = db.TravelCosts.FirstOrDefault(x => x.Id == travelCostId);
+                costDto = mapper.Map<TravelCostDto>(data);
+
+            }
+            costDto.CostTypes = CostTypes();
+
+            return costDto;
         }
         public void UpdateCost(TravelCostDto travelCost)
         {

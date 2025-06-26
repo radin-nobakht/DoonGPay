@@ -5,7 +5,7 @@ namespace DoonGPay.Controllers.Travel
 {
     public partial class TravelController : Controller
     {
-       
+
 
         public IActionResult TravelCosts(int travelId)
         {
@@ -16,11 +16,7 @@ namespace DoonGPay.Controllers.Travel
         [HttpPost]
         public IActionResult EditTravelCost(int? travelCostId, int travelId)
         {
-            TravelCostDto CostDto = new() { TravelId = travelId };
-
-            if (travelCostId > 0)
-                CostDto = costTravelService.GetByIdCost(travelCostId.Value);
-            return PartialView("_EditTravelCost", CostDto);
+            return PartialView("_EditTravelCost", costTravelService.TravelCost(travelCostId, travelId));
         }
 
         [HttpPost]
@@ -45,6 +41,6 @@ namespace DoonGPay.Controllers.Travel
             return Json(new { success = true });
         }
 
-     
+
     }
 }
