@@ -4,12 +4,14 @@ using DoonGPay.Dto;
 using DoonGPay.Entity;
 using DoonGPay.Inteface;
 using DoonGPay.INteface;
+using Newtonsoft.Json.Linq;
+using System.CodeDom;
+using System.Linq;
 
 
 namespace DoonGPay.Service
 {
-    public class TravelService(MyContext db, IMapper mapper, IMySession mySession) :ITravelService
-, ITravelService
+    public class TravelService(MyContext db, IMapper mapper, IMySession mySession) : ITravelService
     {
         #region Travel
         public void Addtravel(TravelDto travel)
@@ -61,13 +63,32 @@ namespace DoonGPay.Service
         {
 
             var data = db.TravelFriends.Where(x => x.TravelId == travelId).ToList();
-            return mapper.Map<List<TravelFriendDto>>(data);
+            var model = mapper.Map<List<TravelFriendDto>>(data);
+            if (model.Count > 0)
+            {
+                var costs = db.TravelCosts.Where(x => x.TravelId == travelId).ToList();
+                var costmodel = mapper.Map<List<TravelCostDto>>(costs);
+
+                // جمع تمام مقادیر هزینه‌ها
+                var totalValue = costmodel.Sum(x => x.Value);
+
+                // محاسبه سهم هر فرد
+                var share = totalValue / model.Count;
+
+                foreach (var friend in model)
+                {
+                    friend.Share = share;
+                }
+            }
+
+
+            return model;
         }
 
         public TravelFriendDto Friend(int FriendId)
         {
 
-            var data = db.TravelFriends.Where(x => x.Id == FriendId).ToList();
+            var data = db.TravelFriends.FirstOrDefault(x => x.Id == FriendId);
 
             return mapper.Map<TravelFriendDto>(data);
         }

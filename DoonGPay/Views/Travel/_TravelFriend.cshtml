@@ -1,5 +1,5 @@
 ﻿@model List<DoonGPay.Dto.TravelFriendDto>
-<button class="btn btn-success mb-3" id="btnAddFriend">سفر جدید</button>
+<button class="btn btn-success mb-3" id="btnAddFriend" data-travel-id=" @ViewData["travelId"]">سفر جدید</button>
 
 <table class="table table-bordered text-center" id="FtTable">
     <thead class="thead-dark">
@@ -17,12 +17,12 @@
         {
             <tr data-id="@i.Id">
                 <td>
-                    <button class="btn btn-info btn-sm btn-editFriend" data-id="@i.Id">ویرایش</button>
+                    <button class="btn btn-info btn-sm btnEditFriend" data-id="@i.Id" data-travel-id="@i.TravelId">ویرایش</button>
                 </td>
                 <td>
-                    <button class="btn btn-danger btn-sm btn-deleteFriend" data-id="@i.Id">حذف</button>
+                    <button class="btn btn-danger btn-sm btn-deleteFriend" data-id="@i.Id" data-travel-id="@i.TravelId">حذف</button>
                 </td>
-                <td>@i.Name</td>
+                <td>@i.FristName</td>
                 <td>@i.LastName</td>
                 <td>@i.PhoneNumber</td>
                 <td>@i.Share</td>

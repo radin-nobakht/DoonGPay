@@ -258,9 +258,9 @@
 
             $(document).on("click","#btnAddFriend",function(){
                    var travelId=$(this).data("travel-id");
-             travelFriends(null,travelId);
+             editTravelFriend(null,travelId);
             });
-            $(document).on("click",".btn-editFriend",function(){
+            $(document).on("click",".btnEditFriend",function(){
 
                 var travelFriendId=$(this).data("id");
                 var travelId=$(this).data("travel-id");
@@ -268,7 +268,7 @@
             })
             function editTravelFriend(travelFriendId,travelId)            {
                  $.ajax({
-                    url: "/travel/EditTravelCost",
+                    url: "/travel/EditFriend",
                     type: "POST",
                     data: {
                         travelFriendId:travelFriendId,
@@ -276,7 +276,7 @@
                     },
                     success: function (result) {
                        $("#modal").html(result)
-                          $("#editCost").modal("show");
+                          $("#editFriend").modal("show");
                     },
                     error: function () {
                         $("#errorMessage").text("خطا در ثبت اطلاعات").show();
@@ -285,45 +285,27 @@
             }
 
             // ویرایش
-             
-            $(document).on("click","#btnSaveCost",function(){
-                var travelId=$("#CostForm #TravelId").val();
+
+            $(document).on("click","#btnSaveFriend",function(){
+                var travelId=$("#friendForm #TravelId").val();
               $.ajax({
-                    url: "/Travel/SaveCost",
+                    url: "/Travel/SaveFriend",
                     type: "POST",
-                    data: $("#CostForm").serialize(),
+                    data: $("#friendForm").serialize(),
 
                     success: function (res) {
                         if (res.success) {
-                            $("#editCost").modal("hide");
-                       travelCosts(travelId);
-                         } else {
+                            $("#editFriend").modal("hide");
+        travelFriends(travelId);
+                        } else {
                             $("#errorMessage").text(res.message).show();
                         }
                     },
                     error: function () {
                         $("#errorMessage").text("خطا در ثبت اطلاعات").show();
                     }
-                });})
-
-
-
-            // حذف
-            $(".btnDeleteTravelCost").click(function () {
-                var row = $(this).closest("tr");
-                var id = $(this).data("id");
-                if (!confirm("آیا از حذف اطمینان دارید؟")) return;
-
-                $.post("/travel/DeleteTravelCost", { id: id }, function (res) {
-                    if (res.success) {
-                        row.fadeOut(300, function () {
-                            $(this).remove();
-                        });
-                    } else {
-                        alert("حذف ناموفق بود.");
-                    }
                 });
-            });
+                })
             //#endregion
 
     </script>

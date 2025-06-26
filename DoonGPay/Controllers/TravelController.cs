@@ -106,19 +106,18 @@ namespace DoonGPay.Controllers
         public IActionResult Friend(int travelId)
         {
             ViewData["travelId"] = travelId;
-            return PartialView("_TravelFellow", travelService.Friends(travelId));
+            return PartialView("_TravelFriend", travelService.Friends(travelId));
         }
 
         [HttpPost]
-        public IActionResult EditFriend(int? friendId, int travelId)
+        public IActionResult EditFriend(int? travelFriendId, int travelId)
         {
             TravelFriendDto fellowDto = new() { TravelId = travelId };
 
-            if (friendId > 0)
-                fellowDto = travelService.Friend(friendId.Value);
+            if (travelFriendId > 0)
+                fellowDto = travelService.Friend(travelFriendId.Value);
             return PartialView("_EditFriend", fellowDto);
         }
-
         [HttpPost]
         public IActionResult SaveFriend(TravelFriendDto model)
         {
