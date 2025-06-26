@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DoonGPay.Entity;
+using DoonGPay.Entity.Travel;
 
 namespace DoonGPay.Adapter
 {

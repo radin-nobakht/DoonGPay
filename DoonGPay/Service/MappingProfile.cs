@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using DoonGPay.Dto;
+using DoonGPay.Dto.Travel;
 using DoonGPay.Entity;
+using DoonGPay.Entity.Travel;
 
 namespace DoonGPay.Service
 {

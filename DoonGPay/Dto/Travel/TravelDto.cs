@@ -1,4 +1,4 @@
-﻿namespace DoonGPay.Dto
+﻿namespace DoonGPay.Dto.Travel
 {
     public class TravelDto
     {

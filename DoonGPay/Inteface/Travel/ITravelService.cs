@@ -1,6 +1,6 @@
-﻿using DoonGPay.Dto;
+﻿using DoonGPay.Dto.Travel;
 
-namespace DoonGPay.Inteface
+namespace DoonGPay.Inteface.Travel
 {
     public interface ITravelService
     {

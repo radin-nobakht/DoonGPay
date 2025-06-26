@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
 using DoonGPay.Adapter;
-using DoonGPay.Dto;
-using DoonGPay.Entity;
+using DoonGPay.Dto.Travel;
+using DoonGPay.Entity.Travel;
 using DoonGPay.Inteface;
+using DoonGPay.Inteface.Travel;
 using DoonGPay.INteface;
 using Newtonsoft.Json.Linq;
 using System.CodeDom;
 using System.Linq;
 
 
-namespace DoonGPay.Service
+namespace DoonGPay.Service.Travel
 {
     public class TravelService(MyContext db, IMapper mapper, IMySession mySession) : ITravelService
     {

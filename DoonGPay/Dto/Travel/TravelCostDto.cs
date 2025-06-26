@@ -1,6 +1,6 @@
 ﻿using DoonGPay.Entity;
 
-namespace DoonGPay.Dto
+namespace DoonGPay.Dto.Travel
 {
     public class TravelCostDto: BaseEntity<int>
     {

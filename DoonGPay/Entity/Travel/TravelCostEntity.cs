@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DoonGPay.Entity
+namespace DoonGPay.Entity.Travel
 {
     [Table("TravelCost")]
     public class TravelCostEntity : BaseEntity<int>

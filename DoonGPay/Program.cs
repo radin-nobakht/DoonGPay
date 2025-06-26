@@ -1,8 +1,10 @@
 using AutoMapper;
 using DoonGPay.Adapter;
 using DoonGPay.Inteface;
+using DoonGPay.Inteface.Travel;
 using DoonGPay.INteface;
 using DoonGPay.Service;
+using DoonGPay.Service.Travel;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
