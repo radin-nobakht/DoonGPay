@@ -6,7 +6,6 @@ namespace DoonGPay.Inteface.Travel
     {
         void AddCost(TravelCostDto travelCost);
         void DeleteCost(int id);
-        TravelCostDto GetByIdCost(int id);
         TravelCostDto TravelCost(int travelCostId);
         List<TravelCostDto> TravelCosts(int travelId);
         void UpdateCost(TravelCostDto travelCost);

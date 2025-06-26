@@ -153,7 +153,7 @@ namespace DoonGPay.Service.Travel
         public TravelCostDto TravelCost(int travelCostId)
         {
 
-            var data = db.TravelCosts.Where(x => x.Id == travelCostId).ToList();
+            var data = db.TravelCosts.FirstOrDefault(x => x.Id == travelCostId);
 
             return mapper.Map<TravelCostDto>(data);
         }
