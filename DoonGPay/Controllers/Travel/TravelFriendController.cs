@@ -9,7 +9,7 @@ namespace DoonGPay.Controllers.Travel
         public IActionResult Friend(int travelId)
         {
             ViewData["travelId"] = travelId;
-            return PartialView("_TravelFriend", friendTravelService.FriendsbyPerson(travelId));
+            return PartialView("_TravelFriend", friendTravelService.Friends_ShareByPerson(travelId));
         }
 
         [HttpPost]
