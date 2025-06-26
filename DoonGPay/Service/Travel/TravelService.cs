@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace DoonGPay.Service.Travel
 {
-    public class TravelService(MyContext db, IMapper mapper, IMySession mySession) : ITravelService
+    public class TravelService(MyContext db, IMapper mapper, IMySession mySession) : ITravelService,ICostTravelService,IFriendTravelService
     {
         #region Travel
         public void Addtravel(TravelDto travel)
@@ -60,7 +60,7 @@ namespace DoonGPay.Service.Travel
             db.TravelFriends.Add(model);
             db.SaveChanges();
         }
-        public List<TravelFriendDto> Friends(int travelId)
+        public List<TravelFriendDto> Friends_ShareByRow(int travelId)
         {
 
             var data = db.TravelFriends.Where(x => x.TravelId == travelId).ToList();
@@ -78,6 +78,31 @@ namespace DoonGPay.Service.Travel
 
                 foreach (var friend in model)
                 {
+                    friend.Share = share;
+                }
+            }
+
+
+            return model;
+        }
+        public List<TravelFriendDto> Friends_ShareByPerson(int travelId)
+        {
+
+            var data = db.TravelFriends.Where(x => x.TravelId == travelId).ToList();
+            var model = mapper.Map<List<TravelFriendDto>>(data);
+            var countPerson = model.Sum(x => x.Person);
+
+            if (model.Count > 0)
+            {
+                var totalValue = db.TravelCosts.Where(x => x.TravelId == travelId).Sum(x => x.Value);
+
+
+                // محاسبه سهم هر فرد
+                decimal onePersonShare =(decimal) totalValue / (decimal)countPerson;
+
+                foreach (var friend in model)
+                {
+                    decimal share = onePersonShare * friend.Person;
                     friend.Share = share;
                 }
             }

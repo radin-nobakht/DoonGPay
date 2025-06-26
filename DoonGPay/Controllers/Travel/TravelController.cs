@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers.Travel
 {
-    public partial class TravelController(ITravelService travelService) : Controller
+    public partial class TravelController(ITravelService travelService, IFriendTravelService friendTravelService, ICostTravelService costTravelService) : Controller
     {
 
 
