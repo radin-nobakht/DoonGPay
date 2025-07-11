@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.ViewComponents
 {
-    public class LinksViewComponent (IMySession mySession): ViewComponent
+    public class LinksViewComponent: ViewComponent
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {

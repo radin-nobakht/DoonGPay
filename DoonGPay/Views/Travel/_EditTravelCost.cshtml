@@ -1,5 +1,5 @@
 ﻿@using DoonGPay.Dto.Travel
-@model TravelCostDto
+@model EditCostViewModel
 <div class="modal fade" aria-hidden="true" id="editCost">
     <div class="modal-dialog" role="document">
         <div class="modal-content form-container">
@@ -7,13 +7,39 @@
                 <h5 class="modal-title">افزودن / ویرایش هزینه</h5>
             </div>
             <div class="modal-body">
+
                 <form id="CostForm">
-                    <input type="hidden" asp-for="Id" />
-                    <input type="hidden" asp-for="TravelId" />
-                    <input type="text" asp-for=Title class="form-control mb-2" placeholder="عنوان" required>
-                    <input type="number" asp-for=Value class="form-control mb-2" placeholder="مقدار" required />
+                    <input type="hidden" id="id" name="id" value="@Model.TravelCost.Id" />
+                    <input type="hidden" id="travelId" name="travelId" value="@Model.TravelCost.TravelId" />
+                    <input type="text" id="title" name="title" value="@Model.TravelCost.Title" class="form-control mb-2" placeholder="عنوان" required>
+                    <input type="number" id="value" name="value" value="@Model.TravelCost.Value" class="form-control mb-2" placeholder="مقدار" required />
                  
-                    @Html.DropDownListFor(model => model.Type, Model.CostTypes, new {@class= "form-control mb-2"})
+                    @Html.DropDownListFor(model => model.TravelCost.Type, Model.TravelCost.CostTypes, new { @class = "form-control mb-2" })
+                    <div id="manual" hidden>
+                            <table>
+                               <thead>
+                                   <tr>
+                                   <th>اسم</th>
+                                   <th id="typeStr"></th>
+                                </tr>
+                               <thead/>
+                               <tbody>
+                                @foreach (var i in Model.TravelFriend)
+                                {
+                                        var fullName = $"{i.FristName} {i.LastName}";
+                                 <tr>
+                                   <td>@fullName</td>
+                                <td>
+                                    <input id="" />
+                                </tr>
+                                }
+                                </td>
+                               <tbody/>
+                            </table>
+
+                        
+                    </div>
+
                     <div class="text-danger" id="errorMessage" style="display:none;"></div>
                 </form>
             </div>

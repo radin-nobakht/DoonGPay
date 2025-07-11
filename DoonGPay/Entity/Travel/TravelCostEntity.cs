@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DoonGPay.Dto.Travel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DoonGPay.Entity.Travel
@@ -11,5 +12,11 @@ namespace DoonGPay.Entity.Travel
         public int Value { get; set; }
         public int Type { get; set; }
         public string? Description { get; set; }
+        [ForeignKey("TravelId")]
+        public virtual TravelEntity Travel { get; set; }
+        public virtual ICollection<TravelCostFriendEntity> TravelCostFriends { get; set; }
+
     }
 }
+
+

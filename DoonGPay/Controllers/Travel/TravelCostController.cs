@@ -1,4 +1,5 @@
 ﻿using DoonGPay.Dto.Travel;
+using DoonGPay.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers.Travel
@@ -10,22 +11,33 @@ namespace DoonGPay.Controllers.Travel
         public IActionResult TravelCosts(int travelId)
         {
             ViewData["travelId"] = travelId;
-            return PartialView("_TravelCost", costTravelService.TravelCosts(travelId));
+            return PartialView("_TravelCost", travelService.TravelCosts(travelId));
         }
-
         [HttpPost]
         public IActionResult EditTravelCost(int? travelCostId, int travelId)
         {
-            return PartialView("_EditTravelCost", costTravelService.TravelCost(travelCostId, travelId));
+            var model = new EditCostViewModel
+            {
+                TravelCost = travelService.TravelCost(travelCostId, travelId),
+                TravelFriend=travelService.TravelFriends(travelId),
+            };
+
+            return PartialView("_EditTravelCost",model);
         }
+        //[HttpPost]
+        //public IActionResult SelectTable(int travelId,int CostId)
+        //{
+        //    var model = new EditCostViewModel();
+        //   model.TravelFriend = travelService.TravelFriends(travelId);
+        //   model.TravelCostFriend = travelService.TravelCostFriends(CostId);
+        //    return PartialView("_EditTravelCost",model);
+        //}
 
         [HttpPost]
         public IActionResult SaveCost(TravelCostDto model)
         {
-            if (model.Id == 0)
-                costTravelService.AddCost(model);
-            else
-                costTravelService.UpdateCost(model);
+            travelService.SaveTravelCost(model);
+
 
             return Json(new
             {
@@ -37,7 +49,7 @@ namespace DoonGPay.Controllers.Travel
         [HttpPost]
         public JsonResult DeleteTravelCost(int id)
         {
-            costTravelService.DeleteCost(id);
+            travelService.DeleteTravelCost(id);
             return Json(new { success = true });
         }
 

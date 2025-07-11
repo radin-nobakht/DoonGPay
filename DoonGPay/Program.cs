@@ -18,8 +18,6 @@ builder.Services.AddDbContext<MyContext>(option =>
 });
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITravelService, TravelService>();
-builder.Services.AddScoped<IFriendTravelService, TravelService>();
-builder.Services.AddScoped<ICostTravelService, TravelService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ISmsService, SmsService>();
 builder.Services.AddScoped<IMySession, MySession>();

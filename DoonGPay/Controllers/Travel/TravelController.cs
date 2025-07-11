@@ -1,17 +1,17 @@
 ﻿using DoonGPay.Dto.Travel;
 using DoonGPay.Entity;
+using DoonGPay.Inteface;
 using DoonGPay.Inteface.Travel;
 using DoonGPay.INteface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers.Travel
 {
-    public partial class TravelController(ITravelService travelService, IFriendTravelService friendTravelService, ICostTravelService costTravelService) : Controller
+    public partial class TravelController(ITravelService travelService) : Controller
     {
 
 
 
-        #region Travel
         public IActionResult Index()
         {
             return View(travelService.Travels());
@@ -36,10 +36,8 @@ namespace DoonGPay.Controllers.Travel
         {
 
 
-            if (model.Id == 0)
-                travelService.Addtravel(model);
-            else
-                travelService.Updatetravel(model);
+            travelService.SaveTravel(model);
+
 
             return Json(new
             {
@@ -51,20 +49,11 @@ namespace DoonGPay.Controllers.Travel
         [HttpPost]
         public JsonResult DeleteTravel(int id)
         {
-            travelService.Deletetravel(id);
+            travelService.DeleteTravel(id);
             return Json(new { success = true });
         }
-        #endregion
 
 
    
-
-
-
-        #region Friend
-
-
-
-        #endregion
     }
 }

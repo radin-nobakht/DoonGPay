@@ -1,5 +1,5 @@
 ﻿using DoonGPay.Dto.Travel;
-using DoonGPay.Inteface.Travel;
+using DoonGPay.Inteface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers.Travel
@@ -9,7 +9,7 @@ namespace DoonGPay.Controllers.Travel
         public IActionResult Friend(int travelId)
         {
             ViewData["travelId"] = travelId;
-            return PartialView("_TravelFriend", friendTravelService.Friends_ShareByPerson(travelId));
+            return PartialView("_TravelFriend", travelService.TravelFriends(travelId));
         }
 
         [HttpPost]
@@ -18,16 +18,14 @@ namespace DoonGPay.Controllers.Travel
             TravelFriendDto fellowDto = new() { TravelId = travelId };
 
             if (travelFriendId > 0)
-                fellowDto = friendTravelService.Friend(travelFriendId.Value);
+                fellowDto = travelService.TravelFriend(travelFriendId.Value);
             return PartialView("_EditFriend", fellowDto);
         }
         [HttpPost]
         public IActionResult SaveFriend(TravelFriendDto model)
         {
-            if (model.Id == 0)
-                friendTravelService.AddFriend(model);
-            else
-                friendTravelService.UpdateFriend(model);
+            travelService.SaveTravelFriend(model);
+
 
             return Json(new
             {
@@ -39,7 +37,7 @@ namespace DoonGPay.Controllers.Travel
         [HttpPost]
         public JsonResult DeleteFriend(int id)
         {
-            friendTravelService.DeleteFriend(id);
+            travelService.DeleteTravelFriend(id);
             return Json(new { success = true });
         }
     }

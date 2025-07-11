@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.ViewComponents
 {
-    public class SearchViewComponent (IMySession mySession): ViewComponent
+    public class SearchViewComponent : ViewComponent
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {

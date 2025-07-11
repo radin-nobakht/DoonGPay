@@ -25,6 +25,7 @@ function travelFriends(travelId) {
         data: { travelId: travelId },
         success: function (result) {
             $("#travelFriend").html(result)
+           
         },
         error: function () {
             $("#errorMessage").text("خطا در ثبت اطلاعات").show();
@@ -65,7 +66,7 @@ $(document).on("click", ".btnDeleteTravel", function () {
 });
 
 
-$("#btnAddTravel").click(function () {
+$("#btnAddTravel").on("click",function () {
 
     editTravel(null);
 });
@@ -110,22 +111,3 @@ $(document).on("click", "#btnSaveTravel", function () {
         }
     });
 })
-
-
-
-// حذف
-$(".btn-DeleteTravel").click(function () {
-    var row = $(this).closest("tr");
-    var id = $(this).data("id");
-    if (!confirm("آیا از حذف اطمینان دارید؟")) return;
-
-    $.post("/travel/DeleteTravel", { id: id }, function (res) {
-        if (res.success) {
-            row.fadeOut(300, function () {
-                $(this).remove();
-            });
-        } else {
-            alert("حذف ناموفق بود.");
-        }
-    });
-});
