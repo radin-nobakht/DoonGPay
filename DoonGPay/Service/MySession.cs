@@ -13,6 +13,7 @@ namespace DoonGPay.Service
         {
             get
             {
+                //to do
                 return httpContextAccessor?.HttpContext?.User?.Claims?.FirstOrDefault(x => x.Type == "FirstName")?.Value;
             }
         }

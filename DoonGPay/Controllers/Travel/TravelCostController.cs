@@ -1,6 +1,7 @@
 ﻿using DoonGPay.Dto.Travel;
 using DoonGPay.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
 
 namespace DoonGPay.Controllers.Travel
 {
@@ -16,14 +17,18 @@ namespace DoonGPay.Controllers.Travel
         [HttpPost]
         public IActionResult EditTravelCost(int? travelCostId, int travelId)
         {
-            var model = new EditCostViewModel
-            {
-                TravelCost = travelService.TravelCost(travelCostId, travelId),
-                TravelFriend=travelService.TravelFriends(travelId),
-            };
-
-            return PartialView("_EditTravelCost",model);
+            return PartialView("_EditTravelCost", travelService.TravelCost(travelCostId, travelId));
         }
+        [HttpPost]
+        public JsonResult SaveTravelCost(TravelCostDto travelCost)
+        {
+            var a = new TravelDto();
+            travelService.SaveTravel(a);
+            travelService.SaveTravelCost(travelCost);
+
+            return Json(true);
+        }
+
         //[HttpPost]
         //public IActionResult SelectTable(int travelId,int CostId)
         //{
@@ -33,18 +38,7 @@ namespace DoonGPay.Controllers.Travel
         //    return PartialView("_EditTravelCost",model);
         //}
 
-        [HttpPost]
-        public IActionResult SaveCost(TravelCostDto model)
-        {
-            travelService.SaveTravelCost(model);
-
-
-            return Json(new
-            {
-                success = true,
-                message = "ذخیره شد"
-            });
-        }
+      
 
         [HttpPost]
         public JsonResult DeleteTravelCost(int id)

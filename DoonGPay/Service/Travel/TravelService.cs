@@ -4,25 +4,21 @@ using DoonGPay.Adapter;
 using DoonGPay.Dto.Travel;
 using DoonGPay.Entity.Travel;
 using DoonGPay.Inteface;
-using DoonGPay.Inteface.Travel;
-using DoonGPay.INteface;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
-using System.CodeDom;
-using System.Linq;
+
 
 
 namespace DoonGPay.Service.Travel
 {
-   public class TravelService(MyContext db, IMapper mapper, IMySession mySession) : ITravelService
+    public class TravelService(MyContext db, IMapper mapper, IMySession mySession) : ITravelService
     {
         #region TravelCostFriend
 
         public void SaveTravelCostFriend(TravelCostFriendDto travelCostFriend)
         {
             var model = mapper.Map<TravelCostFriendEntity>(travelCostFriend);
-            if(model.Id>0)
+            if (model.Id > 0)
                 db.TravelCostFriends.Update(model);
             else
                 db.TravelCostFriends.Add(model);
@@ -60,6 +56,7 @@ namespace DoonGPay.Service.Travel
 
         public void SaveTravel(TravelDto travel)
         {
+
             var model = mapper.Map<TravelEntity>(travel);
             model.InsertDate = DateTime.Now;
             model.UserId = (int)mySession.UserId;
@@ -154,7 +151,7 @@ namespace DoonGPay.Service.Travel
         public List<TravelFriendDto> TravelFriends(int travelId)
         {
             var data = db.TravelFriends.Where(x => x.TravelId == travelId).ToList();
-            return mapper.Map<List<TravelFriendDto>>(data); 
+            return mapper.Map<List<TravelFriendDto>>(data);
         }
 
 
@@ -165,7 +162,7 @@ namespace DoonGPay.Service.Travel
 
             return mapper.Map<TravelFriendDto>(data);
         }
-       
+
         public void DeleteTravelFriend(int id)
         {
             var model = db.TravelFriends.FirstOrDefault(x => x.Id == id);
@@ -180,14 +177,19 @@ namespace DoonGPay.Service.Travel
         #region Cost
         public void SaveTravelCost(TravelCostDto travelCost)
         {
+
             var model = mapper.Map<TravelCostEntity>(travelCost);
             if (model.Id > 0)
                 db.TravelCosts.Update(model);
             else
+                //foreach(var tcf in model.TravelCostFriends)
+                //db.TravelCostFriends.Add(tcf);
                 db.TravelCosts.Add(model);
+            var a =  db.TravelCosts.Last(x=>x.Title== travelCost.Title);
+            var b = a;
             db.SaveChanges();
-            
-            var travelCostCalc= TravelCostCalcFactory.Create(travelCost.Type);
+
+            var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type);
             travelCostCalc.Calc(model.Id);
 
 
@@ -214,22 +216,56 @@ namespace DoonGPay.Service.Travel
         public TravelCostDto TravelCost(int? travelCostId, int travelId)
         {
 
-            TravelCostDto costDto = new() { TravelId = travelId };
+            TravelCostDto travelCost;
 
             if (travelCostId > 0)
             {
-                var cost = db.TravelCosts
-                    .Include(x => x.TravelCostFriends.Where(z => z.TravelCostId == travelCostId))
-                    .FirstOrDefault(x => x.Id == travelCostId);
+                //var cost = db.TravelCosts
+                //    .Include(x => x.TravelCostFriends.Where(z => z.TravelCostId == travelCostId))
+                //    .FirstOrDefault(x => x.Id == travelCostId);
 
-                costDto = mapper.Map<TravelCostDto>(cost);
+                var query = (from tc in db.TravelCosts
+                             where tc.Id == travelCostId
+                             join tcf in db.TravelCostFriends on tc.Id equals tcf.TravelCostId into jtcf
+                             join tf in db.TravelFriends on tc.TravelId equals tf.TravelId into jtf
+                             select new { tc, jtcf, jtf });
 
+                var list = query.ToList();
+                travelCost = list.Select(x=> new TravelCostDto
+                              {
+                                  Id = x.tc.Id,
+                                  Title = x.tc.Title,
+                                  Value = x.tc.Value,
+                                  Type = x.tc.Type,
+                                  TravelCostFriends = x.jtcf.Select(f => new TravelCostFriendDto
+                                  {
+                                      TravelFriendId = f.TravelFriendId,
+                                      TravelCostId = x.tc.Id,
+                                      Id = f.Id,
+                                      Rate = f.Rate,
+                                      Value = f.Value,
+                                      FriendName = x.jtf.Select(z => $"{z.FristName} {z.LastName}").First()
+                                  }).ToList(),
+                              }).First();
             }
-            costDto.CostTypes = TravelCostTypes();
+            else
+            {
+                travelCost = new TravelCostDto
+                {
+                    TravelId = travelId,
+                    TravelCostFriends = db.TravelFriends.Where(x => x.TravelId == travelId)
+                        .Select(x => new TravelCostFriendDto
+                        {
+                            FriendName = $"{x.FristName} {x.LastName}",
+                            TravelFriendId = x.Id
+                        }).ToList()
+                };
+            }
+            travelCost.CostTypes = TravelCostTypes();
 
-            return costDto;
+            return travelCost;
         }
-      
+
         public void DeleteTravelCost(int id)
         {
             var model = db.TravelCosts.FirstOrDefault(x => x.Id == id);

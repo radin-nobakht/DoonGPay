@@ -15,8 +15,8 @@
 
 });
 function Table(value) {
-    if (value != 1 && value != 2) {
-        $("#manual").attr("hidden", false)
+    if (value != 1 && value != 2 && value != 0) {
+       $("#manual").attr("hidden", false)
         if (value == 3) {
             $("#typeStr").text("نفرات")
         }
@@ -98,12 +98,22 @@ function editTravelCost(travelCostId, travelId) {
 // ویرایش
 
 $(document).on("click", "#btnSaveCost", function () {
-    var travelId = $("#CostForm #TravelCost_Id").val();
-    var type = $("#TravelCost_Type").val();
+    //var travelId = $("#CostForm #TravelCost_Id").val();
+    //var type = $("#TravelCost_Type").val();
+    //$("input[name=TravelCostFriendsValue]").each(function () {
+    //    var id = $(this).id();
+    //    $("td[name=TravelCostFriendsName]").each(function () {
+    //        if ($(this).id() == id)
+    //        {
+    //            var friendName = $(this)
+
+    //        }
+    //    });
+    //});
     $.ajax({
-        url: "/Travel/SaveCost",
+        url: "/Travel/SaveTravelCost",
         type: "POST",
-        data: $("#CostForm").serialize() + "&Type=" + type,
+        data: $("#CostForm").serialize() ,
 
 
         success: function (res) {
