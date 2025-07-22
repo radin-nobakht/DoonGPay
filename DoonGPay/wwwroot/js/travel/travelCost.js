@@ -15,7 +15,7 @@
 
 });
 function Table(value) {
-    if (value != 1 && value != 2 && value != 0) {
+    if (value == 3 || value == 4 || value == 5) {
        $("#manual").attr("hidden", false)
         if (value == 3) {
             $("#typeStr").text("نفرات")
@@ -32,48 +32,22 @@ $(document).on("change", "#TravelCost_Type", function () {
     var value =$(this).val();
     Table(value);
 });
-//function selectCost(travelId, costId, value) {
-//    debugger;
-//    if (value != 1 && value != 2) {
-//        $("#manual").attr("hidden", false)
-//        if (value == 3) {
-//            $("#typeStr").text("نفرات")
-//        }
-//        if (value == 4) {
-//            $("#typeStr").text("درصد")
-//        }
-//        if (value == 5) {
-//            $("#typeStr").text("مقدار")
-//        }
-//        $.ajax({
-//            url: "Travel/SelectTable",        
-//            type: 'POST',
-//            data: {
-//                costId: costId,
-//                travelId: travelId  
-//            },     
-//            success: function (response) {
-//                debugger;
-//                $("#manual").attr("hidden",false)
-//            },
-//            error: function (xhr, status, error) {
-//                if (errorCallback) {
-//                    errorCallback(xhr, status, error);
-//                }
-//            }
-//        });
-//    }
-//    } 
 
-$(document).on("click", "#btnAddCost", function () {
-    var travelId = $(this).data("travel-id");
-    editTravelCost(null, travelId);
-});
-$(document).on("click", ".btnEditTravelCost", function () {
+
+//$(document).on("click", "#btnAddCost", function () {
+//    var travelId = $(this).data("travel-id");
+//    editTravelCost(null, travelId);
+//});
+//$(document).on("click", ".btnEditTravelCost", function () {
     
-    var travelCostId = $(this).data("id");
+//    var travelCostId = $(this).data("id");
+//    var travelId = $(this).data("travel-id");
+//    editTravelCost(travelCostId, travelId);
+//})
+$(document).on("click", ".btnTravelCostEdit", function () {
     var travelId = $(this).data("travel-id");
-    editTravelCost(travelCostId, travelId);
+    var travelCostId = $(this).data("id");
+    editTravelCost(travelCostId, travelId); 
 })
 function editTravelCost(travelCostId, travelId) {
     $.ajax({

@@ -66,14 +66,18 @@ $(document).on("click", ".btnDeleteTravel", function () {
 });
 
 
-$("#btnAddTravel").on("click",function () {
+//$("#btnAddTravel").on("click",function () {
 
-    editTravel(null);
-});
+//    editTravel(null);
+//});
+//$(document).on("click", ".btnEditTravel", function () {
+//    var id = $(this).data("id");
+//    editTravel(id);
+//})
 $(document).on("click", ".btnEditTravel", function () {
-    var id = $(this).data("id");
+    var Id = $(this).data("travel-id");
     editTravel(id);
-})
+});
 function editTravel(id) {
     $.ajax({
         url: "/travel/EditTravel",

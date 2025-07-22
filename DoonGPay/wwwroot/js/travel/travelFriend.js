@@ -16,15 +16,21 @@
 });
 
 
-$(document).on("click", "#btnAddFriend", function () {
-    var travelId = $(this).data("travel-id");
-    editTravelFriend(null, travelId);
-});
+//$(document).on("click", "#btnAddFriend", function () {
+//    var travelId = $(this).data("travel-id");
+//    editTravelFriend(null, travelId);
+//});
+//$(document).on("click", ".btnEditFriend", function () {
+
+//    var travelFriendId = $(this).data("id");
+//    var travelId = $(this).data("travel-id");
+//    editTravelFriend(travelFriendId, travelId);
+//})
 $(document).on("click", ".btnEditFriend", function () {
 
-    var travelFriendId = $(this).data("id");
     var travelId = $(this).data("travel-id");
-    editTravelFriend(travelFriendId, travelId);
+    var travelFriendId = $(this).data("id");
+    editTravelFriend(travelFriendId, travelId)
 })
 function editTravelFriend(travelFriendId, travelId) {
     $.ajax({

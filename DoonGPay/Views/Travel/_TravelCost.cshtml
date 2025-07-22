@@ -1,26 +1,27 @@
 ﻿@using DoonGPay.Dto.Travel
 @model List<TravelCostDto>
 
-    هزینه ها
-<button class="btn btn-success mb-3" id="btnAddCost" data-travel-id="@ViewData["travelId"]">هزینه جدید</button>
+<h5>هزینه ها</h5>
+<button class="btn btn-success mb-3 btnTravelCostEdit" id="btnAddCost" data-id="0" data-travel-id="@ViewData["travelId"]">هزینه جدید</button>
+
 <table class="table table-bordered text-center">
     <thead>
         <tr>
-<th>عنوان</th>
-<th>مقدار</th>
-<th>وضعیت</th>
-
+            <th>عنوان</th>
+            <th>مقدار</th>
+            <th>وضعیت</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach(var tc in Model)
+        @foreach (var tc in Model)
         {
             <tr data-id="@tc.Id">
                 <td>@tc.Title</td>
                 <td>@tc.Value</td>
                 <td>@tc.TypeStr</td>
                 <td>
-                    <button class="btn btn-info btn-sm btnEditTravelCost" data-id="@tc.Id" data-travel-id="@tc.TravelId" >ویرایش</button>
+                    <button class="btn btn-info btn-sm btnTravelCostEdit" data-id="@tc.Id" data-travel-id="@tc.TravelId">ویرایش</button>
                     <button class="btn btn-danger btn-sm btnDeleteTravelCost" data-id="@tc.Id" data-travel-id="@tc.TravelId">حذف</button>
                 </td>
             </tr>
