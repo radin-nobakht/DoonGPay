@@ -1,4 +1,5 @@
 ﻿using DoonGPay.Dto.Travel;
+using DoonGPay.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DoonGPay.Inteface.Travel
@@ -16,7 +17,7 @@ namespace DoonGPay.Inteface.Travel
         TravelFriendDto TravelFriend(int FriendId);
 
         List<TravelFriendDto> TravelFriends(int travelId);
-        TravelDto Travel(int id);
+        TravelDto Travel(int? id);
         TravelCostDto TravelCost(int? travelCostId, int travelId);
         List<TravelCostFriendDto> TravelCostFriends(int CostId);
         List<TravelCostDto> TravelCosts(int travelId);

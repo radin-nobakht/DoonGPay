@@ -1,12 +1,31 @@
 ﻿@using DoonGPay.Dto.Travel
-@model List<TravelDto>
+@model TravelDto
 
-<button class="btn btn-success mb-3 btnEditTravel" id="btnAddTravel" data-id="0">سفر جدید</button>
-<div id="travels">
-    <partial name="_Travels" model="Model" />
+<div class="p-3  rounded h-100">
+    <div id="travels">
+        <button class="btn btn-success btnEditTravel" id="btnAddTravel" data-id="0">سفر جدید</button>
+        <partial name="_Travels" model="Model" />
+    </div>
 </div>
-<div id="travelCosts"></div>
-<div id="travelFriend"></div>
+<div class="container mt-5">
+    <div class="row">
+
+               
+                <div class="col-6">
+                        <div id="travelCosts">
+                <partial name="_TravelCost" model="Model.TravelCosts" />
+                        </div>
+                </div>@*cost*@
+                <div class="col-6">
+                        <div id="travelFriend">
+                <partial name="_TravelFriend" model="Model.TravelFriends" />
+                        </div>
+        </div>@*friend*@
+           
+        </div>
+
+    </div>
+
 @section Scripts {
     <script src="~/js/travel/travel.js"></script>
     <script src="~/js/travel/travelcost.js"></script>

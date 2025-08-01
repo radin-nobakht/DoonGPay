@@ -2,7 +2,7 @@
 {
     public class travelsTable
 {
-    <style>
+    
     /* استایل کلی جدول‌ها */
     table.table
 
@@ -72,7 +72,6 @@ button + button {
     font-weight: bold;
 }
 
-</style >
 
     }
 }

@@ -1,7 +1,8 @@
 ﻿
 function travels() {
+    
     $.ajax({
-        url: "/travel/Travels",
+        url: "/Travel/Travel",
         type: "POST",
         success: function (result) {
             $("#travels").html(result)
@@ -11,11 +12,31 @@ function travels() {
         }
     });
 }
-$(document).on("click", "tr.travel", function () {
-    var travelId = $(this).attr("data-id");
-    travelCosts(travelId);
+/*travelFriendsAndCosts();*/
+ function travelFriendsAndCosts() {
+     var travelId = $(".travel").attr("data-id");
+     travelCosts(travelId);
     travelFriends(travelId);
-})
+};
+$(document).on("click", "tr.travels", function () {
+
+});
+$(document).on("click", "#morebtn", function () {
+    $.ajax({
+        url: "/Travel/Travels",
+        type: "POST",
+        success: function (result) {
+            $("#modal").html(result);
+            $("#travelsModal").modal("show");
+        },
+        error: function () {
+            $("#errorMessage").text("خطا در ثبت اطلاعات").show();
+        }
+    });
+});
+
+
+
 
 
 function travelFriends(travelId) {
@@ -25,16 +46,16 @@ function travelFriends(travelId) {
         data: { travelId: travelId },
         success: function (result) {
             $("#travelFriend").html(result)
-           
         },
         error: function () {
             $("#errorMessage").text("خطا در ثبت اطلاعات").show();
+
         }
     });
 }
 function travelCosts(travelId) {
     $.ajax({
-        url: "/travel/TravelCosts",
+        url: "/Travel/TravelCosts",
         type: "POST",
         data: { travelId: travelId },
         success: function (result) {
@@ -45,7 +66,22 @@ function travelCosts(travelId) {
         }
     });
 }
+$(document).on("click", ".travels", function () {
+    var id = $(this).attr("data-id");
+    $.ajax({
+        url: "/Travel/ChangeTravel",
+        type: "POST",
+        data: { id: id },
+        success: function (result) {
+            $("#travels").html(result)
+            $('#travelsModal').modal('hide');
 
+        },
+        error: function () {
+
+        }
+    });
+});
 
 
 $(document).on("click", ".btnDeleteTravel", function () {

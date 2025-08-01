@@ -1,38 +1,34 @@
 ﻿@using DoonGPay.Dto.Travel
 @model TravelCostDto
-
+<link href="~/css/travel/travelsmodals.css" rel="stylesheet" />
 <div class="modal fade" aria-hidden="true" id="editCost">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content form-container">
             <div class="modal-header">
                 <h5 class="modal-title">افزودن / ویرایش هزینه</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-
                 <form id="CostForm">
                     <input type="hidden" id="id" name="Id" value="@Model.Id" />
                     <input type="hidden" id="travelId" name="TravelId" value="@Model.TravelId" />
-                    <input type="text" id="title" name="Title" value="@Model.Title" class="form-control mb-2" placeholder="عنوان" required />
-                    <input type="number" id="value" name="Value" value="@Model.Value" class="form-control mb-2" placeholder="مقدار" required />
-
-                    @Html.DropDownListFor(model => model.Type, Model.CostTypes, new { @class = "form-control mb-2", name = "Type" })
+                    <input type="text" id="title" name="Title" value="@Model.Title" class="form-control mb-3" placeholder="عنوان" required />
+                    <input type="number" id="value" name="Value" value="@Model.Value" class="form-control mb-3" placeholder="مقدار" required />
+                    @Html.DropDownListFor(model => model.Type, Model.CostTypes, new { @class = "form-control mb-3", name = "Type" })
 
                     <div id="manual" hidden>
-                        <table class="table">
-                            <thead>
+                        <table class="table table-sm table-bordered text-center">
+                            <thead class="thead-light">
                                 <tr>
                                     <th>اسم</th>
                                     <th id="typeStr"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach(var tcf in Model.TravelCostFriends.Select((x,i)=> new {x,i}))
+                                @foreach (var tcf in Model.TravelCostFriends.Select((x, i) => new { x, i }))
                                 {
                                     <tr>
-                                        <td>
-                                            @tcf.x.FriendName
-                                        
-                                        </td>
+                                        <td>@tcf.x.FriendName</td>
                                         <td>
                                             <input type="hidden" name="TravelCostFriends[@tcf.i].TravelFriendId" value="@tcf.x.TravelFriendId" />
                                             <input type="hidden" name="TravelCostFriends[@tcf.i].Id" value="@tcf.x.Id" />
@@ -52,7 +48,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" id="btnSaveCost" class="btn btn-primary">ثبت</button>
+                <button type="button" id="btnSaveCost" class="btn btn-success">ثبت</button>
             </div>
         </div>
     </div>

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
-using DoonGPay.Inteface.Travel;
 using DoonGPay.Adapter;
 using DoonGPay.Dto.Travel;
 using DoonGPay.Entity.Travel;
 using DoonGPay.Inteface;
+using DoonGPay.Inteface.Travel;
+using DoonGPay.ViewModel;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
@@ -66,11 +68,38 @@ namespace DoonGPay.Service.Travel
                 db.Travels.Add(model);
             db.SaveChanges();
         }
+        public TravelDto Travel(int? id) {
+            TravelEntity data = new TravelEntity();
+            if (id == 0)
+            {
+                 data = db.Travels
+                              .Include(x => x.TravelFriends)
+                              .Include(x => x.TravelCosts)
+                              .FirstOrDefault(x => x.UserId == mySession.UserId);
+               
+            }
+            else
+            {
+                 data = db.Travels
+                             .Include(x => x.TravelFriends)
+                             .Include(x => x.TravelCosts)
+                             .FirstOrDefault(x => x.Id ==id);
+            }
+            return mapper.Map<TravelDto>(data);
+        }
         public List<TravelDto> Travels()
         {
             var data = db.Travels.Where(x => x.UserId == mySession.UserId).ToList();
+            //var first = db.Travels.First();
+            //var dtoFirst = mapper.Map<TravelDto>(first);
+            //var costs = db.TravelCosts.Where(x => x.TravelId == dtoFirst.Id).Select(x => x.Value).ToList();
+            //var persons = db.TravelFriends.Where(x => x.TravelId == dtoFirst.Id).Select(x => x.Person).ToList();
+
+
 
             return mapper.Map<List<TravelDto>>(data);
+
+
         }
         public void DeleteTravel(int id)
         {
@@ -81,10 +110,7 @@ namespace DoonGPay.Service.Travel
                 db.SaveChanges();
             }
         }
-        public TravelDto Travel(int id)
-        {
-            return mapper.Map<TravelDto>(db.Travels.FirstOrDefault(x => x.Id == id));
-        }
+
         #endregion
 
         #region Friend
@@ -166,7 +192,7 @@ namespace DoonGPay.Service.Travel
         public void DeleteTravelFriend(int id)
         {
             var model = db.TravelFriends.FirstOrDefault(x => x.Id == id);
-            if (model != null)
+            if (model.FristName != null && model.LastName != null && model.TravelId != 0 && model.Id != 0 && model.PhoneNumber != null && model.Person != 0 && model.Share != null)
             {
                 db.TravelFriends.Remove(model);
                 db.SaveChanges();
@@ -185,7 +211,7 @@ namespace DoonGPay.Service.Travel
                 //foreach(var tcf in model.TravelCostFriends)
                 //db.TravelCostFriends.Add(tcf);
                 db.TravelCosts.Add(model);
-            var a =  db.TravelCosts.Last(x=>x.Title== travelCost.Title);
+            var a = db.TravelCosts.Last(x => x.Title == travelCost.Title);
             var b = a;
             db.SaveChanges();
 
@@ -231,22 +257,22 @@ namespace DoonGPay.Service.Travel
                              select new { tc, jtcf, jtf });
 
                 var list = query.ToList();
-                travelCost = list.Select(x=> new TravelCostDto
-                              {
-                                  Id = x.tc.Id,
-                                  Title = x.tc.Title,
-                                  Value = x.tc.Value,
-                                  Type = x.tc.Type,
-                                  TravelCostFriends = x.jtcf.Select(f => new TravelCostFriendDto
-                                  {
-                                      TravelFriendId = f.TravelFriendId,
-                                      TravelCostId = x.tc.Id,
-                                      Id = f.Id,
-                                      Rate = f.Rate,
-                                      Value = f.Value,
-                                      FriendName = x.jtf.Select(z => $"{z.FristName} {z.LastName}").First()
-                                  }).ToList(),
-                              }).First();
+                travelCost = list.Select(x => new TravelCostDto
+                {
+                    Id = x.tc.Id,
+                    Title = x.tc.Title,
+                    Value = x.tc.Value,
+                    Type = x.tc.Type,
+                    TravelCostFriends = x.jtcf.Select(f => new TravelCostFriendDto
+                    {
+                        TravelFriendId = f.TravelFriendId,
+                        TravelCostId = x.tc.Id,
+                        Id = f.Id,
+                        Rate = f.Rate,
+                        Value = f.Value,
+                        FriendName = x.jtf.Select(z => $"{z.FristName} {z.LastName}").First()
+                    }).ToList(),
+                }).First();
             }
             else
             {

@@ -1,36 +1,41 @@
 ﻿@using DoonGPay.Dto.Travel
 @model List<TravelFriendDto>
 
-<button class="btn btn-success mb-3 btnEditFriend" id="btnAddFriend" data-id="0" data-travel-id="@ViewData["travelId"]">سفر جدید</button>
+<link href="~/css/travel/travelstable.css" rel="stylesheet" />
+<div>
+    <button class="btn btn-success mb-3 btnEditFriend" id="btnAddFriend" data-id="0" data-travel-id="@ViewData["travelId"]">همسفر جدید</button>
 
-<table class="table table-bordered text-center" id="FtTable">
-    <thead class="thead-dark">
-        <tr>
-            <th>ویرایش</th>
-            <th>حذف</th>
-            <th>اسم</th>
-            <th>نام خانوادگی</th>
-            <th>تلفن</th>
-            <th>نفرات</th>
-            <th>سهم</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var i in Model)
-        {
-            <tr data-id="@i.Id">
-                <td>
-                    <button class="btn btn-info btn-sm btnEditFriend" data-id="@i.Id" data-travel-id="@i.TravelId">ویرایش</button>
-                </td>
-                <td>
-                    <button class="btn btn-danger btn-sm btn-deleteFriend" data-id="@i.Id" data-travel-id="@i.TravelId">حذف</button>
-                </td>
-                <td>@i.FristName</td>
-                <td>@i.LastName</td>
-                <td>@i.PhoneNumber</td>
-                <td>@i.Person</td>
-                <td>@i.Share</td>
+    <table class="table table-bordered text-center" id="FtTable">
+        <thead class="thead-dark">
+            <tr>
+
+                <th>نام کامل</th>
+                <th>نفرات</th>
+                <th>سهم</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var i in Model)
+            {
+                var fullName = $"{i.FristName} {i.LastName}";
+                <tr data-id="@i.Id">
+
+                    <td>@fullName</td>
+                    <td>@i.Person</td>
+                    <td>@i.Share</td>
+                    <td>
+                        <button class="btn btn-info btn-sm btnEditFriend" data-id="@i.Id" data-travel-id="@i.TravelId">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+
+                        <button class="btn btn-danger btn-sm btn-deleteFriend" data-id="@i.Id" data-travel-id="@i.TravelId">
+                            <i class="fa-solid fa-trash"></i>
+
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

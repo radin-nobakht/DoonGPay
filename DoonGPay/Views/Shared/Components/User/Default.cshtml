@@ -1,10 +1,14 @@
 ﻿@using DoonGPay.ViewModel
 @model UserViewModel
+<div class=" text-light" style=" background-color:#343a40">
 @if (Model.IsLogin)
 {
-    <label>@Model.Name</label>
+       
+    <label  >@Model.Name</label>
+
 }
 else
 {
     <a id="login" href="/Login">ورود</a>
 }
+</div>

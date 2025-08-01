@@ -1,7 +1,12 @@
 ﻿@using DoonGPay.Dto.Travel
 @model List<TravelCostDto>
-
-<h5>هزینه ها</h5>
+<style>
+    img{
+        width:20px;
+    }
+</style>
+<link href="~/css/travel/travelstable.css" rel="stylesheet" />
+<div name="wer">
 <button class="btn btn-success mb-3 btnTravelCostEdit" id="btnAddCost" data-id="0" data-travel-id="@ViewData["travelId"]">هزینه جدید</button>
 
 <table class="table table-bordered text-center">
@@ -21,10 +26,15 @@
                 <td>@tc.Value</td>
                 <td>@tc.TypeStr</td>
                 <td>
-                    <button class="btn btn-info btn-sm btnTravelCostEdit" data-id="@tc.Id" data-travel-id="@tc.TravelId">ویرایش</button>
-                    <button class="btn btn-danger btn-sm btnDeleteTravelCost" data-id="@tc.Id" data-travel-id="@tc.TravelId">حذف</button>
+                        <button class="btn btn-info btn-sm btnTravelCostEdit" data-id="@tc.Id" data-travel-id="@tc.TravelId">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm btnDeleteTravelCost" data-id="@tc.Id" data-travel-id="@tc.TravelId">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+</div>

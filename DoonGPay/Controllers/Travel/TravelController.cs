@@ -1,4 +1,5 @@
 ﻿using DoonGPay.Dto.Travel;
+using PersianDate;
 using DoonGPay.Entity;
 using DoonGPay.Inteface;
 using DoonGPay.Inteface.Travel;
@@ -9,27 +10,45 @@ namespace DoonGPay.Controllers.Travel
 {
     public partial class TravelController(ITravelService travelService) : Controller
     {
-
-
-
         public IActionResult Index()
         {
-            return View(travelService.Travels());
+           TravelDto model =travelService.Travel(0);
+            //var travels=travelService.Travels();
+            //travels.First.TravelFriends = travelService.TravelFriends(travels.First.Id);
+            //travels.First.TravelCosts = travelService.TravelCosts(travels.First.Id);
+            return View(model);
         }
-
-        public IActionResult Travels()
+        public IActionResult ChangeTravel(int id)
         {
-            return PartialView("_Travels", travelService.Travels());
+            var model = travelService.Travel(id);
+            DateTime now = DateTime.Now;
+            PersianDate.PersianDate persianDate = new PersianDate.PersianDate(now);
+
+            string persianDateString = persianDate.ToString(); // مثلا "۱۴۰۴/۰۵/۱۰"
+
+            ViewBag.PersianDate = persianDateString;
+            return View();
+            return PartialView("_Travels",model);
         }
         [HttpPost]
-        public IActionResult EditTravel(int? id)
+        //public IActionResult Travels()
+        //{
+        //    return PartialView("_Travels", travelService.Travel);
+        //}
+        public IActionResult Travels()
         {
-            TravelDto travelDto = new() { Date = DateTime.Now };
-
-            if (id > 0)
-                travelDto = travelService.Travel(id.Value);
-            return PartialView("_EditTravel", travelDto);
+            List<TravelDto> model = travelService.Travels();
+            return PartialView("_Travelss",model);
         }
+        [HttpPost]
+        //public IActionResult EditTravel(int? id)
+        //{
+        //    TravelDto travelDto = new() { Date = DateTime.Now };
+
+        //    if (id > 0)
+        //        travelDto = travelService.Travel(id.Value);
+        //    return PartialView("_EditTravel", travelDto);
+        //}
 
         [HttpPost]
         public IActionResult SaveTravel(TravelDto model)
