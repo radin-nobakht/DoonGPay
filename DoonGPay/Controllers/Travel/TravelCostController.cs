@@ -22,8 +22,6 @@ namespace DoonGPay.Controllers.Travel
         [HttpPost]
         public JsonResult SaveTravelCost(TravelCostDto travelCost)
         {
-            var a = new TravelDto();
-            travelService.SaveTravel(a);
             travelService.SaveTravelCost(travelCost);
 
             return Json(true);

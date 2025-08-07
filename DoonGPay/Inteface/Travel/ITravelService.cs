@@ -19,7 +19,7 @@ namespace DoonGPay.Inteface.Travel
         List<TravelFriendDto> TravelFriends(int travelId);
         TravelDto Travel(int? id);
         TravelCostDto TravelCost(int? travelCostId, int travelId);
-        List<TravelCostFriendDto> TravelCostFriends(int CostId);
+        //List<TravelCostFriendDto> TravelCostFriends(int CostId);
         List<TravelCostDto> TravelCosts(int travelId);
         List<TravelDto> Travels();
         void SaveTravelCost(TravelCostDto travelCost);

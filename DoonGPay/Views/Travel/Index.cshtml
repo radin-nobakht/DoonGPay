@@ -3,28 +3,9 @@
 
 <div class="p-3  rounded h-100">
     <div id="travels">
-        <button class="btn btn-success btnEditTravel" id="btnAddTravel" data-id="0">سفر جدید</button>
-        <partial name="_Travels" model="Model" />
+        <partial name="_Travel" model="Model" />
     </div>
 </div>
-<div class="container mt-5">
-    <div class="row">
-
-               
-                <div class="col-6">
-                        <div id="travelCosts">
-                <partial name="_TravelCost" model="Model.TravelCosts" />
-                        </div>
-                </div>@*cost*@
-                <div class="col-6">
-                        <div id="travelFriend">
-                <partial name="_TravelFriend" model="Model.TravelFriends" />
-                        </div>
-        </div>@*friend*@
-           
-        </div>
-
-    </div>
 
 @section Scripts {
     <script src="~/js/travel/travel.js"></script>

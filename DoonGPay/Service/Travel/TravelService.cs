@@ -26,12 +26,12 @@ namespace DoonGPay.Service.Travel
                 db.TravelCostFriends.Add(model);
             db.SaveChanges();
         }
-        public List<TravelCostFriendDto> TravelCostFriends(int travelCostId)
-        {
-            var data = db.TravelCostFriends.Where(x => x.TravelCostId == travelCostId).ToList();
+        //public List<TravelCostFriendDto> TravelCostFriends(int travelCostId)
+        //{
+        //    var data = db.TravelCostFriends.Where(x => x.TravelCostId == travelCostId).ToList();
 
-            return mapper.Map<List<TravelCostFriendDto>>(data);
-        }
+        //    return mapper.Map<List<TravelCostFriendDto>>(data);
+        //}
         public void DeleteTravelCostFriend(int id)
         {
             var model = db.TravelCostFriends.FirstOrDefault(x => x.Id == id);
@@ -85,6 +85,8 @@ namespace DoonGPay.Service.Travel
                              .Include(x => x.TravelCosts)
                              .FirstOrDefault(x => x.Id ==id);
             }
+          
+
             return mapper.Map<TravelDto>(data);
         }
         public List<TravelDto> Travels()
@@ -201,25 +203,73 @@ namespace DoonGPay.Service.Travel
         #endregion
 
         #region Cost
+        //public void SaveTravelCost(TravelCostDto travelCost)
+        //{
+
+        //    var model = mapper.Map<TravelCostEntity>(travelCost);
+        //    bool add = true;
+        //    if (model.Id > 0)
+        //    {
+        //        db.TravelCosts.Update(model);
+        //         add = false;
+        //    }
+        //    else
+        //    {
+        //        db.TravelCosts.Add(model);
+        //         add = true;
+        //    }
+
+        //    db.SaveChanges();
+
+        //    var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type);
+        //    travelCostCalc.Calc(model.Id,model.TravelId,add);
+
+
+        //}
         public void SaveTravelCost(TravelCostDto travelCost)
         {
-
             var model = mapper.Map<TravelCostEntity>(travelCost);
-            if (model.Id > 0)
-                db.TravelCosts.Update(model);
-            else
-                //foreach(var tcf in model.TravelCostFriends)
-                //db.TravelCostFriends.Add(tcf);
+            bool isAdd = model.Id <= 0;
+
+            if (isAdd)
+            {
                 db.TravelCosts.Add(model);
-            var a = db.TravelCosts.Last(x => x.Title == travelCost.Title);
-            var b = a;
+                db.SaveChanges();  // تا مدل Id بگیره
+            }
+            else
+            {
+                db.TravelCosts.Update(model);
+                db.SaveChanges();
+            }
+
+            var friendsDto = travelCost.TravelCostFriends ?? new List<TravelCostFriendDto>();
+
+            var friendIdsInDto = friendsDto.Select(f => f.Id).ToList();
+            var friendsToDelete = db.TravelCostFriends
+                .Where(f => f.TravelCostId == model.Id && !friendIdsInDto.Contains(f.Id))
+                .ToList();
+
+            db.TravelCostFriends.RemoveRange(friendsToDelete);
+
+            foreach (var friendDto in friendsDto)
+            {
+                var friendEntity = mapper.Map<TravelCostFriendEntity>(friendDto);
+                friendEntity.TravelCostId = model.Id;
+
+                if (friendDto.Id <= 0)
+                    db.TravelCostFriends.Add(friendEntity);
+                else
+                    db.TravelCostFriends.Update(friendEntity);
+            }
+
             db.SaveChanges();
 
-            var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type);
-            travelCostCalc.Calc(model.Id);
-
+         var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type);
+         travelCostCalc.Calc(model.Id,model.TravelId,isAdd,friendsDto);
 
         }
+
+
         public List<TravelCostDto> TravelCosts(int travelId)
         {
 
@@ -239,54 +289,108 @@ namespace DoonGPay.Service.Travel
             return list;
         }
         private List<SelectListItem> TravelCostTypes() => TravelCostCalcFactory.SelectTypes();
+        //public TravelCostDto TravelCost(int? travelCostId, int travelId)
+        //{
+
+        //    TravelCostDto travelCost;
+
+        //    if (travelCostId > 0)
+        //    {
+        //        //var cost = db.TravelCosts
+        //        //    .Include(x => x.TravelCostFriends.Where(z => z.TravelCostId == travelCostId))
+        //        //    .FirstOrDefault(x => x.Id == travelCostId);
+
+        //        var query = (from tc in db.TravelCosts
+        //                     where tc.Id == travelCostId
+        //                     join tcf in db.TravelCostFriends on tc.Id equals tcf.TravelCostId into jtcf
+        //                     join tf in db.TravelFriends on tc.TravelId equals tf.TravelId into jtf
+        //                     select new { tc, jtcf, jtf });
+
+        //        var list = query.ToList();
+        //        travelCost = list.Select(x => new TravelCostDto
+        //        {
+        //            Id = x.tc.Id,
+        //            Title = x.tc.Title,
+        //            Value = x.tc.Value,
+        //            Type = x.tc.Type,
+        //            TravelCostFriends = x.jtcf.Select(f => new TravelCostFriendDto
+        //            {
+        //                TravelFriendId = f.TravelFriendId,
+        //                TravelCostId = x.tc.Id,
+        //                Id = f.Id,
+        //                Rate = f.Rate,
+        //                Value = f.Value,
+        //                FriendName = x.jtf.Select(z => $"{z.FristName} {z.LastName}").First()
+        //            }).ToList(),
+        //        }).First();
+        //    }
+        //    else
+        //    {
+        //        travelCost = new TravelCostDto
+        //        {
+        //            TravelId = travelId,
+        //            TravelCostFriends = db.TravelFriends.Where(x => x.TravelId == travelId)
+        //                .Select(x => new TravelCostFriendDto
+        //                {
+        //                    FriendName = $"{x.FristName} {x.LastName}",
+        //                    TravelFriendId = x.Id
+        //                }).ToList()
+        //        };
+        //    }
+        //    travelCost.CostTypes = TravelCostTypes();
+
+        //    return travelCost;
+        //}
         public TravelCostDto TravelCost(int? travelCostId, int travelId)
         {
-
             TravelCostDto travelCost;
 
             if (travelCostId > 0)
             {
-                //var cost = db.TravelCosts
-                //    .Include(x => x.TravelCostFriends.Where(z => z.TravelCostId == travelCostId))
-                //    .FirstOrDefault(x => x.Id == travelCostId);
-
-                var query = (from tc in db.TravelCosts
-                             where tc.Id == travelCostId
-                             join tcf in db.TravelCostFriends on tc.Id equals tcf.TravelCostId into jtcf
-                             join tf in db.TravelFriends on tc.TravelId equals tf.TravelId into jtf
-                             select new { tc, jtcf, jtf });
-
-                var list = query.ToList();
-                travelCost = list.Select(x => new TravelCostDto
-                {
-                    Id = x.tc.Id,
-                    Title = x.tc.Title,
-                    Value = x.tc.Value,
-                    Type = x.tc.Type,
-                    TravelCostFriends = x.jtcf.Select(f => new TravelCostFriendDto
+                var query =
+                    from tc in db.TravelCosts
+                    where tc.Id == travelCostId
+                    select new TravelCostDto
                     {
-                        TravelFriendId = f.TravelFriendId,
-                        TravelCostId = x.tc.Id,
-                        Id = f.Id,
-                        Rate = f.Rate,
-                        Value = f.Value,
-                        FriendName = x.jtf.Select(z => $"{z.FristName} {z.LastName}").First()
-                    }).ToList(),
-                }).First();
+                        Id = tc.Id,
+                        Title = tc.Title,
+                        Value = tc.Value,
+                        Type = tc.Type,
+                        TravelCostFriends = (
+                            from tcf in db.TravelCostFriends
+                            where tcf.TravelCostId == tc.Id
+                            join tf in db.TravelFriends on tcf.TravelFriendId equals tf.Id
+                            select new TravelCostFriendDto
+                            {
+                                Id = tcf.Id,
+                                TravelCostId = tcf.TravelCostId,
+                                TravelFriendId = tcf.TravelFriendId,
+                                Value = tcf.Value,
+                                Rate = tcf.Rate,
+                                FriendName = tf.FristName + " " + tf.LastName
+                            }
+                        ).ToList()
+                    };
+
+                travelCost = query.FirstOrDefault();
             }
             else
             {
                 travelCost = new TravelCostDto
                 {
                     TravelId = travelId,
-                    TravelCostFriends = db.TravelFriends.Where(x => x.TravelId == travelId)
-                        .Select(x => new TravelCostFriendDto
+                    TravelCostFriends = (
+                        from tf in db.TravelFriends
+                        where tf.TravelId == travelId
+                        select new TravelCostFriendDto
                         {
-                            FriendName = $"{x.FristName} {x.LastName}",
-                            TravelFriendId = x.Id
-                        }).ToList()
+                            TravelFriendId = tf.Id,
+                            FriendName = tf.FristName + " " + tf.LastName
+                        }
+                    ).ToList()
                 };
             }
+
             travelCost.CostTypes = TravelCostTypes();
 
             return travelCost;

@@ -1,87 +1,36 @@
 ﻿@using DoonGPay.Dto.Travel
-@model TravelDto
+@model List<TravelDto>
 
-<style>
-    /* استایل کلی جدول‌ها */
-    table.table {
-        background-color: #fff;
-        border-collapse: collapse;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        border-radius: 10px;
-        overflow: hidden;
-    }
-
-    img {
-        width: 20px;
-    }
-
-        table.table thead {
-            background-color: #343a40;
-            color: white;
-        }
-
-        table.table th,
-        table.table td {
-            vertical-align: middle;
-            padding: 12px;
-            font-size: 14px;
-        }
-
-        /* ردیف‌های جدول هنگام هاور */
-        table.table tbody tr:hover {
-            background-color: #f2f2f2;
-            transition: 0.2s ease-in-out;
-        }
-
-    /* استایل دکمه‌ها */
-    button.btn {
-        border-radius: 6px !important;
-        font-size: 13px !important;
-        padding: 6px 14px !important;
-        min-width: 70px;
-    }
-
-    /* دکمه ویرایش */
-    button.btn-info {
-        background-color: #17a2b8;
-        border-color: #17a2b8;
-        color: white;
-    }
-
-    /* دکمه حذف */
-    button.btn-danger {
-        background-color: #dc3545;
-        border-color: #dc3545;
-        color: white;
-    }
-
-    /* دکمه افزودن */
-    button.btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
-        color: white;
-    }
-
-    /* فاصله بین دکمه‌ها */
-    button + button {
-        margin-right: 5px;
-    }
-
-    /* فاصله دکمه بالا */
-    .mb-3 {
-        margin-bottom: 15px !important;
-        font-weight: bold;
-    }
-
-</style>
-<button type="button" class="btn btn-primary" id="morebtn">بیشتر</button>
-
-<link href="~/css/travel/travelstable.css" rel="stylesheet" />
-
-
-<div class="p-2 bg-light rounded shadow-sm d-inline-flex align-items-center gap-2" data-id="@Model.Id"><span class="fw-bold">@Model.Name</span><span><strong>تاریخ:</strong> @Model.Date</span><span><strong>تعداد نفرات:</strong> @Model.AllPerson</span><span><strong>کل هزینه:</strong> @Model.AllCost تومان</span><button class="btn btn-info btn-sm btnEditTravel" data-id="@Model.Id"><i class="fa-solid fa-pen-to-square"></i></button><button class="btn btn-danger btn-sm btnDeleteTravel" data-id="@Model.Id"><i class="fa-solid fa-trash"></i></button></div>
-
-
-
-
-
+<div class="modal fade" id="travelsModal" tabindex="-1" aria-labelledby="travelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="travelLabel">سفرها</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered text-center">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>نام</th>
+                            <th>تاریخ</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var i in Model)
+                        {
+                            <tr data-id="@i.Id" class="travels">
+                                <td>@i.Name</td>
+                                <td>@i.Date</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+            </div>
+        </div>
+    </div>
+</div>

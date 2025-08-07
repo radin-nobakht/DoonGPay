@@ -18,9 +18,7 @@ function travels() {
      travelCosts(travelId);
     travelFriends(travelId);
 };
-$(document).on("click", "tr.travels", function () {
 
-});
 $(document).on("click", "#morebtn", function () {
     $.ajax({
         url: "/Travel/Travels",

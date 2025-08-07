@@ -21,14 +21,8 @@ namespace DoonGPay.Controllers.Travel
         public IActionResult ChangeTravel(int id)
         {
             var model = travelService.Travel(id);
-            DateTime now = DateTime.Now;
-            PersianDate.PersianDate persianDate = new PersianDate.PersianDate(now);
-
-            string persianDateString = persianDate.ToString(); // مثلا "۱۴۰۴/۰۵/۱۰"
-
-            ViewBag.PersianDate = persianDateString;
-            return View();
-            return PartialView("_Travels",model);
+            
+            return PartialView("_Travel",model);
         }
         [HttpPost]
         //public IActionResult Travels()
@@ -38,7 +32,7 @@ namespace DoonGPay.Controllers.Travel
         public IActionResult Travels()
         {
             List<TravelDto> model = travelService.Travels();
-            return PartialView("_Travelss",model);
+            return PartialView("_Travels",model);
         }
         [HttpPost]
         //public IActionResult EditTravel(int? id)
