@@ -264,7 +264,7 @@ namespace DoonGPay.Service.Travel
 
             db.SaveChanges();
 
-         var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type);
+         var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type ,db,mapper);
          travelCostCalc.Calc(model.Id,model.TravelId,isAdd,friendsDto);
 
         }

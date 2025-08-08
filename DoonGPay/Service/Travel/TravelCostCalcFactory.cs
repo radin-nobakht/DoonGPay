@@ -1,5 +1,7 @@
-﻿using DoonGPay.Adapter;
+﻿using AutoMapper;
+using DoonGPay.Adapter;
 using DoonGPay.Dto.Travel;
+using DoonGPay.Entity.Travel;
 using DoonGPay.Inteface.Travel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -7,15 +9,15 @@ namespace DoonGPay.Service.Travel
 {
     public static class TravelCostCalcFactory
     {
-        public static ITravelCostCalc Create(int value)
+        public static ITravelCostCalc Create(int value , MyContext db, IMapper mapper)
         {
             return value switch
             {
-                1 => new TravelCostCalcEqual(),
-                2 => new TravelCostCalcPerson(),
-                3 => new TravelCostCalcPersonManual(),
-                4 => new TravelCostCalcValue(),
-                5 => new TravelCostCalcPercent(),
+                1 => new TravelCostCalcEqual(db,mapper),
+                2 => new TravelCostCalcPerson(db, mapper),
+                3 => new TravelCostCalcPersonManual(db, mapper),
+                4 => new TravelCostCalcValue(db, mapper),
+                5 => new TravelCostCalcPercent(db, mapper),
                 _ => throw new NotImplementedException("خطا در انجام عملیات"),
             };
         }
@@ -41,112 +43,140 @@ namespace DoonGPay.Service.Travel
         public int Value { get; set; } = value;
     }
 
-    public class TravelCostCalcPerson() : ITravelCostCalc
+    public class TravelCostCalcPerson(MyContext db, IMapper mapper) : ITravelCostCalc
     {
-        private readonly ICalcService _calcService;
+
+       
         public void Calc(int travelCostId, int travelId, bool add, ICollection<TravelCostFriendDto> travelCostFriends)
         {
-            var persons = _calcService.Persons(travelId);
-            var costs = _calcService.CostValue(travelCostId);
-            var share = costs / persons;
-            var friendsList = _calcService.Friends(travelId);
+            // اگر travelId یک مقدار ساده است (مثلاً int)
+            var persons = db.TravelFriends
+                             .Where(x => x.TravelId == travelId)
+                             .Sum(x => x.Person);
+            var costValue = db.TravelCosts
+                             .Where(x => x.Id == travelCostId)
+                             .Select(x => x.Value)
+                             .FirstOrDefault();
+            var share = travelCostId / persons;
+            var Friends = db.TravelFriends.Where(x => x.TravelId == travelId).Select(x => new { x.Id, x.Person }).ToList();
             var finishList = new TravelCostFriendDto();
             if (add = true)
             {
-                friendsList = _calcService.Friends(travelId);
-                foreach (var f in friendsList)
+                foreach (var f in Friends)
                 {
 
                     finishList.Value = f.Person * share;
                     finishList.TravelFriendId = f.Id;
                     finishList.TravelCostId = travelCostId;
-
-                    _calcService.SaveTravelCostsFriend(finishList);
+                    var travelCostFriendEntity = mapper.Map<TravelCostFriendEntity>(Friends);
+                    db.TravelCostFriends.Add(travelCostFriendEntity);
                 }
             }
             else
             {
-                var friendCostsList = _calcService.GetTravelFriendCost(travelId);
-                foreach (var fcl in friendCostsList)
+                var CostFriend = db.TravelCostFriends.Where(x => x.TravelCostId == travelCostId).ToList();
+                foreach (var fcl in CostFriend)
                 {
                     finishList.Id = fcl.Id;
-                    foreach (var f in friendsList)
+                    foreach (var f in Friends)
                     {
                         if (fcl.TravelFriendId == f.Id)
                         {
                             finishList.Value = f.Person * share;
                         }
                     }
-                    _calcService.SaveTravelCostsFriend(finishList);
+                    var travelCostFriendEntity = mapper.Map<TravelCostFriendEntity>(finishList);
+                    db.TravelCostFriends.Update(travelCostFriendEntity);
                 }
-
+                db.SaveChanges();
 
             }
         }
     }
-    public class TravelCostCalcEqual() : ITravelCostCalc
+    public class TravelCostCalcEqual(MyContext db,IMapper mapper) : ITravelCostCalc
     {
-        private readonly ICalcService _calcService;
-        public void Calc(int travelCostId, int travelId, bool add, ICollection <TravelCostFriendDto> travelCostFriends)
+
+      
+
+        public void Calc(int travelCostId, int travelId, bool add, ICollection<TravelCostFriendDto> travelCostFriends)
         {
-            var costs = _calcService.CostValue(travelCostId);
-            var friendsList = _calcService.Friends(travelId);
-            var share = costs / friendsList.Count;
+            var costValue = db.TravelCosts
+                             .Where(x => x.Id == travelCostId)
+                             .Select(x => x.Value)
+                             .FirstOrDefault();
+             var Frined = db.TravelFriends.Where(x => x.TravelId == travelId).Select(x => new { x.Id, x.Person }).ToList(); 
+            var share = costValue / Frined.Count;
             var finishList = new TravelCostFriendDto();
             if (add)
             {
-                foreach (var f in friendsList)
+                foreach (var f in Frined)
                 {
                     finishList.Value = share;
                     finishList.TravelFriendId = f.Id;
                     finishList.TravelCostId = travelCostId;
 
-                    _calcService.SaveTravelCostsFriend(finishList);
+                    var travelCostFriendEntity = mapper.Map<TravelCostFriendEntity>(finishList);
+                    db.TravelCostFriends.Add(travelCostFriendEntity);
                 }
             }
             else
             {
-                var friendCostsList = _calcService.GetTravelFriendCost(travelId);
-                foreach (var fcl in friendCostsList)
+                var travelCostFriend = db.TravelCostFriends.Where(x => x.TravelCostId == travelCostId).ToList();
+                foreach (var fcl in travelCostFriend)
                 {
                     finishList.Value = share;
                     finishList.Id = fcl.Id;
-                    _calcService.SaveTravelCostsFriend(finishList);
+
+                    var travelCostFriendEntity = mapper.Map<TravelCostFriendEntity>(finishList);
+                    db.TravelCostFriends.Update(travelCostFriendEntity);
                 }
             }
+            db.SaveChanges();
+
         }
     }
-    public class TravelCostCalcPercent() : ITravelCostCalc
+    public class TravelCostCalcPercent(MyContext db, IMapper mapper) : ITravelCostCalc
     {
-        private readonly ICalcService _calcService;
         public void Calc(int travelCostId, int travelId, bool add, ICollection<TravelCostFriendDto> travelCostFriends)
         {
 
         }
     }
-    public class TravelCostCalcPersonManual() : ITravelCostCalc
+    public class TravelCostCalcPersonManual(MyContext db, IMapper mapper) : ITravelCostCalc
     {
-        private readonly ICalcService _calcService;
 
-        public void Calc(int travelCostId, int travelId, bool add, ICollection <TravelCostFriendDto> travelCostFriends)
+        public void Calc(int travelCostId, int travelId, bool add, ICollection<TravelCostFriendDto> travelCostFriends)
         {
 
         }
     }
-    public class TravelCostCalcValue : ITravelCostCalc
+    public class TravelCostCalcValue(MyContext db, IMapper mapper) : ITravelCostCalc
     {
-        private readonly ICalcService _calcService;
+       
         public void Calc(int travelCostId, int travelId, bool add, ICollection<TravelCostFriendDto> travelCostFriends)
         {
             var list = new TravelCostFriendDto();
-         foreach(var fcl in travelCostFriends)
+            foreach (var fcl in travelCostFriends)
             {
-              list.Value = fcl.Value;
+                list.Value = fcl.Value;
                 list.Id = fcl.Id;
                 list.TravelFriendId = fcl.TravelFriendId;
                 list.TravelCostId = travelCostId;
-                _calcService.SaveTravelCostsFriend(list);
-            }         
+
+                var travelCostFriendEntity = mapper.Map<TravelCostFriendEntity>(list);
+                if (travelCostFriendEntity.Id == 0)
+                {
+                    db.TravelCostFriends.Add(travelCostFriendEntity);
+
+                }
+                else
+                {
+                    db.TravelCostFriends.Update(travelCostFriendEntity);
+
+                }
+                    db.SaveChanges();
+
+            }
         }
     }
 
