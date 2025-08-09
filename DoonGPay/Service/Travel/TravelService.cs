@@ -356,6 +356,7 @@ namespace DoonGPay.Service.Travel
                         Title = tc.Title,
                         Value = tc.Value,
                         Type = tc.Type,
+                        TravelId = travelId,
                         TravelCostFriends = (
                             from tcf in db.TravelCostFriends
                             where tcf.TravelCostId == tc.Id

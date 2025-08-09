@@ -17,8 +17,10 @@ namespace DoonGPay.Controllers.Travel
         [HttpPost]
         public IActionResult EditTravelCost(int? travelCostId, int travelId)
         {
-            return PartialView("_EditTravelCost", travelService.TravelCost(travelCostId, travelId));
+            var model = travelService.TravelCost(travelCostId, travelId);
+            return PartialView("_EditTravelCost",model);
         }
+
         [HttpPost]
         public JsonResult SaveTravelCost(TravelCostDto travelCost)
         {

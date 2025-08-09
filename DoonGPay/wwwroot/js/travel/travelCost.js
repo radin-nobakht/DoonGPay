@@ -16,6 +16,7 @@
 });
 function Table(value) {
     if (value == 3 || value == 4 || value == 5) {
+        debugger;
        $("#manual").attr("hidden", false)
         if (value == 3) {
             $("#typeStr").text("نفرات")
@@ -24,7 +25,7 @@ function Table(value) {
             $("#typeStr").text("درصد")
         }
         if (value == 5) {
-            $("#typeStr").val("مقدار")
+            $("#typeStr").text("مقدار")
         }
     }
 }
@@ -88,8 +89,6 @@ $(document).on("click", "#btnSaveCost", function () {
         url: "/Travel/SaveTravelCost",
         type: "POST",
         data: $("#CostForm").serialize() ,
-
-
         success: function (res) {
             if (res.success) {
                 $("#editCost").modal("hide");
