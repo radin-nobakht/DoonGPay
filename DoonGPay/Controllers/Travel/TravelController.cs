@@ -13,6 +13,7 @@ namespace DoonGPay.Controllers.Travel
         public IActionResult Index()
         {
            TravelDto model =travelService.Travel(0);
+            ViewData["travelId"] = model.Id;
             //var travels=travelService.Travels();
             //travels.First.TravelFriends = travelService.TravelFriends(travels.First.Id);
             //travels.First.TravelCosts = travelService.TravelCosts(travels.First.Id);
@@ -35,14 +36,14 @@ namespace DoonGPay.Controllers.Travel
             return PartialView("_Travels",model);
         }
         [HttpPost]
-        //public IActionResult EditTravel(int? id)
-        //{
-        //    TravelDto travelDto = new() { Date = DateTime.Now };
+        public IActionResult EditTravel(int? id)
+        {
+            TravelDto travelDto = new() { Date = DateTime.Now };
 
-        //    if (id > 0)
-        //        travelDto = travelService.Travel(id.Value);
-        //    return PartialView("_EditTravel", travelDto);
-        //}
+            if (id > 0)
+                travelDto = travelService.Travel(id.Value);
+            return PartialView("_EditTravel", travelDto);
+        }
 
         [HttpPost]
         public IActionResult SaveTravel(TravelDto model)

@@ -14,8 +14,12 @@ namespace DoonGPay.Dto.Travel
         public virtual ICollection<TravelCostDto> TravelCosts { get; set; }
         public virtual ICollection<TravelFriendDto> TravelFriends { get; set; }
 
-        public int AllPerson => TravelFriends.Sum(x => x.Person);
-        public decimal AllCost => TravelCosts.Sum(x => x.Value);
+        public int AllPerson => (TravelFriends != null && TravelFriends.Count > 0)
+            ? TravelFriends.Sum(x => x.Person)
+            : 0;
+        public decimal AllCost => (TravelCosts != null && TravelCosts.Count > 0)
+            ? TravelCosts.Sum(x => x.Value)
+            : 0m;
 
     }
 }

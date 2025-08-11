@@ -104,17 +104,16 @@ namespace DoonGPay.Service.Travel
                              .Where(x => x.Id == travelCostId)
                              .Select(x => x.Value)
                              .FirstOrDefault();
-             var Frined = db.TravelFriends.Where(x => x.TravelId == travelId).Select(x => new { x.Id, x.Person }).ToList(); 
-            var share = costValue / Frined.Count;
+             var frined = db.TravelFriends.Where(x => x.TravelId == travelId).Select(x => new { x.Id, x.Person }).ToList(); 
+            var share = costValue / frined.Count;
             var finishList = new TravelCostFriendDto();
             if (add)
             {
-                foreach (var f in Frined)
+                foreach (var f in frined)
                 {
                     finishList.Value = share;
                     finishList.TravelFriendId = f.Id;
                     finishList.TravelCostId = travelCostId;
-
                     var travelCostFriendEntity = mapper.Map<TravelCostFriendEntity>(finishList);
                     db.TravelCostFriends.Add(travelCostFriendEntity);
                 }

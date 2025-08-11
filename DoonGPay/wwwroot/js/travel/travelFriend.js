@@ -26,8 +26,11 @@
 //    var travelId = $(this).data("travel-id");
 //    editTravelFriend(travelFriendId, travelId);
 //})
+
 $(document).on("click", ".btnEditFriend", function () {
 
+
+    debugger;
     var travelId = $(this).data("travel-id");
     var travelFriendId = $(this).data("id");
     editTravelFriend(travelFriendId, travelId)
@@ -35,19 +38,20 @@ $(document).on("click", ".btnEditFriend", function () {
 function editTravelFriend(travelFriendId, travelId) {
     $.ajax({
         url: "/travel/EditFriend",
-        type: "POST",
+        type: "GET",
         data: {
             travelFriendId: travelFriendId,
             travelId: travelId
         },
         success: function (result) {
-            $("#modal").html(result)
-            $("#editFriend").modal("show");
+            $("#modal").html(result);
+            $('#editFriend').modal('show');
         },
         error: function () {
             $("#errorMessage").text("خطا در ثبت اطلاعات").show();
         }
     });
+
 }
 
 // ویرایش

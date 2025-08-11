@@ -12,15 +12,29 @@ namespace DoonGPay.Controllers.Travel
             return PartialView("_TravelFriend", travelService.TravelFriends(travelId));
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult EditFriend(int? travelFriendId, int travelId)
         {
-            TravelFriendDto fellowDto = new() { TravelId = travelId };
+            TravelFriendDto fellowDto;
 
-            if (travelFriendId > 0)
+            if (travelFriendId.HasValue && travelFriendId.Value > 0)
+            {
                 fellowDto = travelService.TravelFriend(travelFriendId.Value);
-            return PartialView("_EditFriend", fellowDto);
+                if (fellowDto == null)
+                {
+                    // می‌تونی اینجا خطا یا View خاصی بازگردونی
+                    return NotFound();
+                }
+            }
+            else
+            {
+                fellowDto = new TravelFriendDto { TravelId = travelId };
+            }
+
+            return PartialView("_EditTravelFriend", fellowDto);
         }
+
+
         [HttpPost]
         public IActionResult SaveFriend(TravelFriendDto model)
         {

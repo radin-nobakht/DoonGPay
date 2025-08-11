@@ -14,9 +14,14 @@
                     <input type="hidden" id="travelId" name="TravelId" value="@Model.TravelId" />
                     <input type="text" id="title" name="Title" value="@Model.Title" class="form-control mb-3" placeholder="عنوان" required />
                     <input type="number" id="value" name="Value" value="@Model.Value" class="form-control mb-3" placeholder="مقدار" required />
-                    @Html.DropDownListFor(model => model.Type, Model.CostTypes, new { @class = "form-control mb-3", name = "Type" })
-
-                    <div id="manual" hidden>
+                    @Html.DropDownListFor(model => model.Type, Model.CostTypes, new { @class = "form-control mb-3  type", name = "Type"})
+                    <style>
+                        div#manual 
+                        {
+                            display:none;
+                        }
+                    </style>
+                    <div id="manual" >
                         <table class="table table-sm table-bordered text-center">
                             <thead class="thead-light">
                                 <tr>

@@ -83,6 +83,7 @@ $(document).on("click", ".travels", function () {
 
 
 $(document).on("click", ".btnDeleteTravel", function () {
+    debugger;
     var row = $(this).closest("tr");
     var id = $(this).data("id");
     if (!confirm("آیا از حذف اطمینان دارید؟")) return;
@@ -109,7 +110,8 @@ $(document).on("click", ".btnDeleteTravel", function () {
 //    editTravel(id);
 //})
 $(document).on("click", ".btnEditTravel", function () {
-    var Id = $(this).data("travel-id");
+    var id = $(this).data("id");
+    debugger;
     editTravel(id);
 });
 function editTravel(id) {

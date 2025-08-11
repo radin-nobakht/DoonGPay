@@ -228,8 +228,10 @@ namespace DoonGPay.Service.Travel
         //}
         public void SaveTravelCost(TravelCostDto travelCost)
         {
-            var model = mapper.Map<TravelCostEntity>(travelCost);
+            var model = mapper.Map<TravelCostbugEntity>(travelCost);
             bool isAdd = model.Id <= 0;
+            if (travelCost.Type == 1 || travelCost.Type == 2)
+                travelCost.TravelCostFriends = null;
 
             if (isAdd)
             {

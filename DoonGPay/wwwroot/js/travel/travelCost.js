@@ -1,4 +1,4 @@
-﻿$(document).on("click", ".btnDeleteTravelCost", function () {
+﻿    $(document).on("click", ".btnDeleteTravelCost", function () {
     var row = $(this).closest("tr");
     var id = $(this).data("id");
     if (!confirm("آیا از حذف اطمینان دارید؟")) return;
@@ -12,12 +12,12 @@
             alert("حذف ناموفق بود.");
         }
     });
-
 });
 function Table(value) {
+    debugger;
     if (value == 3 || value == 4 || value == 5) {
         debugger;
-       $("#manual").attr("hidden", false)
+        $("#manual").show();
         if (value == 3) {
             $("#typeStr").text("نفرات")
         }
@@ -28,8 +28,13 @@ function Table(value) {
             $("#typeStr").text("مقدار")
         }
     }
+    else {
+        $("#manual").hide();
+
+    }
 }
-$(document).on("change", "#TravelCost_Type", function () {
+$(document).on("change", "#Type", function () {
+    debugger;
     var value =$(this).val();
     Table(value);
 });
