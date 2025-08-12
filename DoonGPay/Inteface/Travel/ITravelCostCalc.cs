@@ -4,7 +4,7 @@ namespace DoonGPay.Inteface.Travel
 {
     public interface ITravelCostCalc
     {
-        void Calc(int travelCostId, int TravelId, bool add, ICollection<TravelCostFriendDto> travelCostFriends);
-
+        //void Calc(int travelCostId, int TravelId, bool add, ICollection<TravelCostFriendDto> travelCostFriends);
+        TravelCostDto Calc(TravelCostDto travelCost);
     }
 }

@@ -8,6 +8,7 @@ using DoonGPay.ViewModel;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 
 
@@ -68,24 +69,25 @@ namespace DoonGPay.Service.Travel
                 db.Travels.Add(model);
             db.SaveChanges();
         }
-        public TravelDto Travel(int? id) {
+        public TravelDto Travel(int? id)
+        {
             TravelEntity data = new TravelEntity();
             if (id == 0)
             {
-                 data = db.Travels
-                              .Include(x => x.TravelFriends)
-                              .Include(x => x.TravelCosts)
-                              .FirstOrDefault(x => x.UserId == mySession.UserId);
-               
+                data = db.Travels
+                             .Include(x => x.TravelFriends)
+                             .Include(x => x.TravelCosts)
+                             .FirstOrDefault(x => x.UserId == mySession.UserId);
+
             }
             else
             {
-                 data = db.Travels
-                             .Include(x => x.TravelFriends)
-                             .Include(x => x.TravelCosts)
-                             .FirstOrDefault(x => x.Id ==id);
+                data = db.Travels
+                            .Include(x => x.TravelFriends)
+                            .Include(x => x.TravelCosts)
+                            .FirstOrDefault(x => x.Id == id);
             }
-          
+
 
             return mapper.Map<TravelDto>(data);
         }
@@ -228,47 +230,23 @@ namespace DoonGPay.Service.Travel
         //}
         public void SaveTravelCost(TravelCostDto travelCost)
         {
-            var model = mapper.Map<TravelCostbugEntity>(travelCost);
-            bool isAdd = model.Id <= 0;
-            if (travelCost.Type == 1 || travelCost.Type == 2)
-                travelCost.TravelCostFriends = null;
+            var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type, db, mapper);
 
-            if (isAdd)
+            var modelCalc = travelCostCalc.Calc(travelCost);
+            var model = mapper.Map<TravelCostEntity>(modelCalc);
+
+
+            if (model.Id <= 0)
             {
+                foreach (var i in model.TravelCostFriends)
+                {
+                    i.Id = 0;
+                }
                 db.TravelCosts.Add(model);
-                db.SaveChanges();  // تا مدل Id بگیره
             }
             else
-            {
                 db.TravelCosts.Update(model);
-                db.SaveChanges();
-            }
-
-            var friendsDto = travelCost.TravelCostFriends ?? new List<TravelCostFriendDto>();
-
-            var friendIdsInDto = friendsDto.Select(f => f.Id).ToList();
-            var friendsToDelete = db.TravelCostFriends
-                .Where(f => f.TravelCostId == model.Id && !friendIdsInDto.Contains(f.Id))
-                .ToList();
-
-            db.TravelCostFriends.RemoveRange(friendsToDelete);
-
-            foreach (var friendDto in friendsDto)
-            {
-                var friendEntity = mapper.Map<TravelCostFriendEntity>(friendDto);
-                friendEntity.TravelCostId = model.Id;
-
-                if (friendDto.Id <= 0)
-                    db.TravelCostFriends.Add(friendEntity);
-                else
-                    db.TravelCostFriends.Update(friendEntity);
-            }
-
             db.SaveChanges();
-
-         var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type ,db,mapper);
-         travelCostCalc.Calc(model.Id,model.TravelId,isAdd,friendsDto);
-
         }
 
 
