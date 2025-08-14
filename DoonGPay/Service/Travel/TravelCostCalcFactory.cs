@@ -43,95 +43,40 @@ namespace DoonGPay.Service.Travel
         public int Value { get; set; } = value;
     }
 
+
+    //بر حسب نفرات ثبت شده
     public class TravelCostCalcPerson(MyContext db, IMapper mapper) : ITravelCostCalc
     {
-
-
+   
         public TravelCostDto Calc(TravelCostDto travelCost)
         {
-            // اگر travelId یک مقدار ساده است (مثلاً int)
-            var persons = db.TravelFriends
-                             .Where(x => x.TravelId == travelCost.TravelId)
-                             .Sum(x => x.Person);
-           
-            var share = travelCost.Id / persons;
-            var friends = db.TravelFriends.Where(x => x.TravelId == travelCost.TravelId).Select(x => new { x.Id, x.Person }).ToList();
+
+            var travelFriends = db.TravelFriends.Where(x => x.TravelId == travelCost.TravelId).Select(x => new { x.Person, x.Id }).ToList();
+
+            var share = travelCost.Value / travelFriends.Sum(x => x.Person);
+
             var finishList = new TravelCostFriendDto();
-            if (travelCost.Id > 0)
-            {
-                foreach (var f in friends)
-                {
 
-                    finishList.Value = f.Person * share;
-                    finishList.TravelFriendId = f.Id;
-                    finishList.TravelCostId = travelCost.Id;
-                   
-                }
-            }
-            else
-            {
-                var CostFriend = db.TravelCostFriends.Where(x => x.TravelCostId == travelCost.Id).ToList();
-                foreach (var fcl in CostFriend)
-                {
-                    finishList.Id = fcl.Id;
-                    foreach (var f in friends)
-                    {
-                        if (fcl.TravelFriendId == f.Id)
-                        {
-                            finishList.Value = f.Person * share;
-                        }
-                    }
-                    var travelCostFriendEntity = mapper.Map<TravelCostFriendEntity>(finishList);
-                    db.TravelCostFriends.Update(travelCostFriendEntity);
-                }
+            foreach (var tcf in travelCost.TravelCostFriends)
+                tcf.Value = travelFriends.First(x => x.Id == tcf.TravelFriendId).Person * share;
 
-            }
+
             return travelCost;
-
         }
+
     }
     public class TravelCostCalcEqual(MyContext db, IMapper mapper) : ITravelCostCalc
     {
 
         public TravelCostDto Calc(TravelCostDto travelCost)
-
         {
 
             var friend = db.TravelFriends.Where(x => x.TravelId == travelCost.TravelId).Select(x => new { x.Id, x.Person }).ToList();
             var share = travelCost.Value / friend.Count;
-            var finishList = new List<TravelCostFriendDto>();
-            if (travelCost.Id > 0)
-            {
-                foreach (var f in friend)
-                {
-                    finishList.Add(new TravelCostFriendDto
-                    {
-                        Value = share,
-                        TravelFriendId = f.Id,
-                        TravelCostId = travelCost.Id
-                    });
-                }
-            }
-            else
-            {
-                var travelCostFriend = db.TravelCostFriends.Where(x => x.TravelCostId == travelCost.Id).ToList();
-                foreach (var fcl in travelCostFriend)
-                {
-                    decimal value = 0;
-                    foreach (var f in friend)
-                    {
-                        if (fcl.TravelFriendId == f.Id)
-                        {
-                           value = f.Person * share;
-                        }
-                    }
-                    travelCost.TravelCostFriends.Add(new TravelCostFriendDto
-                    {
-                        Id = fcl.Id,
-                        Value= value
-                    });
-                }
-            }
+
+             foreach (var tcf in travelCost.TravelCostFriends)
+                tcf.Value = share;
+
             return travelCost;
 
         }
@@ -149,6 +94,10 @@ namespace DoonGPay.Service.Travel
 
         public TravelCostDto Calc(TravelCostDto travelCost)
         {
+            travelCost.Type = 2;
+            var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type, db, mapper);
+             travelCost = travelCostCalc.Calc(travelCost);
+            travelCost.Type = 3;
             return travelCost;
         }
     }
@@ -157,21 +106,10 @@ namespace DoonGPay.Service.Travel
 
         public TravelCostDto Calc(TravelCostDto travelCost)
         {
-            foreach (var fcl in travelCost.TravelCostFriends)
-            {
-                travelCost.TravelCostFriends.Add(new TravelCostFriendDto
-                {
-                    Value = fcl.Value,
-                    Id = fcl.Id,
-                    TravelFriendId = fcl.TravelFriendId,
-                    TravelCostId = travelCost.Id
-                });
-            }
+            foreach (var tcf in travelCost.TravelCostFriends)
+                tcf.Value = travelCost.TravelCostFriends.First(x => x.Id == tcf.TravelFriendId).Value ;
+
             return travelCost;
         }
     }
 }
-
-
-
-

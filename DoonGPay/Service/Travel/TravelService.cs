@@ -231,17 +231,17 @@ namespace DoonGPay.Service.Travel
         public void SaveTravelCost(TravelCostDto travelCost)
         {
             var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type, db, mapper);
-
             var modelCalc = travelCostCalc.Calc(travelCost);
+
             var model = mapper.Map<TravelCostEntity>(modelCalc);
 
 
             if (model.Id <= 0)
             {
-                foreach (var i in model.TravelCostFriends)
-                {
-                    i.Id = 0;
-                }
+                //foreach (var i in model.TravelCostFriends)
+                //{
+                //    i.Id = 0;
+                //}
                 db.TravelCosts.Add(model);
             }
             else
