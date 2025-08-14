@@ -228,9 +228,64 @@ namespace DoonGPay.Service.Travel
 
 
         //}
+        public TravelCostDto TravelCost(int? travelCostId, int travelId)
+        {
+            TravelCostDto travelCost;
+
+            if (travelCostId > 0)
+            {
+                var query =
+                    from tc in db.TravelCosts
+                    where tc.Id == travelCostId
+                    select new TravelCostDto
+                    {
+                        Id = tc.Id,
+                        Title = tc.Title,
+                        Value = tc.Value,
+                        Type = tc.Type,
+                        TravelId = travelId,
+                        TravelCostFriends = (
+                            from tcf in db.TravelCostFriends
+                            where tcf.TravelCostId == tc.Id
+                            join tf in db.TravelFriends on tcf.TravelFriendId equals tf.Id
+                            select new TravelCostFriendDto
+                            {
+                                Id = tcf.Id,
+                                TravelCostId = tcf.TravelCostId,
+                                TravelFriendId = tcf.TravelFriendId,
+                                Value = tcf.Value,
+                                Rate = tcf.Rate,
+                                FriendName = tf.FristName + " " + tf.LastName
+                            }
+                        ).ToList()
+                    };
+
+                travelCost = query.FirstOrDefault();
+            }
+            else
+            {
+                travelCost = new TravelCostDto
+                {
+                    TravelId = travelId,
+                    TravelCostFriends = (
+                        from tf in db.TravelFriends
+                        where tf.TravelId == travelId
+                        select new TravelCostFriendDto
+                        {
+                            TravelFriendId = tf.Id,
+                            FriendName = tf.FristName + " " + tf.LastName,
+                        }
+                    ).ToList()
+                };
+            }
+
+            travelCost.CostTypes = TravelCostTypes();
+
+            return travelCost;
+        }
         public void SaveTravelCost(TravelCostDto travelCost)
         {
-            var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type, db, mapper);
+            var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type, db);
             var modelCalc = travelCostCalc.Calc(travelCost);
 
             var model = mapper.Map<TravelCostEntity>(modelCalc);
@@ -321,61 +376,7 @@ namespace DoonGPay.Service.Travel
 
         //    return travelCost;
         //}
-        public TravelCostDto TravelCost(int? travelCostId, int travelId)
-        {
-            TravelCostDto travelCost;
-
-            if (travelCostId > 0)
-            {
-                var query =
-                    from tc in db.TravelCosts
-                    where tc.Id == travelCostId
-                    select new TravelCostDto
-                    {
-                        Id = tc.Id,
-                        Title = tc.Title,
-                        Value = tc.Value,
-                        Type = tc.Type,
-                        TravelId = travelId,
-                        TravelCostFriends = (
-                            from tcf in db.TravelCostFriends
-                            where tcf.TravelCostId == tc.Id
-                            join tf in db.TravelFriends on tcf.TravelFriendId equals tf.Id
-                            select new TravelCostFriendDto
-                            {
-                                Id = tcf.Id,
-                                TravelCostId = tcf.TravelCostId,
-                                TravelFriendId = tcf.TravelFriendId,
-                                Value = tcf.Value,
-                                Rate = tcf.Rate,
-                                FriendName = tf.FristName + " " + tf.LastName
-                            }
-                        ).ToList()
-                    };
-
-                travelCost = query.FirstOrDefault();
-            }
-            else
-            {
-                travelCost = new TravelCostDto
-                {
-                    TravelId = travelId,
-                    TravelCostFriends = (
-                        from tf in db.TravelFriends
-                        where tf.TravelId == travelId
-                        select new TravelCostFriendDto
-                        {
-                            TravelFriendId = tf.Id,
-                            FriendName = tf.FristName + " " + tf.LastName
-                        }
-                    ).ToList()
-                };
-            }
-
-            travelCost.CostTypes = TravelCostTypes();
-
-            return travelCost;
-        }
+     
 
         public void DeleteTravelCost(int id)
         {

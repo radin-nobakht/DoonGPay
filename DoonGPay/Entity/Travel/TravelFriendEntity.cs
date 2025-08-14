@@ -15,8 +15,8 @@ namespace DoonGPay.Entity.Travel
         public decimal? Share { get; set; }
         [ForeignKey("TravelId")]
         public virtual TravelEntity Travel { get; set; }
-        [NotMapped]
-        public virtual ICollection<TravelCostFriendDto> CostFriend { get; set; }
+
+        public virtual ICollection<TravelCostFriendEntity> TravelCostFriends { get; set; }
 
     }
 }

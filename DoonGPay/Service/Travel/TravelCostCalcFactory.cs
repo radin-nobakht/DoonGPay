@@ -9,15 +9,15 @@ namespace DoonGPay.Service.Travel
 {
     public static class TravelCostCalcFactory
     {
-        public static ITravelCostCalc Create(int value, MyContext db, IMapper mapper)
+        public static ITravelCostCalc Create(int value, MyContext db)
         {
             return value switch
             {
-                1 => new TravelCostCalcEqual(db, mapper),
-                2 => new TravelCostCalcPerson(db, mapper),
-                3 => new TravelCostCalcPersonManual(db, mapper),
-                4 => new TravelCostCalcValue(db, mapper),
-                5 => new TravelCostCalcPercent(db, mapper),
+                1 => new TravelCostCalcEqual(db),
+                2 => new TravelCostCalcPerson(db),
+                3 => new TravelCostCalcPersonManual(db),
+                4 => new TravelCostCalcValue(db),
+                5 => new TravelCostCalcPercent(db),
                 _ => throw new NotImplementedException("خطا در انجام عملیات"),
             };
         }
@@ -45,7 +45,7 @@ namespace DoonGPay.Service.Travel
 
 
     //بر حسب نفرات ثبت شده
-    public class TravelCostCalcPerson(MyContext db, IMapper mapper) : ITravelCostCalc
+    public class TravelCostCalcPerson(MyContext db) : ITravelCostCalc
     {
    
         public TravelCostDto Calc(TravelCostDto travelCost)
@@ -65,7 +65,7 @@ namespace DoonGPay.Service.Travel
         }
 
     }
-    public class TravelCostCalcEqual(MyContext db, IMapper mapper) : ITravelCostCalc
+    public class TravelCostCalcEqual(MyContext db) : ITravelCostCalc
     {
 
         public TravelCostDto Calc(TravelCostDto travelCost)
@@ -81,7 +81,7 @@ namespace DoonGPay.Service.Travel
 
         }
     }
-    public class TravelCostCalcPercent(MyContext db, IMapper mapper) : ITravelCostCalc
+    public class TravelCostCalcPercent(MyContext db) : ITravelCostCalc
     {
         public TravelCostDto Calc(TravelCostDto travelCost)
         {
@@ -89,27 +89,33 @@ namespace DoonGPay.Service.Travel
 
         }
     }
-    public class TravelCostCalcPersonManual(MyContext db, IMapper mapper) : ITravelCostCalc
+    public class TravelCostCalcPersonManual(MyContext db) : ITravelCostCalc
     {
 
         public TravelCostDto Calc(TravelCostDto travelCost)
         {
-            travelCost.Type = 2;
-            var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type, db, mapper);
-             travelCost = travelCostCalc.Calc(travelCost);
-            travelCost.Type = 3;
+
+            var share = travelCost.Value / travelCost.TravelCostFriends.Sum(x => x.Rate);
+
+            var finishList = new TravelCostFriendDto();
+
+            foreach (var tcf in travelCost.TravelCostFriends)
+                tcf.Value =tcf.Rate * share;
+
+
             return travelCost;
         }
     }
-    public class TravelCostCalcValue(MyContext db, IMapper mapper) : ITravelCostCalc
+    public class TravelCostCalcValue(MyContext db) : ITravelCostCalc
     {
 
         public TravelCostDto Calc(TravelCostDto travelCost)
         {
             foreach (var tcf in travelCost.TravelCostFriends)
-                tcf.Value = travelCost.TravelCostFriends.First(x => x.Id == tcf.TravelFriendId).Value ;
+                tcf.Value = tcf.Rate;
 
             return travelCost;
         }
     }
 }
+
