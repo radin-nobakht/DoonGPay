@@ -112,7 +112,7 @@ namespace DoonGPay.Service.Travel
             UpdateTravelCostFriendAfterFriend(travelFriends.TravelId);
 
         }
-        public void UpdateTravelCostFriendAfterFriend(int travelId)
+        private void UpdateTravelCostFriendAfterFriend(int travelId)
         {
             var travelCostIdAndType = db.TravelCosts
               .Where(x => x.TravelId == travelId && x.Type == 2)
