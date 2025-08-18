@@ -10,7 +10,6 @@ namespace DoonGPay.Inteface.Travel
    
         void SaveTravelFriend(TravelFriendDto travelFriends);
         void SaveTravel(TravelDto travel);
-        void SaveTravelCostFriend(TravelCostFriendDto travelCostFriend);
         List<TravelDto> AllTravel(int travelId);
         void DeleteTravelCost(int id);
         void DeleteTravel(int id);
@@ -20,7 +19,6 @@ namespace DoonGPay.Inteface.Travel
         List<TravelFriendDto> TravelFriends(int travelId);
         TravelDto Travel(int? id);
         TravelCostDto TravelCost(int? travelCostId, int travelId);
-        //List<TravelCostFriendDto> TravelCostFriends(int CostId);
         List<TravelCostDto> TravelCosts(int travelId);
         List<TravelDto> Travels();
         IBaseResult SaveTravelCost(TravelCostDto travelCost);

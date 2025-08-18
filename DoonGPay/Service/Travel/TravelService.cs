@@ -5,45 +5,15 @@ using DoonGPay.Dto.Travel;
 using DoonGPay.Entity.Travel;
 using DoonGPay.Inteface;
 using DoonGPay.Inteface.Travel;
-using DoonGPay.ViewModel;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
 
 
 namespace DoonGPay.Service.Travel
 {
     public class TravelService(MyContext db, IMapper mapper, IMySession mySession) : ITravelService
     {
-        #region TravelCostFriend
-
-        public void SaveTravelCostFriend(TravelCostFriendDto travelCostFriend)
-        {
-            var model = mapper.Map<TravelCostFriendEntity>(travelCostFriend);
-            if (model.Id > 0)
-                db.TravelCostFriends.Update(model);
-            else
-                db.TravelCostFriends.Add(model);
-            db.SaveChanges();
-        }
-        //public List<TravelCostFriendDto> TravelCostFriends(int travelCostId)
-        //{
-        //    var data = db.TravelCostFriends.Where(x => x.TravelCostId == travelCostId).ToList();
-
-        //    return mapper.Map<List<TravelCostFriendDto>>(data);
-        //}
-        public void DeleteTravelCostFriend(int id)
-        {
-            var model = db.TravelCostFriends.FirstOrDefault(x => x.Id == id);
-            if (model != null)
-            {
-                db.TravelCostFriends.Remove(model);
-                db.SaveChanges();
-            }
-        }
-        #endregion
+   
 
         #region Travel
 
@@ -88,9 +58,20 @@ namespace DoonGPay.Service.Travel
                             .Include(x => x.TravelCosts)
                             .FirstOrDefault(x => x.Id == id);
             }
+            var dtoData = mapper.Map<TravelDto>(data);
+            var costTypes = TravelCostTypes();
 
+            foreach (var tc in dtoData.TravelCosts)
+            {
+                var type = costTypes.FirstOrDefault(x => x.Value == tc.Type.ToString());
+                tc.TypeStr = type != null ? type.Text : "نامشخص"; // یا مقدار پیش‌فرض دلخواه
+            }
+            foreach (var tf in dtoData.TravelFriends)
+            {
+                tf.Share = db.TravelCostFriends.Where(x => x.TravelFriendId == tf.Id).Sum(x => x.Value);
 
-            return mapper.Map<TravelDto>(data);
+            }
+            return dtoData;
         }
         public List<TravelDto> Travels()
         {
@@ -128,7 +109,42 @@ namespace DoonGPay.Service.Travel
             else
                 db.TravelFriends.Add(model);
             db.SaveChanges();
+            UpdateTravelCostFriendAfterFriend(travelFriends.TravelId);
+
         }
+        public void UpdateTravelCostFriendAfterFriend(int travelId)
+        {
+            var travelCostIdAndType = db.TravelCosts
+              .Where(x => x.TravelId == travelId && x.Type == 2)
+              .Select(x => new { x.Id, x.Type })
+              .ToList();
+            
+            TravelCostEntity travelCost = new TravelCostEntity();
+        
+
+            foreach(var tciat in travelCostIdAndType)
+            {
+                travelCost.TravelCostFriends = db.TravelCostFriends
+                         .Where(x => x.TravelCostId == tciat.Id)
+                         .ToList(); // ممکنه 0، 1 یا چند مورد باشد
+                travelCost.TravelId = travelId;
+                travelCost.Type = tciat.Type;
+                var travelCostDto = mapper.Map<TravelCostDto>(travelCost);
+                foreach (var tcf in travelCostDto.TravelCostFriends)
+                {
+                    travelCostDto.TravelCostFriend = tcf;
+                    var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type, db);
+                    var modelCalc = travelCostCalc.Calc(travelCostDto);
+                    var travelCostFriendEntity = mapper.Map<TravelCostFriendEntity>(modelCalc.TravelCostFriend);
+
+                    db.TravelCostFriends.Add(travelCostFriendEntity);
+                }
+            }
+            db.SaveChanges();
+
+        }
+
+
         //public List<TravelFriendDto> Friends_ShareByRow(int travelId)
         //{
 
@@ -197,11 +213,12 @@ namespace DoonGPay.Service.Travel
         public void DeleteTravelFriend(int id)
         {
             var model = db.TravelFriends.FirstOrDefault(x => x.Id == id);
-            if (model.FristName != null && model.LastName != null && model.TravelId != 0 && model.Id != 0 && model.PhoneNumber != null && model.Person != 0 && model.Share != null)
-            {
-                db.TravelFriends.Remove(model);
-                db.SaveChanges();
-            }
+            db.TravelFriends.Remove(model);
+            var travelCostFriend = db.TravelCostFriends.Where(x => x.TravelCostId == id);
+            foreach (var tcf in travelCostFriend)
+                db.TravelCostFriends.Remove(tcf);
+            db.SaveChanges();
+
         }
         #endregion
 
@@ -290,6 +307,7 @@ namespace DoonGPay.Service.Travel
             var validate = travelCostCalc.Validate(travelCost);
             if (!validate.Result)
                 return validate;
+
             var modelCalc = travelCostCalc.Calc(travelCost);
 
             var model = mapper.Map<TravelCostEntity>(modelCalc);
@@ -381,12 +399,14 @@ namespace DoonGPay.Service.Travel
         public void DeleteTravelCost(int id)
         {
             var model = db.TravelCosts.FirstOrDefault(x => x.Id == id);
-            if (model != null)
-            {
-                db.TravelCosts.Remove(model);
-                db.SaveChanges();
-            }
+
+            db.TravelCosts.Remove(model);
+            var travelCostFriend = db.TravelCostFriends.Where(x => x.TravelFriendId == id);
+            foreach (var tcf in travelCostFriend)
+                db.TravelCostFriends.Remove(tcf);
+            db.SaveChanges();
         }
+
         #endregion
 
 

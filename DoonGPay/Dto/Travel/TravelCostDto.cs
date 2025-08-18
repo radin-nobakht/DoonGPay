@@ -13,6 +13,7 @@ namespace DoonGPay.Dto.Travel
         public string TypeStr { get; set; }
         public virtual TravelDto Travel { get; set; }
         public List<SelectListItem> CostTypes { get; set; }
+        public  TravelCostFriendDto TravelCostFriend { get; set; }
         public virtual ICollection<TravelCostFriendDto> TravelCostFriends { get; set; }
 
     }
