@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DoonGPay.Adapter;
+using DoonGPay.Dto;
 using DoonGPay.Dto.Travel;
 using DoonGPay.Entity.Travel;
 using DoonGPay.Inteface;
@@ -283,25 +284,24 @@ namespace DoonGPay.Service.Travel
 
             return travelCost;
         }
-        public void SaveTravelCost(TravelCostDto travelCost)
+        public IBaseResult SaveTravelCost(TravelCostDto travelCost)
         {
             var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type, db);
+            var validate = travelCostCalc.Validate(travelCost);
+            if (!validate.Result)
+                return validate;
             var modelCalc = travelCostCalc.Calc(travelCost);
 
             var model = mapper.Map<TravelCostEntity>(modelCalc);
 
 
             if (model.Id <= 0)
-            {
-                //foreach (var i in model.TravelCostFriends)
-                //{
-                //    i.Id = 0;
-                //}
                 db.TravelCosts.Add(model);
-            }
+
             else
                 db.TravelCosts.Update(model);
             db.SaveChanges();
+            return new BaseResult(true);
         }
 
 
@@ -376,7 +376,7 @@ namespace DoonGPay.Service.Travel
 
         //    return travelCost;
         //}
-     
+
 
         public void DeleteTravelCost(int id)
         {

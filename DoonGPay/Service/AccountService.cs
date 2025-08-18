@@ -16,12 +16,8 @@ namespace DoonGPay.Service
             var user = db.Users.FirstOrDefault(x => x.PhoneNumber == login.PhoneNumber);
 
             if (user == null)
-                return new BaseResult
-                {
-                    Result = false,
-                    Message = "کاربر پیدا نشد"
-                };
-
+                return new BaseResult(false, "کاربر پیدا نشد");
+           
             var result = smsService.ValidateSms(login.PhoneNumber, login.Code, SmsType.Login);
             if (!result.Result) { return result; }
 
@@ -41,10 +37,8 @@ namespace DoonGPay.Service
                 ExpiresUtc = DateTime.UtcNow.AddDays(7)
             };
             httpContextAccessor.HttpContext?.SignInAsync(principal, properties);
-            return new BaseResult
-            {
-                Result = true
-            };
+            return new BaseResult(true);
+           
         }
 
         public IBaseResult LoginSendCode(string phoneNumber)

@@ -14,9 +14,9 @@
     });
 });
 function Table(value) {
-    debugger;
+     
     if (value == 3 || value == 4 || value == 5) {
-        debugger;
+         
         $("#manual").show();
         if (value == 3) {
             $("#typeStr").text("نفرات")
@@ -34,7 +34,7 @@ function Table(value) {
     }
 }
 $(document).on("change", "#Type", function () {
-    debugger;
+     
     var value =$(this).val();
     Table(value);
 });
@@ -70,7 +70,7 @@ function editTravelCost(travelCostId, travelId) {
             Table(value);
         },
         error: function () {
-            $("#errorMessage").text("خطا در ثبت اطلاعات").show();
+            $("#errorMessage").text().show();
         }
     });
 }
@@ -78,32 +78,22 @@ function editTravelCost(travelCostId, travelId) {
 // ویرایش
 
 $(document).on("click", "#btnSaveCost", function () {
-    //var travelId = $("#CostForm #TravelCost_Id").val();
-    //var type = $("#TravelCost_Type").val();
-    //$("input[name=TravelCostFriendsValue]").each(function () {
-    //    var id = $(this).id();
-    //    $("td[name=TravelCostFriendsName]").each(function () {
-    //        if ($(this).id() == id)
-    //        {
-    //            var friendName = $(this)
+    var travelId = $("#CostForm #TravelCost_Id").val();
 
-    //        }
-    //    });
-    //});
     $.ajax({
         url: "/Travel/SaveTravelCost",
         type: "POST",
         data: $("#CostForm").serialize() ,
         success: function (res) {
-            if (res.success) {
+            if (res.result) {
                 $("#editCost").modal("hide");
                 travelCosts(travelId);
             } else {
                 $("#errorMessage").text(res.message).show();
             }
         },
-        error: function () {
-            $("#errorMessage").text("خطا در ثبت اطلاعات").show();
+        error: function (result) {
+            $("#errorMessage").text("خطا در ....");
         }
     });
 })

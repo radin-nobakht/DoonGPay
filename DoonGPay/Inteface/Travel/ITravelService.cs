@@ -1,4 +1,5 @@
-﻿using DoonGPay.Dto.Travel;
+﻿using DoonGPay.Dto;
+using DoonGPay.Dto.Travel;
 using DoonGPay.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -22,7 +23,7 @@ namespace DoonGPay.Inteface.Travel
         //List<TravelCostFriendDto> TravelCostFriends(int CostId);
         List<TravelCostDto> TravelCosts(int travelId);
         List<TravelDto> Travels();
-        void SaveTravelCost(TravelCostDto travelCost);
+        IBaseResult SaveTravelCost(TravelCostDto travelCost);
         
     }
 }

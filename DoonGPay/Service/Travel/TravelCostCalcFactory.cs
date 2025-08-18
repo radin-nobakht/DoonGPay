@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DoonGPay.Adapter;
+using DoonGPay.Dto;
 using DoonGPay.Dto.Travel;
 using DoonGPay.Entity.Travel;
 using DoonGPay.Inteface.Travel;
@@ -47,7 +48,10 @@ namespace DoonGPay.Service.Travel
     //بر حسب نفرات ثبت شده
     public class TravelCostCalcPerson(MyContext db) : ITravelCostCalc
     {
-   
+         public IBaseResult Validate (TravelCostDto travelCost)
+        {
+            return new BaseResult(true);
+        }
         public TravelCostDto Calc(TravelCostDto travelCost)
         {
 
@@ -67,7 +71,10 @@ namespace DoonGPay.Service.Travel
     }
     public class TravelCostCalcEqual(MyContext db) : ITravelCostCalc
     {
-
+        public IBaseResult Validate(TravelCostDto travelCost)
+        {
+            return new BaseResult(true);
+        }
         public TravelCostDto Calc(TravelCostDto travelCost)
         {
 
@@ -83,14 +90,32 @@ namespace DoonGPay.Service.Travel
     }
     public class TravelCostCalcPercent(MyContext db) : ITravelCostCalc
     {
+        public IBaseResult Validate(TravelCostDto travelCost)
+        {
+           if(travelCost.TravelCostFriends.Sum(x=>x.Rate) != 100)
+            {
+
+                return new BaseResult(false, "جمع درصد های شما 100 نمی شود");
+
+            }
+            return new BaseResult(true);
+        }
         public TravelCostDto Calc(TravelCostDto travelCost)
         {
+            var share = travelCost.Value / 100;
+            foreach (var tcf in travelCost.TravelCostFriends)
+                tcf.Value = tcf.Rate * share;
             return travelCost;
+
 
         }
     }
     public class TravelCostCalcPersonManual(MyContext db) : ITravelCostCalc
     {
+        public IBaseResult Validate(TravelCostDto travelCost)
+        {
+            return new BaseResult(true);
+        }
 
         public TravelCostDto Calc(TravelCostDto travelCost)
         {
@@ -108,6 +133,16 @@ namespace DoonGPay.Service.Travel
     }
     public class TravelCostCalcValue(MyContext db) : ITravelCostCalc
     {
+        public IBaseResult Validate(TravelCostDto travelCost)
+        {
+            if (travelCost.TravelCostFriends.Sum(x => x.Rate) != travelCost.Value)
+            {
+                var messege = $"جمع هزینه های شما با {travelCost.Value} مساوی نیست لطفا اصلاح کنید";
+                return new BaseResult(false);
+
+            }
+            return new BaseResult(true, $"جمع هزینه های شما با {travelCost.Value} مساوی نیست لطفا اصلاح کنید");
+        }
 
         public TravelCostDto Calc(TravelCostDto travelCost)
         {

@@ -24,11 +24,11 @@ namespace DoonGPay.Controllers.Travel
         [HttpPost]
         public JsonResult SaveTravelCost(TravelCostDto travelCost)
         {
-            travelService.SaveTravelCost(travelCost);
 
-            return Json(true);
+
+            return Json(travelService.SaveTravelCost(travelCost));
         }
-
+        
         //[HttpPost]
         //public IActionResult SelectTable(int travelId,int CostId)
         //{
