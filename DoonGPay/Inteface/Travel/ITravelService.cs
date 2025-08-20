@@ -1,5 +1,6 @@
 ﻿using DoonGPay.Dto;
 using DoonGPay.Dto.Travel;
+using System.Globalization;
 using DoonGPay.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -7,7 +8,7 @@ namespace DoonGPay.Inteface.Travel
 {
     public interface ITravelService
     {
-   
+        string ToPersianDateString( DateTime date);
         void SaveTravelFriend(TravelFriendDto travelFriends);
         void SaveTravel(TravelDto travel);
         List<TravelDto> AllTravel(int travelId);

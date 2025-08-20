@@ -14,6 +14,7 @@ namespace DoonGPay.Controllers.Travel
         {
            TravelDto model =travelService.Travel(0);
             ViewData["travelId"] = model.Id;
+            model.Date = travelService.ToPersianDateString(model.InsertDate);
             //var travels=travelService.Travels();
             //travels.First.TravelFriends = travelService.TravelFriends(travels.First.Id);
             //travels.First.TravelCosts = travelService.TravelCosts(travels.First.Id);
@@ -38,7 +39,7 @@ namespace DoonGPay.Controllers.Travel
         [HttpPost]
         public IActionResult EditTravel(int? id)
         {
-            TravelDto travelDto = new() { Date = DateTime.Now };
+            TravelDto travelDto = new() { InsertDate = DateTime.Now };
 
             if (id > 0)
                 travelDto = travelService.Travel(id.Value);

@@ -137,11 +137,10 @@ namespace DoonGPay.Service.Travel
         {
             if (travelCost.TravelCostFriends.Sum(x => x.Rate) != travelCost.Value)
             {
-                var messege = $"جمع هزینه های شما با {travelCost.Value} مساوی نیست لطفا اصلاح کنید";
-                return new BaseResult(false);
-
+              
+                return new BaseResult(false, $"جمع هزینه های شما با {travelCost.Value} مساوی نیست لطفا اصلاح کنید");
             }
-            return new BaseResult(true, $"جمع هزینه های شما با {travelCost.Value} مساوی نیست لطفا اصلاح کنید");
+            return new BaseResult(true);
         }
 
         public TravelCostDto Calc(TravelCostDto travelCost)

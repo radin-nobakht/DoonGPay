@@ -8,7 +8,7 @@ namespace DoonGPay.Dto.Travel
         public int UserId { get; set; }
 
         public string Name { get; set; }
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
 
         public DateTime InsertDate { get; set; }
         public virtual ICollection<TravelCostDto> TravelCosts { get; set; }

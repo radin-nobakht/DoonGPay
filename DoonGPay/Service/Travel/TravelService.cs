@@ -7,16 +7,22 @@ using DoonGPay.Inteface;
 using DoonGPay.Inteface.Travel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 
 namespace DoonGPay.Service.Travel
 {
     public class TravelService(MyContext db, IMapper mapper, IMySession mySession) : ITravelService
     {
-   
+
 
         #region Travel
 
+        public  string ToPersianDateString( DateTime date)
+        {
+            PersianCalendar pc = new PersianCalendar();
+            return $"{pc.GetYear(date)}/{pc.GetMonth(date):00}/{pc.GetDayOfMonth(date):00}";
+        }
         public List<TravelDto> AllTravel(int travelId)
         {
             var data = db.Travels.Where(x => x.Id == travelId)

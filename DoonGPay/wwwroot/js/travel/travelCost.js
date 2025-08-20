@@ -18,6 +18,7 @@ function Table(value) {
     if (value == 3 || value == 4 || value == 5) {
          
         $("#manual").show();
+        debugger;
         if (value == 3) {
             $("#typeStr").text("نفرات")
         }
@@ -34,8 +35,7 @@ function Table(value) {
     }
 }
 $(document).on("change", "#Type", function () {
-     
-    var value =$(this).val();
+    var value = $(this).val();
     Table(value);
 });
 
@@ -66,7 +66,7 @@ function editTravelCost(travelCostId, travelId) {
         success: function (result) {
             $("#modal").html(result)
             $("#editCost").modal("show");
-            var value = $("#TravelCost_Type").val();
+            var value = $("#Type").val();
             Table(value);
         },
         error: function () {
@@ -78,7 +78,7 @@ function editTravelCost(travelCostId, travelId) {
 // ویرایش
 
 $(document).on("click", "#btnSaveCost", function () {
-    var travelId = $("#CostForm #TravelCost_Id").val();
+    var travelId = $("#CostForm #travelId").val();
 
     $.ajax({
         url: "/Travel/SaveTravelCost",
