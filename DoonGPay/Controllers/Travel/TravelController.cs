@@ -1,9 +1,5 @@
 ﻿using DoonGPay.Dto.Travel;
-using PersianDate;
-using DoonGPay.Entity;
-using DoonGPay.Inteface;
 using DoonGPay.Inteface.Travel;
-using DoonGPay.INteface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers.Travel
@@ -14,23 +10,15 @@ namespace DoonGPay.Controllers.Travel
         {
            TravelDto model =travelService.Travel(0);
             ViewData["travelId"] = model.Id;
-            model.Date = travelService.ToPersianDateString(model.InsertDate);
-            //var travels=travelService.Travels();
-            //travels.First.TravelFriends = travelService.TravelFriends(travels.First.Id);
-            //travels.First.TravelCosts = travelService.TravelCosts(travels.First.Id);
             return View(model);
         }
         public IActionResult ChangeTravel(int id)
         {
             var model = travelService.Travel(id);
-            
+
             return PartialView("_Travel",model);
         }
-        [HttpPost]
-        //public IActionResult Travels()
-        //{
-        //    return PartialView("_Travels", travelService.Travel);
-        //}
+      
         public IActionResult Travels()
         {
             List<TravelDto> model = travelService.Travels();

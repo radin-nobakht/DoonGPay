@@ -16,6 +16,7 @@ namespace DoonGPay.Service
             CreateMap<TravelCostFriendDto, TravelCostFriendEntity>().ReverseMap();
 
             CreateMap<TravelCostDto, TravelCostEntity>().ReverseMap();
+            CreateMap<UsuallyFriendDto, UsuallyFrinedEntity>().ReverseMap();
 
         }
     }

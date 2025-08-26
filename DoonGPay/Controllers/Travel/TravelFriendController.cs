@@ -6,11 +6,7 @@ namespace DoonGPay.Controllers.Travel
 {
     public partial class TravelController: Controller
     {
-        public IActionResult Friend(int travelId)
-        {
-            ViewData["travelId"] = travelId;
-            return PartialView("_TravelFriend", travelService.TravelFriends(travelId));
-        }
+      
 
         [HttpGet]
         public IActionResult EditFriend(int? travelFriendId, int travelId)
@@ -53,6 +49,14 @@ namespace DoonGPay.Controllers.Travel
         {
             travelService.DeleteTravelFriend(id);
             return Json(new { success = true });
+        }
+        public IActionResult UsaullyFrineds()
+        {
+            return View(travelService.UsuallyFriends);
+        }
+        public IActionResult UsaullyFrined(int usaullyFrinedId)
+        {
+            return View(travelService.UsuallyFriend(usaullyFrinedId));
         }
     }
 }

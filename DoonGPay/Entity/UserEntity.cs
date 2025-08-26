@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DoonGPay.Entity.Travel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DoonGPay.Entity
@@ -13,5 +14,8 @@ namespace DoonGPay.Entity
         [MaxLength(11)]
         [MinLength(11)]
         public required string PhoneNumber { get; set; }
+        public virtual ICollection<TravelEntity> Travels { get; set; }
+        public virtual ICollection<UsuallyFrinedEntity> UsuallyFrineds { get; set; }
+
     }
 }

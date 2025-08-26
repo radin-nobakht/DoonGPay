@@ -10,6 +10,8 @@ namespace DoonGPay.Entity.Travel
         public string Name { get; set; }
         public DateTime Date { get; set; }
         public DateTime InsertDate { get; set; }
+        [ForeignKey("UserId")]
+        public virtual UserEntity User { get; set; }
         public virtual ICollection<TravelCostEntity> TravelCosts { get; set; }
         public virtual ICollection<TravelFriendEntity> TravelFriends { get; set; }
     }

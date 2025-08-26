@@ -15,6 +15,7 @@ namespace DoonGPay.Adapter
         public DbSet<TravelCostEntity> TravelCosts { get; set; }
         public DbSet<TravelFriendEntity> TravelFriends { get; set; }
         public DbSet<TravelEntity> Travels { get; set; }
+        public DbSet<UsuallyFrinedEntity> UsuallyFrineds { get; set; }
         public DbSet<TravelCostFriendEntity> TravelCostFriends { get; set; }
     }
 }

@@ -77,6 +77,8 @@ namespace DoonGPay.Service.Travel
                 tf.Share = db.TravelCostFriends.Where(x => x.TravelFriendId == tf.Id).Sum(x => x.Value);
 
             }
+            dtoData.Date =ToPersianDateString(dtoData.InsertDate);
+
             return dtoData;
         }
         public List<TravelDto> Travels()
@@ -225,6 +227,16 @@ namespace DoonGPay.Service.Travel
                 db.TravelCostFriends.Remove(tcf);
             db.SaveChanges();
 
+        }
+        public List<UsuallyFriendDto> UsuallyFriends() 
+        {
+            var model = db.UsuallyFrineds.Where(x=> x.UserId == mySession.UserId).ToList();
+            return mapper.Map<List<UsuallyFriendDto>>(model);
+        }
+        public UsuallyFriendDto UsuallyFriend(int usuallyFriendId)
+        {
+            var model = db.UsuallyFrineds.FirstOrDefault(x => x.Id == usuallyFriendId);
+            return mapper.Map<UsuallyFriendDto>(model);
         }
         #endregion
 

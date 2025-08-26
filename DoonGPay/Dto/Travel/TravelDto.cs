@@ -13,6 +13,7 @@ namespace DoonGPay.Dto.Travel
         public DateTime InsertDate { get; set; }
         public virtual ICollection<TravelCostDto> TravelCosts { get; set; }
         public virtual ICollection<TravelFriendDto> TravelFriends { get; set; }
+        public virtual UserDto User { get; set; }
 
         public int AllPerson => (TravelFriends != null && TravelFriends.Count > 0)
             ? TravelFriends.Sum(x => x.Person)
