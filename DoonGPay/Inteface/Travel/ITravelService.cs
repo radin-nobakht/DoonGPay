@@ -8,6 +8,8 @@ namespace DoonGPay.Inteface.Travel
 {
     public interface ITravelService
     {
+        void DeleteUsuallyFriend(int id);
+        void SaveUsualyFriend(UsuallyFriendDto usuallyFriend);
         List<UsuallyFriendDto> UsuallyFriends();
         UsuallyFriendDto UsuallyFriend(int usuallyFriendId);
         string ToPersianDateString( DateTime date);

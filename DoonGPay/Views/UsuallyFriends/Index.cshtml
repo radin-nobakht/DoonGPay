@@ -1,0 +1,115 @@
+﻿@using DoonGPay.Dto
+@model List<UsuallyFriendDto>
+
+<style>
+    /* استایل کلی جدول‌ها */
+    table.table {
+        background-color: #fff;
+        border-collapse: collapse;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    img {
+        width: 20px;
+    }
+
+    table.table thead {
+        background-color: #343a40;
+        color: white;
+    }
+
+    table.table th,
+    table.table td {
+        vertical-align: middle;
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    /* ردیف‌های جدول هنگام هاور */
+    table.table tbody tr:hover {
+        background-color: #f2f2f2;
+        transition: 0.2s ease-in-out;
+    }
+
+    /* استایل دکمه‌ها */
+    button.btn {
+        border-radius: 6px !important;
+        font-size: 13px !important;
+        padding: 6px 14px !important;
+        min-width: 70px;
+    }
+
+    /* دکمه ویرایش */
+    button.btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+        color: white;
+    }
+
+    /* دکمه حذف */
+    button.btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: white;
+    }
+
+    /* دکمه افزودن */
+    button.btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        color: white;
+    }
+
+    /* فاصله بین دکمه‌ها */
+    button + button {
+        margin-right: 5px;
+    }
+
+    /* فاصله دکمه بالا */
+    .mb-3 {
+        margin-bottom: 15px !important;
+        font-weight: bold;
+    }
+
+</style>
+<button class="btn btn-success btnEditTravel" id="btnAddTravel" data-id="0">سفر جدید</button>
+
+<button type="button" class="btn btn-primary" id="morebtn">بیشتر</button>
+
+<link href="~/css/travel/travelstable.css" rel="stylesheet" />
+
+<button class="btn btn-success mb-3 btnEditFriend" id="btnAddFriend" data-id="0" data-travel-id="@ViewData["travelId"]">همسفر جدید</button>
+
+<table class="table table-bordered text-center" id="FtTable">
+    <thead class="thead-dark">
+        <tr>
+
+            <th>نام</th>
+            <th>نام خوانوادگی</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in Model)
+        {
+            <tr data-id="@i.Id">
+                <td>@i.FirstName</td>
+                <td>@i.LastName</td>
+             
+               
+                <td>
+                    <button class="btn btn-info btn-sm btnEditFriend" data-id="@i.Id">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+
+                    <button class="btn btn-danger btn-sm btn-deleteFriend" data-id="@i.Id">
+                        <i class="fa-solid fa-trash"></i>
+
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

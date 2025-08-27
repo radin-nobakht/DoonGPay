@@ -2,6 +2,7 @@
 using DoonGPay.Adapter;
 using DoonGPay.Dto;
 using DoonGPay.Dto.Travel;
+using DoonGPay.Entity;
 using DoonGPay.Entity.Travel;
 using DoonGPay.Inteface;
 using DoonGPay.Inteface.Travel;
@@ -15,10 +16,42 @@ namespace DoonGPay.Service.Travel
     public class TravelService(MyContext db, IMapper mapper, IMySession mySession) : ITravelService
     {
 
+        #region
+        public List<UsuallyFriendDto> UsuallyFriends()
+        {
+            var model = db.UsuallyFrineds.Where(x => x.UserId == mySession.UserId).ToList();
+            return mapper.Map<List<UsuallyFriendDto>>(model);
+        }
+        public UsuallyFriendDto UsuallyFriend(int usuallyFriendId)
+        {
+            var model = db.UsuallyFrineds.FirstOrDefault(x => x.Id == usuallyFriendId);
+            return mapper.Map<UsuallyFriendDto>(model);
+        }
+        public void SaveUsualyFriend(UsuallyFriendDto usuallyFriend)
+        {
+            var model = mapper.Map<UsuallyFrinedEntity>(usuallyFriend);
+
+            if (model.Id > 0)
+                db.UsuallyFrineds.Update(model);
+            else
+                db.UsuallyFrineds.Add(model);
+            db.SaveChanges();
+
+        }
+      
+        public void DeleteUsuallyFriend(int id)
+        {
+            var model = db.UsuallyFrineds.FirstOrDefault(x => x.Id == id);
+            db.UsuallyFrineds.Remove(model);
+            db.SaveChanges();
+
+        }
+
+        #endregion
 
         #region Travel
 
-        public  string ToPersianDateString( DateTime date)
+        public string ToPersianDateString( DateTime date)
         {
             PersianCalendar pc = new PersianCalendar();
             return $"{pc.GetYear(date)}/{pc.GetMonth(date):00}/{pc.GetDayOfMonth(date):00}";
@@ -108,6 +141,21 @@ namespace DoonGPay.Service.Travel
         #endregion
 
         #region Friend
+        public List<TravelFriendDto> TravelFriends(int travelId)
+        {
+            var data = db.TravelFriends.Where(x => x.TravelId == travelId).ToList();
+            return mapper.Map<List<TravelFriendDto>>(data);
+        }
+
+
+        public TravelFriendDto TravelFriend(int FriendId)
+        {
+
+            var data = db.TravelFriends.FirstOrDefault(x => x.Id == FriendId);
+
+            return mapper.Map<TravelFriendDto>(data);
+        }
+
         public void SaveTravelFriend(TravelFriendDto travelFriends)
         {
             var model = mapper.Map<TravelFriendEntity>(travelFriends);
@@ -152,72 +200,6 @@ namespace DoonGPay.Service.Travel
 
         }
 
-
-        //public List<TravelFriendDto> Friends_ShareByRow(int travelId)
-        //{
-
-        //    var data = db.TravelFriends.Where(x => x.TravelId == travelId).ToList();
-        //    var model = mapper.Map<List<TravelFriendDto>>(data);
-        //    if (model.Count > 0)
-        //    {
-        //        var costs = db.TravelCosts.Where(x => x.TravelId == travelId).ToList();
-        //        var costmodel = mapper.Map<List<TravelCostDto>>(costs);
-
-        //        // جمع تمام مقادیر هزینه‌ها
-        //        var totalValue = costmodel.Sum(x => x.Value);
-
-        //        // محاسبه سهم هر فرد
-        //        var share = totalValue / model.Count;
-
-        //        foreach (var friend in model)
-        //        {
-        //            friend.Share = share;
-        //        }
-        //    }
-
-
-        //    return model;
-        //}
-        //public List<TravelFriendDto> Friends_ShareByPerson(int travelId)
-        //{
-
-        //    var data = db.TravelFriends.Where(x => x.TravelId == travelId).ToList();
-        //    var model = mapper.Map<List<TravelFriendDto>>(data);
-        //    var countPerson = model.Sum(x => x.Person);
-
-        //    if (model.Count > 0)
-        //    {
-        //        var totalValue = db.TravelCosts.Where(x => x.TravelId == travelId).Sum(x => x.Value);
-
-
-        //        // محاسبه سهم هر فرد
-        //        decimal onePersonShare = (decimal)totalValue / (decimal)countPerson;
-
-        //        foreach (var friend in model)
-        //        {
-        //            decimal share = onePersonShare * friend.Person;
-        //            friend.Share = share;
-        //        }
-        //    }
-
-
-        //    return model;
-        //}
-        public List<TravelFriendDto> TravelFriends(int travelId)
-        {
-            var data = db.TravelFriends.Where(x => x.TravelId == travelId).ToList();
-            return mapper.Map<List<TravelFriendDto>>(data);
-        }
-
-
-        public TravelFriendDto TravelFriend(int FriendId)
-        {
-
-            var data = db.TravelFriends.FirstOrDefault(x => x.Id == FriendId);
-
-            return mapper.Map<TravelFriendDto>(data);
-        }
-
         public void DeleteTravelFriend(int id)
         {
             var model = db.TravelFriends.FirstOrDefault(x => x.Id == id);
@@ -228,16 +210,7 @@ namespace DoonGPay.Service.Travel
             db.SaveChanges();
 
         }
-        public List<UsuallyFriendDto> UsuallyFriends() 
-        {
-            var model = db.UsuallyFrineds.Where(x=> x.UserId == mySession.UserId).ToList();
-            return mapper.Map<List<UsuallyFriendDto>>(model);
-        }
-        public UsuallyFriendDto UsuallyFriend(int usuallyFriendId)
-        {
-            var model = db.UsuallyFrineds.FirstOrDefault(x => x.Id == usuallyFriendId);
-            return mapper.Map<UsuallyFriendDto>(model);
-        }
+       
         #endregion
 
         #region Cost

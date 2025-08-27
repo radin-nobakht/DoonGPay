@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DoonGPay.Entity.Travel
+namespace DoonGPay.Entity
 {
     [Table("UsallyFriends")]
     public class UsuallyFrinedEntity : BaseEntity<int>

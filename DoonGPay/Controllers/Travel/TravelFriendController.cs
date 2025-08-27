@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers.Travel
 {
-    public partial class TravelController: Controller
+    public partial class TravelController : Controller
     {
       
 
@@ -35,8 +35,6 @@ namespace DoonGPay.Controllers.Travel
         public IActionResult SaveFriend(TravelFriendDto model)
         {
             travelService.SaveTravelFriend(model);
-
-
             return Json(new
             {
                 success = true,
@@ -50,13 +48,6 @@ namespace DoonGPay.Controllers.Travel
             travelService.DeleteTravelFriend(id);
             return Json(new { success = true });
         }
-        public IActionResult UsaullyFrineds()
-        {
-            return View(travelService.UsuallyFriends);
-        }
-        public IActionResult UsaullyFrined(int usaullyFrinedId)
-        {
-            return View(travelService.UsuallyFriend(usaullyFrinedId));
-        }
+      
     }
 }
