@@ -9,7 +9,7 @@ namespace DoonGPay.Dto
         public  string LastName { get; set; }
         public  string PhoneNumber { get; set; }
         public virtual ICollection<TravelDto> Travels { get; set; }
-        public virtual ICollection<UsuallyFriendsDto> UsuallyFriends { get; set; }
+        public virtual ICollection<UsuallyFriendDto> UsuallyFriends { get; set; }
 
     }
 }

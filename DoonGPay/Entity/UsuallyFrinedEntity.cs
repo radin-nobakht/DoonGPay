@@ -2,7 +2,7 @@
 
 namespace DoonGPay.Entity
 {
-    [Table("UsallyFriends")]
+    [Table("UsallyFriend")]
     public class UsuallyFrinedEntity : BaseEntity<int>
     {
         public int UserId { get; set; }

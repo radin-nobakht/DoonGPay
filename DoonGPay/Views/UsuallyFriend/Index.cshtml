@@ -74,13 +74,11 @@
     }
 
 </style>
-<button class="btn btn-success btnEditTravel" id="btnAddTravel" data-id="0">سفر جدید</button>
+<button class="btn btn-success btnEditusuallyFriend" id="btnAddusuallyFriend" data-id="0">دوستان همیشگی جدید</button>
 
-<button type="button" class="btn btn-primary" id="morebtn">بیشتر</button>
 
 <link href="~/css/travel/travelstable.css" rel="stylesheet" />
 
-<button class="btn btn-success mb-3 btnEditFriend" id="btnAddFriend" data-id="0" data-travel-id="@ViewData["travelId"]">همسفر جدید</button>
 
 <table class="table table-bordered text-center" id="FtTable">
     <thead class="thead-dark">
@@ -88,6 +86,7 @@
 
             <th>نام</th>
             <th>نام خوانوادگی</th>
+            <th>شماره تلفن</th>
             <th></th>
         </tr>
     </thead>
@@ -97,14 +96,15 @@
             <tr data-id="@i.Id">
                 <td>@i.FirstName</td>
                 <td>@i.LastName</td>
+                <td>@i.PhoneNumber</td>
              
                
                 <td>
-                    <button class="btn btn-info btn-sm btnEditFriend" data-id="@i.Id">
+                    <button class="btn btn-info btn-sm btnEditUsuallyFriend" data-id="@i.Id">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
 
-                    <button class="btn btn-danger btn-sm btn-deleteFriend" data-id="@i.Id">
+                    <button class="btn btn-danger btn-sm btnDeleteUsuallyFriend" data-id="@i.Id">
                         <i class="fa-solid fa-trash"></i>
 
                     </button>
@@ -113,3 +113,7 @@
         }
     </tbody>
 </table>
+@section Scripts {
+
+<script src="~/js/usuallyfriends.js"></script>
+}

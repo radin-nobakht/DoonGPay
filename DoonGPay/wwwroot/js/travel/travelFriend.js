@@ -15,27 +15,9 @@
 
 });
 
-
-//$(document).on("click", "#btnAddFriend", function () {
-//    var travelId = $(this).data("travel-id");
-//    editTravelFriend(null, travelId);
-//});
-//$(document).on("click", ".btnEditFriend", function () {
-
-//    var travelFriendId = $(this).data("id");
-//    var travelId = $(this).data("travel-id");
-//    editTravelFriend(travelFriendId, travelId);
-//})
-
 $(document).on("click", ".btnEditFriend", function () {
-
-
-    debugger;
     var travelId = $(this).data("travel-id");
     var travelFriendId = $(this).data("id");
-    editTravelFriend(travelFriendId, travelId)
-})
-function editTravelFriend(travelFriendId, travelId) {
     $.ajax({
         url: "/travel/EditFriend",
         type: "GET",
@@ -51,10 +33,7 @@ function editTravelFriend(travelFriendId, travelId) {
             $("#errorMessage").text("خطا در ثبت اطلاعات").show();
         }
     });
-
-}
-
-// ویرایش
+})
 
 $(document).on("click", "#btnSaveFriend", function () {
     var travelId = $("#friendForm #TravelId").val();
@@ -66,7 +45,6 @@ $(document).on("click", "#btnSaveFriend", function () {
         success: function (res) {
             if (res.success) {
                 $("#editFriend").modal("hide");
-                travelFriends(travelId);
             } else {
                 $("#errorMessage").text(res.message).show();
             }

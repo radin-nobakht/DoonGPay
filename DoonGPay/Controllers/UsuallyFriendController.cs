@@ -5,25 +5,25 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers
 {
-    public class UsuallyFriendsController(ITravelService travelService, IMySession mySession) : Controller
+    public class UsuallyFriendController(ITravelService travelService, IMySession mySession) : Controller
     {
         public IActionResult Index()
         {
-            return View(travelService.UsuallyFriends);
+            var model = travelService.UsuallyFriends();
+            return View(model);
         }
         [HttpPost]
         public IActionResult UsaullyFrined(int usaullyFrinedId)
         {
             return View(travelService.UsuallyFriend(usaullyFrinedId));
         }
-        [HttpGet]
-        public IActionResult EditUsuallyFriend(int? UsuallyFriendId)
+        [HttpPost]
+        public IActionResult EditUsuallyFriend(int? usaullyFrinedId)
         {
             UsuallyFriendDto fellowDto;
-
-            if (UsuallyFriendId.HasValue && UsuallyFriendId.Value > 0)
+            if (usaullyFrinedId.HasValue && usaullyFrinedId.Value > 0)
             {
-                fellowDto = travelService.UsuallyFriend(UsuallyFriendId.Value);
+                fellowDto = travelService.UsuallyFriend(usaullyFrinedId.Value);
                 if (fellowDto == null)
                 {
                     // می‌تونی اینجا خطا یا View خاصی بازگردونی
