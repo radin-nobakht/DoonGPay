@@ -6,6 +6,7 @@ using DoonGPay.Entity;
 using DoonGPay.Entity.Travel;
 using DoonGPay.Inteface;
 using DoonGPay.Inteface.Travel;
+using DoonGPay.Tools;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
@@ -30,6 +31,7 @@ namespace DoonGPay.Service.Travel
         public void SaveUsualyFriend(UsuallyFriendDto usuallyFriend)
         {
             var model = mapper.Map<UsuallyFrinedEntity>(usuallyFriend);
+            model.UserId = (int)mySession.UserId;
 
             if (model.Id > 0)
                 db.UsuallyFrineds.Update(model);
@@ -38,7 +40,7 @@ namespace DoonGPay.Service.Travel
             db.SaveChanges();
 
         }
-      
+
         public void DeleteUsuallyFriend(int id)
         {
             var model = db.UsuallyFrineds.FirstOrDefault(x => x.Id == id);
@@ -51,11 +53,7 @@ namespace DoonGPay.Service.Travel
 
         #region Travel
 
-        public string ToPersianDateString( DateTime date)
-        {
-            PersianCalendar pc = new PersianCalendar();
-            return $"{pc.GetYear(date)}/{pc.GetMonth(date):00}/{pc.GetDayOfMonth(date):00}";
-        }
+
         public List<TravelDto> AllTravel(int travelId)
         {
             var data = db.Travels.Where(x => x.Id == travelId)
@@ -79,40 +77,33 @@ namespace DoonGPay.Service.Travel
                 db.Travels.Add(model);
             db.SaveChanges();
         }
+
         public TravelDto Travel(int? id)
         {
-            TravelEntity data = new TravelEntity();
-            if (id == 0)
-            {
-                data = db.Travels
-                             .Include(x => x.TravelFriends)
-                             .Include(x => x.TravelCosts)
-                             .FirstOrDefault(x => x.UserId == mySession.UserId);
+            TravelEntity? travel;
+            var query = db.Travels
+                           .Include(x => x.TravelFriends)
+                           .Include(x => x.TravelCosts);
+            if (id > 0)
+                travel = query.FirstOrDefault(x => x.Id == id);
 
-            }
             else
-            {
-                data = db.Travels
-                            .Include(x => x.TravelFriends)
-                            .Include(x => x.TravelCosts)
-                            .FirstOrDefault(x => x.Id == id);
-            }
-            var dtoData = mapper.Map<TravelDto>(data);
+                travel = query.FirstOrDefault(x => x.UserId == mySession.UserId);
+
+            if (travel == null)
+                return new TravelDto { InsertDate = DateTime.Now };
+
+            var travelDto = mapper.Map<TravelDto>(travel);
             var costTypes = TravelCostTypes();
 
-            foreach (var tc in dtoData.TravelCosts)
-            {
-                var type = costTypes.FirstOrDefault(x => x.Value == tc.Type.ToString());
-                tc.TypeStr = type != null ? type.Text : "نامشخص"; // یا مقدار پیش‌فرض دلخواه
-            }
-            foreach (var tf in dtoData.TravelFriends)
-            {
+            foreach (var tc in travelDto.TravelCosts)
+                tc.TypeStr = costTypes.FirstOrDefault(x => x.Value == tc.Type.ToString())?.Text ?? "نامشخص";
+
+
+            foreach (var tf in travelDto.TravelFriends)
                 tf.Share = db.TravelCostFriends.Where(x => x.TravelFriendId == tf.Id).Sum(x => x.Value);
 
-            }
-            dtoData.Date =ToPersianDateString(dtoData.InsertDate);
-
-            return dtoData;
+            return travelDto;
         }
         public List<TravelDto> Travels()
         {
@@ -174,11 +165,11 @@ namespace DoonGPay.Service.Travel
               .Where(x => x.TravelId == travelId && x.Type == 2)
               .Select(x => new { x.Id, x.Type })
               .ToList();
-            
-            TravelCostEntity travelCost = new TravelCostEntity();
-        
 
-            foreach(var tciat in travelCostIdAndType)
+            TravelCostEntity travelCost = new TravelCostEntity();
+
+
+            foreach (var tciat in travelCostIdAndType)
             {
                 travelCost.TravelCostFriends = db.TravelCostFriends
                          .Where(x => x.TravelCostId == tciat.Id)
@@ -210,7 +201,7 @@ namespace DoonGPay.Service.Travel
             db.SaveChanges();
 
         }
-       
+
         #endregion
 
         #region Cost

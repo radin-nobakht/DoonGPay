@@ -17,13 +17,13 @@ namespace DoonGPay.Controllers
         {
             return View(travelService.UsuallyFriend(usaullyFrinedId));
         }
-        [HttpPost]
-        public IActionResult EditUsuallyFriend(int? usaullyFrinedId)
+        [HttpGet]
+        public IActionResult EditUsuallyFriend(int? Id)
         {
             UsuallyFriendDto fellowDto;
-            if (usaullyFrinedId.HasValue && usaullyFrinedId.Value > 0)
+            if (Id.HasValue && Id.Value > 0)
             {
-                fellowDto = travelService.UsuallyFriend(usaullyFrinedId.Value);
+                fellowDto = travelService.UsuallyFriend(Id.Value);
                 if (fellowDto == null)
                 {
                     // می‌تونی اینجا خطا یا View خاصی بازگردونی
@@ -36,7 +36,7 @@ namespace DoonGPay.Controllers
                 fellowDto = new UsuallyFriendDto { UserId = userId };
             }
 
-            return PartialView("_EditUsaullyFriend", fellowDto);
+            return PartialView("_EditUsuallyFriend", fellowDto);
         }
 
 
@@ -49,8 +49,9 @@ namespace DoonGPay.Controllers
             return Json(new
             {
                 success = true,
-                message = "ذخیره شد"
-            });
+                message = travelService.UsuallyFriends()
+
+        });
         }
 
         [HttpPost]

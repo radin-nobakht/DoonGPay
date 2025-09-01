@@ -8,7 +8,7 @@ namespace DoonGPay.Entity
         public int UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int Phonenumber { get; set; }
+        public string PhoneNumber { get; set; }
         [ForeignKey("UserId")]
         public virtual UserEntity User { get; set; }
     }

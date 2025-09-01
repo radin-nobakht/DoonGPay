@@ -19,6 +19,7 @@
         </tr>
     </thead>
     <tbody>
+        @if(Model!= null)
         @foreach (var tc in Model)
         {
             <tr data-id="@tc.Id">

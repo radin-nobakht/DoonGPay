@@ -80,7 +80,7 @@
 <link href="~/css/travel/travelstable.css" rel="stylesheet" />
 
 
-<table class="table table-bordered text-center" id="FtTable">
+<table class="table table-bordered text-center usuallyFriendRows" id="FtTable">
     <thead class="thead-dark">
         <tr>
 
@@ -93,14 +93,14 @@
     <tbody>
         @foreach (var i in Model)
         {
-            <tr data-id="@i.Id">
+            <tr data-id="@i.Id" c>
                 <td>@i.FirstName</td>
                 <td>@i.LastName</td>
                 <td>@i.PhoneNumber</td>
              
                
                 <td>
-                    <button class="btn btn-info btn-sm btnEditUsuallyFriend" data-id="@i.Id">
+                    <button class="btn btn-info btn-sm btnEditusuallyFriend" data-id="@i.Id">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
 

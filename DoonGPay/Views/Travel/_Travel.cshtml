@@ -80,7 +80,7 @@
 
 <link href="~/css/travel/travelstable.css" rel="stylesheet" />
 
-
+@if (Model != null){
 <div class="p-2 bg-light rounded shadow-sm d-inline-flex align-items-center gap-2" data-id="@Model.Id">
     <span class="fw-bold">@Model.Name</span>
     <span>
@@ -98,7 +98,7 @@
                         <i class="fa-solid fa-trash"></i>
                         </button>
                         </div>
-
+                        }
 <div class="container mt-5">
     <div class="row">
 

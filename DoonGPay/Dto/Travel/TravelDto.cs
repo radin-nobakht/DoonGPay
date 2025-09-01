@@ -1,4 +1,5 @@
 ﻿using DoonGPay.Entity.Travel;
+using DoonGPay.Tools;
 
 namespace DoonGPay.Dto.Travel
 {
@@ -8,7 +9,7 @@ namespace DoonGPay.Dto.Travel
         public int UserId { get; set; }
 
         public string Name { get; set; }
-        public string Date { get; set; }
+      
 
         public DateTime InsertDate { get; set; }
         public virtual ICollection<TravelCostDto> TravelCosts { get; set; }
@@ -22,5 +23,6 @@ namespace DoonGPay.Dto.Travel
             ? TravelCosts.Sum(x => x.Value)
             : 0m;
 
+        public string Date => InsertDate.ToPersianDateString();
     }
 }

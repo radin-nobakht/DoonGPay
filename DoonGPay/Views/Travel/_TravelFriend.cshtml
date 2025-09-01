@@ -16,6 +16,7 @@
             </tr>
         </thead>
         <tbody>
+            @if(Model!=null)
             @foreach (var i in Model)
             {
                 var fullName = $"{i.FristName} {i.LastName}";
