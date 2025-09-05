@@ -1,0 +1,37 @@
+﻿@using DoonGPay.Dto
+@model List<UsuallyFriendDto>
+
+<div class="modal fade" id="usuallyFriendsModal" tabindex="-1" aria-labelledby="usuallyFriendsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="usuallyFriendsLabel">دوستان همیشگی</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered text-center">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>نام</th>
+                            <th>شماره تلفن</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var i in Model)
+                        {
+                            var FullName =$"{i.FirstName} {i.LastName}";
+                            <tr data-id="@i.Id" class="usuallyFriend">
+
+                                <td>@FullName</td>
+                                <td>@i.PhoneNumber</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+            </div>
+        </div>
+    </div>
+</div>

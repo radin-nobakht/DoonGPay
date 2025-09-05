@@ -14,6 +14,32 @@
     });
 
 });
+$(document).on("click", "#btnUsuallyFriend", function () {
+    $.ajax({
+        url: "/UsuallyFriend/UsuallyFriendsModal",
+        type: "POST",
+        success: function (result) {
+            $("#modal").html(result);
+            $("#usuallyFriendsModal").modal("show");
+        },
+        error: function () {
+            $("#errorMessage").text("خطا در ثبت اطلاعات").show();
+        }
+    });
+});
+$(document).on("click", ".usuallyFriend", function () {
+    $.ajax({
+        url: "/UsuallyFriend/GetAndConvertUsuallyFriendDtoTotravelFriendDto",
+        type: "POST",
+        success: function (result) {
+            $("#usuallyFriendsModal").modal("hide");
+            $("#editFriend").modal("hide");
+        },
+        error: function () {
+            $("#errorMessage").text("خطا در ثبت اطلاعات").show();
+        }
+    });
+});
 
 $(document).on("click", ".btnEditFriend", function () {
     var travelId = $(this).data("travel-id");

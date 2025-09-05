@@ -17,7 +17,7 @@ namespace DoonGPay.Service.Travel
     public class TravelService(MyContext db, IMapper mapper, IMySession mySession) : ITravelService
     {
 
-        #region
+        #region UsuallyFriends
         public List<UsuallyFriendDto> UsuallyFriends()
         {
             var model = db.UsuallyFrineds.Where(x => x.UserId == mySession.UserId).ToList();
@@ -69,7 +69,6 @@ namespace DoonGPay.Service.Travel
         {
 
             var model = mapper.Map<TravelEntity>(travel);
-            model.InsertDate = DateTime.Now;
             model.UserId = (int)mySession.UserId;
             if (model.Id > 0)
                 db.Travels.Update(model);

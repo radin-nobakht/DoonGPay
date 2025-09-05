@@ -1,16 +1,36 @@
-﻿using DoonGPay.Dto;
+﻿using AutoMapper;
+using DoonGPay.Dto;
+using DoonGPay.Dto.Travel;
+using DoonGPay.Entity;
 using DoonGPay.Inteface;
 using DoonGPay.Inteface.Travel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers
 {
-    public class UsuallyFriendController(ITravelService travelService, IMySession mySession) : Controller
+    public class UsuallyFriendController(ITravelService travelService, IMySession mySession, IMapper mapper) : Controller
     {
         public IActionResult Index()
         {
             var model = travelService.UsuallyFriends();
             return View(model);
+        }
+        [HttpPost]
+        public IActionResult GetAndConvertUsuallyFriendDtoTotravelFriendDto(int Id)
+        {
+            var FareeModel = travelService.UsuallyFriends();
+
+            var model = mapper.Map<TravelFriendDto>(FareeModel);
+
+            return PartialView("_EditTravelFriend",model);
+
+            
+        }
+        [HttpPost]
+        public IActionResult UsuallyFriendsModal()
+        {
+            List<UsuallyFriendDto> model = travelService.UsuallyFriends();
+            return PartialView("_EditUsuallyFriend", model);
         }
         [HttpPost]
         public IActionResult UsaullyFrined(int usaullyFrinedId)
