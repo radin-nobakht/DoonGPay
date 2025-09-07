@@ -1,82 +1,66 @@
-﻿$(document).on("click", ".btn-deleteFriend", function () {
-    var row = $(this).closest("tr");
-    var id = $(this).data("id");
-    if (!confirm("آیا از حذف اطمینان دارید؟")) return;
+﻿// ویرایش دوست
+function editFriend(travelFriendId, travelId) {
+    $.get("/TravelFriend/EditFriend", { travelFriendId, travelId }, function (result) {
+        $("#modal").html(result);
+        new bootstrap.Modal(document.getElementById("editFriend")).show();
+    });
+}
 
-    $.post("/travel/DeleteFriend", { id: id }, function (res) {
+// ذخیره دوست
+function saveFriend() {
+    $.post("/TravelFriend/SaveFriend", $("#friendForm").serialize(), function (res) {
         if (res.success) {
-            row.fadeOut(300, function () {
-                $(this).remove();
-            });
+            $("#editFriend").modal("hide");
+            loadTravels();
         } else {
-            alert("حذف ناموفق بود.");
+            $("#errorMessage").text(res.message).show();
         }
     });
+}
 
+// حذف دوست
+function deleteFriend(id, row) {
+    if (!confirm("آیا از حذف اطمینان دارید؟")) return;
+    $.post("/TravelFriend/DeleteFriend", { id }, function (res) {
+        if (res.success) {
+            row.fadeOut(300, function () { $(this).remove(); });
+        } else {
+            alert(res.message || "حذف ناموفق بود.");
+        }
+    });
+}
+
+// لیست دوستان همیشگی
+function showUsuallyFriends() {
+    $.get("/UsuallyFriend/UsuallyFriendsModal", function (result) {
+        $("#modal").html(result);
+        new bootstrap.Modal(document.getElementById("usuallyFriendsModal")).show();
+    });
+}
+
+// انتخاب دوست از دوستان همیشگی
+function selectUsuallyFriend(id) {
+    $.post("/UsuallyFriend/GetAndConvertUsuallyFriendDtoTotravelFriendDto", { id }, function (result) {
+        $("#usuallyFriendsModal").modal("hide");
+        $("#modal").html(result);
+        new bootstrap.Modal(document.getElementById("editFriend")).show();
+    });
+}
+
+// Events
+$(document).on("click", ".btnEditFriend", function () {
+    editFriend($(this).data("id"), $(this).data("travel-id"));
+});
+$(document).on("click", "#btnSaveFriend", function () {
+    saveFriend();
+});
+$(document).on("click", ".btn-deleteFriend", function () {
+    var row = $(this).closest("tr");
+    deleteFriend($(this).data("id"), row);
 });
 $(document).on("click", "#btnUsuallyFriend", function () {
-    $.ajax({
-        url: "/UsuallyFriend/UsuallyFriendsModal",
-        type: "POST",
-        success: function (result) {
-            $("#modal").html(result);
-            $("#usuallyFriendsModal").modal("show");
-        },
-        error: function () {
-            $("#errorMessage").text("خطا در ثبت اطلاعات").show();
-        }
-    });
+    showUsuallyFriends();
 });
 $(document).on("click", ".usuallyFriend", function () {
-    $.ajax({
-        url: "/UsuallyFriend/GetAndConvertUsuallyFriendDtoTotravelFriendDto",
-        type: "POST",
-        success: function (result) {
-            $("#usuallyFriendsModal").modal("hide");
-            $("#editFriend").modal("hide");
-        },
-        error: function () {
-            $("#errorMessage").text("خطا در ثبت اطلاعات").show();
-        }
-    });
+    selectUsuallyFriend($(this).data("id"));
 });
-
-$(document).on("click", ".btnEditFriend", function () {
-    var travelId = $(this).data("travel-id");
-    var travelFriendId = $(this).data("id");
-    $.ajax({
-        url: "/travel/EditFriend",
-        type: "GET",
-        data: {
-            travelFriendId: travelFriendId,
-            travelId: travelId
-        },
-        success: function (result) {
-            $("#modal").html(result);
-            $('#editFriend').modal('show');
-        },
-        error: function () {
-            $("#errorMessage").text("خطا در ثبت اطلاعات").show();
-        }
-    });
-})
-
-$(document).on("click", "#btnSaveFriend", function () {
-    var travelId = $("#friendForm #TravelId").val();
-    $.ajax({
-        url: "/Travel/SaveFriend",
-        type: "POST",
-        data: $("#friendForm").serialize(),
-
-        success: function (res) {
-            if (res.success) {
-                $("#editFriend").modal("hide");
-            } else {
-                $("#errorMessage").text(res.message).show();
-            }
-        },
-        error: function () {
-            $("#errorMessage").text("خطا در ثبت اطلاعات").show();
-        }
-    });
-})

@@ -1,52 +1,56 @@
 ﻿using DoonGPay.Dto.Travel;
+using DoonGPay.Inteface.Travel;
 using DoonGPay.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Http.Headers;
 
 namespace DoonGPay.Controllers.Travel
 {
     public partial class TravelController : Controller
     {
-
-
+        // لیست هزینه‌ها برای یک سفر
         public IActionResult TravelCosts(int travelId)
         {
             ViewData["travelId"] = travelId;
-            return PartialView("_TravelCost", travelService.TravelCosts(travelId));
+            var model = travelService.TravelCosts(travelId);
+            return PartialView("_TravelCost", model);
         }
-        [HttpPost]
+
+        // فرم Add/Edit هزینه
+        [HttpGet]
         public IActionResult EditTravelCost(int? travelCostId, int travelId)
         {
             var model = travelService.TravelCost(travelCostId, travelId);
-            return PartialView("_EditTravelCost",model);
+            return PartialView("_EditTravelCost", model);
         }
 
+        // ذخیره هزینه
         [HttpPost]
         public JsonResult SaveTravelCost(TravelCostDto travelCost)
         {
-
-
-            return Json(travelService.SaveTravelCost(travelCost));
+            try
+            {
+                travelService.SaveTravelCost(travelCost);
+                return Json(new { success = true, message = "ذخیره شد" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
-        
-        //[HttpPost]
-        //public IActionResult SelectTable(int travelId,int CostId)
-        //{
-        //    var model = new EditCostViewModel();
-        //   model.TravelFriend = travelService.TravelFriends(travelId);
-        //   model.TravelCostFriend = travelService.TravelCostFriends(CostId);
-        //    return PartialView("_EditTravelCost",model);
-        //}
 
-      
-
+        // حذف هزینه
         [HttpPost]
         public JsonResult DeleteTravelCost(int id)
         {
-            travelService.DeleteTravelCost(id);
-            return Json(new { success = true });
+            try
+            {
+                travelService.DeleteTravelCost(id);
+                return Json(new { success = true, message = "حذف شد" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
-
-
     }
 }

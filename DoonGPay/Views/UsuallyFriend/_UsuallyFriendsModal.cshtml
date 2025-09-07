@@ -1,8 +1,20 @@
 ﻿@using DoonGPay.Dto
 @model List<UsuallyFriendDto>
 
+<style>
+    /* وقتی روی ردیف می‌بریم موس */
+    tr.usuallyFriend {
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    tr.usuallyFriend:hover {
+        background-color: #f1f1f1;
+    }
+</style>
+
 <div class="modal fade" id="usuallyFriendsModal" tabindex="-1" aria-labelledby="usuallyFriendsLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="usuallyFriendsLabel">دوستان همیشگی</h5>
@@ -10,7 +22,7 @@
             </div>
             <div class="modal-body">
                 <table class="table table-bordered text-center">
-                    <thead class="thead-dark">
+                    <thead class="table-dark">
                         <tr>
                             <th>نام</th>
                             <th>شماره تلفن</th>
@@ -19,10 +31,8 @@
                     <tbody>
                         @foreach (var i in Model)
                         {
-                            var FullName =$"{i.FirstName} {i.LastName}";
                             <tr data-id="@i.Id" class="usuallyFriend">
-
-                                <td>@FullName</td>
+                                <td>@($"{i.FirstName} {i.LastName}")</td>
                                 <td>@i.PhoneNumber</td>
                             </tr>
                         }

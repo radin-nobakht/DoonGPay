@@ -158,47 +158,71 @@ namespace DoonGPay.Service.Travel
             UpdateTravelCostFriendAfterFriend(travelFriends.TravelId);
 
         }
+
+
+
+
         private void UpdateTravelCostFriendAfterFriend(int travelId)
         {
             var travelCostIdAndType = db.TravelCosts
-              .Where(x => x.TravelId == travelId && x.Type == 2)
-              .Select(x => new { x.Id, x.Type })
-              .ToList();
-
-            TravelCostEntity travelCost = new TravelCostEntity();
-
+                .Where(x => x.TravelId == travelId && x.Type == 2)
+                .Select(x => new { x.Id, x.Type })
+                .ToList();
 
             foreach (var tciat in travelCostIdAndType)
             {
-                travelCost.TravelCostFriends = db.TravelCostFriends
-                         .Where(x => x.TravelCostId == tciat.Id)
-                         .ToList(); // ممکنه 0، 1 یا چند مورد باشد
-                travelCost.TravelId = travelId;
-                travelCost.Type = tciat.Type;
+                // موجودیت‌ها بدون Track لود می‌شوند
+                var travelCostFriends = db.TravelCostFriends
+                    .AsNoTracking()
+                    .Where(x => x.TravelCostId == tciat.Id)
+                    .ToList();
+
+                var travelCost = new TravelCostEntity
+                {
+                    TravelId = travelId,
+                    Type = tciat.Type,
+                    TravelCostFriends = travelCostFriends
+                };
+
                 var travelCostDto = mapper.Map<TravelCostDto>(travelCost);
+
                 foreach (var tcf in travelCostDto.TravelCostFriends)
                 {
                     travelCostDto.TravelCostFriend = tcf;
+
                     var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type, db);
                     var modelCalc = travelCostCalc.Calc(travelCostDto);
+
                     var travelCostFriendEntity = mapper.Map<TravelCostFriendEntity>(modelCalc.TravelCostFriend);
 
-                    db.TravelCostFriends.Add(travelCostFriendEntity);
+                    db.TravelCostFriends.Update(travelCostFriendEntity);
                 }
             }
-            db.SaveChanges();
 
+            db.SaveChanges();
         }
+
 
         public void DeleteTravelFriend(int id)
         {
-            var model = db.TravelFriends.FirstOrDefault(x => x.Id == id);
-            db.TravelFriends.Remove(model);
-            var travelCostFriend = db.TravelCostFriends.Where(x => x.TravelCostId == id);
-            foreach (var tcf in travelCostFriend)
-                db.TravelCostFriends.Remove(tcf);
-            db.SaveChanges();
+            // همه رکوردهایی که به این TravelFriend وصل هستند رو بگیر
+            var relatedCostFriends = db.TravelCostFriends
+                .Where(x => x.TravelFriendId == id)
+                .ToList();
 
+            if (relatedCostFriends.Any())
+            {
+                db.TravelCostFriends.RemoveRange(relatedCostFriends);
+            }
+
+            // حالا خود TravelFriend رو پیدا و حذف کن
+            var model = db.TravelFriends.FirstOrDefault(x => x.Id == id);
+            if (model != null)
+            {
+                db.TravelFriends.Remove(model);
+            }
+
+            db.SaveChanges();
         }
 
         #endregion

@@ -1,102 +1,57 @@
-﻿    $(document).on("click", ".btnDeleteTravelCost", function () {
-    var row = $(this).closest("tr");
-    var id = $(this).data("id");
-    if (!confirm("آیا از حذف اطمینان دارید؟")) return;
+﻿// ویرایش هزینه سفر
+function editTravelCost(travelCostId, travelId) {
+    $.get("/TravelCost/EditTravelCost", { travelCostId: travelCostId, travelId: travelId }, function (result) {
+        $("#modal").html(result);
+        new bootstrap.Modal(document.getElementById("editCost")).show();
+        updateCostTableVisibility($("#Type").val());
+    });
+}
 
-    $.post("/travel/DeleteTravelCost", { id: id }, function (res) {
+// ذخیره هزینه سفر
+function saveTravelCost() {
+    $.post("/TravelCost/SaveTravelCost", $("#CostForm").serialize(), function (res) {
         if (res.success) {
-            row.fadeOut(300, function () {
-                $(this).remove();
-            });
+            $("#editCost").modal("hide");
+            loadTravels();
         } else {
-            alert("حذف ناموفق بود.");
+            $("#errorMessage").text(res.message).show();
         }
     });
-});
-function Table(value) {
-     
-    if (value == 3 || value == 4 || value == 5) {
-         
-        $("#manual").show();
-        debugger;
-        if (value == 3) {
-            $("#typeStr").text("نفرات")
-        }
-        if (value == 4) {
-            $("#typeStr").text("درصد")
-        }
-        if (value == 5) {
-            $("#typeStr").text("مقدار")
-        }
-    }
-    else {
-        $("#manual").hide();
+}
 
+// حذف هزینه سفر
+function deleteTravelCost(id, row) {
+    if (!confirm("آیا از حذف اطمینان دارید؟")) return;
+    $.post("/TravelCost/DeleteTravelCost", { id: id }, function (res) {
+        if (res.success) {
+            row.fadeOut(300, function () { $(this).remove(); });
+        } else {
+            alert(res.message || "حذف ناموفق بود.");
+        }
+    });
+}
+
+// Events
+$(document).on("click", ".btnTravelCostEdit", function () {
+    editTravelCost($(this).data("id"), $(this).data("travel-id"));
+});
+$(document).on("click", "#btnSaveCost", function () {
+    saveTravelCost();
+});
+$(document).on("click", ".btnDeleteTravelCost", function () {
+    var row = $(this).closest("tr");
+    deleteTravelCost($(this).data("id"), row);
+});
+
+// نمایش/پنهان جدول دستی هزینه
+function updateCostTableVisibility(value) {
+    if (value == 3 || value == 4 || value == 5) {
+        $("#manual").show();
+        $("#typeStr").text(value == 3 ? "نفرات" : value == 4 ? "درصد" : "مقدار");
+    } else {
+        $("#manual").hide();
     }
 }
 $(document).on("change", "#Type", function () {
-    var value = $(this).val();
-    Table(value);
+    updateCostTableVisibility($(this).val());
 });
-
-
-//$(document).on("click", "#btnAddCost", function () {
-//    var travelId = $(this).data("travel-id");
-//    editTravelCost(null, travelId);
-//});
-//$(document).on("click", ".btnEditTravelCost", function () {
-    
-//    var travelCostId = $(this).data("id");
-//    var travelId = $(this).data("travel-id");
-//    editTravelCost(travelCostId, travelId);
-//})
-$(document).on("click", ".btnTravelCostEdit", function () {
-    var travelId = $(this).data("travel-id");
-    var travelCostId = $(this).data("id");
-    editTravelCost(travelCostId, travelId); 
-})
-function editTravelCost(travelCostId, travelId) {
-    $.ajax({
-        url: "/travel/EditTravelCost",
-        type: "POST",
-        data: {
-            travelCostId: travelCostId,
-            travelId: travelId
-        },
-        success: function (result) {
-            $("#modal").html(result)
-            $("#editCost").modal("show");
-            var value = $("#Type").val();
-            Table(value);
-        },
-        error: function () {
-            $("#errorMessage").text().show();
-        }
-    });
-}
-
-// ویرایش
-
-$(document).on("click", "#btnSaveCost", function () {
-    var travelId = $("#CostForm #travelId").val();
-
-    $.ajax({
-        url: "/Travel/SaveTravelCost",
-        type: "POST",
-        data: $("#CostForm").serialize() ,
-        success: function (res) {
-            if (res.result) {
-                $("#editCost").modal("hide");
-                travelCosts(travelId);
-            } else {
-                $("#errorMessage").text(res.message).show();
-            }
-        },
-        error: function (result) {
-            $("#errorMessage").text("خطا در ....");
-        }
-    });
-})
-
-
-

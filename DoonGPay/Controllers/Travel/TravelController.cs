@@ -4,59 +4,71 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers.Travel
 {
-    public partial class TravelController(ITravelService travelService) : Controller
+    public partial class TravelController(ITravelService travelService): Controller
     {
+     
+
+        // صفحه اصلی سفر
         public IActionResult Index()
         {
-           TravelDto model =travelService.Travel(0);
+            TravelDto model = travelService.Travel(0);
             ViewData["travelId"] = model.Id;
             return View(model);
         }
+
+        // تغییر سفر فعال
         public IActionResult ChangeTravel(int id)
         {
             var model = travelService.Travel(id);
-
-            return PartialView("_Travel",model);
+            return PartialView("_Travel", model);
         }
-      
+
+        // لیست تمام سفرها
         public IActionResult Travels()
         {
             List<TravelDto> model = travelService.Travels();
-            return PartialView("_Travels",model);
+            return PartialView("_Travels", model);
         }
-        [HttpPost]
+
+        // فرم Add/Edit سفر
+        [HttpGet]
         public IActionResult EditTravel(int? id)
         {
             TravelDto travelDto = new() { InsertDate = DateTime.Now };
-
-            if (id > 0)
+            if (id.HasValue && id.Value > 0)
                 travelDto = travelService.Travel(id.Value);
+
             return PartialView("_EditTravel", travelDto);
         }
 
+        // ذخیره سفر
         [HttpPost]
-        public IActionResult SaveTravel(TravelDto model)
+        public JsonResult SaveTravel(TravelDto model)
         {
-
-
-            travelService.SaveTravel(model);
-
-
-            return Json(new
+            try
             {
-                success = true,
-                message = "ذخیره شد"
-            });
+                travelService.SaveTravel(model);
+                return Json(new { success = true, message = "ذخیره شد" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
 
+        // حذف سفر
         [HttpPost]
         public JsonResult DeleteTravel(int id)
         {
-            travelService.DeleteTravel(id);
-            return Json(new { success = true });
+            try
+            {
+                travelService.DeleteTravel(id);
+                return Json(new { success = true, message = "حذف شد" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
-
-
-   
     }
 }

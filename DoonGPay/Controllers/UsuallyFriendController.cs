@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using DoonGPay.Dto;
 using DoonGPay.Dto.Travel;
-using DoonGPay.Entity;
 using DoonGPay.Inteface;
 using DoonGPay.Inteface.Travel;
 using Microsoft.AspNetCore.Mvc;
@@ -15,38 +14,36 @@ namespace DoonGPay.Controllers
             var model = travelService.UsuallyFriends();
             return View(model);
         }
-        [HttpPost]
-        public IActionResult GetAndConvertUsuallyFriendDtoTotravelFriendDto(int Id)
-        {
-            var FareeModel = travelService.UsuallyFriends();
 
-            var model = mapper.Map<TravelFriendDto>(FareeModel);
-
-            return PartialView("_EditTravelFriend",model);
-
-            
-        }
+        // 📌 نمایش لیست دوستان معمولی داخل مودال
         [HttpPost]
         public IActionResult UsuallyFriendsModal()
         {
-            List<UsuallyFriendDto> model = travelService.UsuallyFriends();
-            return PartialView("_EditUsuallyFriend", model);
+            var model = travelService.UsuallyFriends();
+            return PartialView("_UsuallyFriendsModal", model);
         }
+
+        // 📌 انتخاب یک دوست و تبدیل آن به TravelFriendDto
         [HttpPost]
-        public IActionResult UsaullyFrined(int usaullyFrinedId)
+        public IActionResult GetAndConvertUsuallyFriendDtoTotravelFriendDto(int id)
         {
-            return View(travelService.UsuallyFriend(usaullyFrinedId));
+            var friend = travelService.UsuallyFriend(id);
+            if (friend == null) return NotFound();
+
+            var model = mapper.Map<TravelFriendDto>(friend);
+            return PartialView("_EditTravelFriend", model);
         }
+
+        // 📌 ادیت یک UsuallyFriend
         [HttpGet]
-        public IActionResult EditUsuallyFriend(int? Id)
+        public IActionResult EditUsuallyFriend(int? id)
         {
             UsuallyFriendDto fellowDto;
-            if (Id.HasValue && Id.Value > 0)
+            if (id.HasValue && id.Value > 0)
             {
-                fellowDto = travelService.UsuallyFriend(Id.Value);
+                fellowDto = travelService.UsuallyFriend(id.Value);
                 if (fellowDto == null)
                 {
-                    // می‌تونی اینجا خطا یا View خاصی بازگردونی
                     return NotFound();
                 }
             }
@@ -59,21 +56,20 @@ namespace DoonGPay.Controllers
             return PartialView("_EditUsuallyFriend", fellowDto);
         }
 
-
+        // 📌 ذخیره دوست معمولی
         [HttpPost]
         public IActionResult SaveUsuallyFriend(UsuallyFriendDto model)
         {
             travelService.SaveUsualyFriend(model);
 
-
             return Json(new
             {
                 success = true,
-                message = travelService.UsuallyFriends()
-
-        });
+                message = "اطلاعات با موفقیت ذخیره شد"
+            });
         }
 
+        // 📌 حذف دوست معمولی
         [HttpPost]
         public JsonResult DeleteUsuallyFriend(int id)
         {

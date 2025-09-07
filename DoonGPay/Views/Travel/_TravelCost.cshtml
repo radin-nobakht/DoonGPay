@@ -1,41 +1,47 @@
 ﻿@using DoonGPay.Dto.Travel
 @model List<TravelCostDto>
 <style>
-    img{
-        width:20px;
+    img {
+        width: 20px;
     }
 </style>
 <link href="~/css/travel/travelstable.css" rel="stylesheet" />
 <div name="wer">
-<button class="btn btn-success mb-3 btnTravelCostEdit" id="btnAddCost" data-id="0" data-travel-id="@ViewData["travelId"]">هزینه جدید</button>
+    <button class="btn btn-success mb-3 btnTravelCostEdit" id="btnAddCost" data-id="0" data-travel-id="@ViewData["travelId"]">هزینه جدید</button>
 
-<table class="table table-bordered text-center">
-    <thead>
-        <tr>
-            <th>عنوان</th>
-            <th>مقدار</th>
-            <th>وضعیت</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @if(Model!= null)
-        @foreach (var tc in Model)
-        {
-            <tr data-id="@tc.Id">
-                <td>@tc.Title</td>
-                <td>@tc.Value</td>
-                <td>@tc.TypeStr</td>
-                <td>
-                        <button class="btn btn-info btn-sm btnTravelCostEdit" data-id="@tc.Id" data-travel-id="@tc.TravelId">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </button>
-                        <button class="btn btn-danger btn-sm btnDeleteTravelCost" data-id="@tc.Id" data-travel-id="@tc.TravelId">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                </td>
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <th>ردیف</th>
+                <th>عنوان</th>
+                <th>مقدار</th>
+                <th>وضعیت</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                var raw = 0;
+                @foreach (var tc in Model)
+                {
+                    raw++;
+                    <tr data-id="@tc.Id">
+                        <td>@raw</td>
+                        <td>@tc.Title</td>
+                        <td>@tc.Value</td>
+                        <td>@tc.TypeStr</td>
+                        <td>
+                            <button class="btn btn-info btn-sm btnTravelCostEdit" data-id="@tc.Id" data-travel-id="@tc.TravelId">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm btnDeleteTravelCost" data-id="@tc.Id" data-travel-id="@tc.TravelId">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
 </div>

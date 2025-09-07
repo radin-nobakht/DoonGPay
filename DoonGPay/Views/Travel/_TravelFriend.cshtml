@@ -8,7 +8,7 @@
     <table class="table table-bordered text-center" id="FtTable">
         <thead class="thead-dark">
             <tr>
-
+                <th>ردیف</th>
                 <th>نام کامل</th>
                 <th>نفرات</th>
                 <th>سهم</th>
@@ -16,12 +16,17 @@
             </tr>
         </thead>
         <tbody>
-            @if(Model!=null)
+            @if (Model != null)
+            {
+
+                var raw = 0;
             @foreach (var i in Model)
             {
-                var fullName = $"{i.FristName} {i.LastName}";
+                    raw++;
+                    var fullName = $"{i.FristName} {i.LastName}";
                 <tr data-id="@i.Id">
 
+                    <td>@raw</td>
                     <td>@fullName</td>
                     <td>@i.Person</td>
                     <td>@i.Share</td>
@@ -36,6 +41,7 @@
                         </button>
                     </td>
                 </tr>
+            }
             }
         </tbody>
     </table>

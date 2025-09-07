@@ -1,13 +1,15 @@
 ﻿using DoonGPay.Dto.Travel;
 using DoonGPay.Inteface;
+using DoonGPay.Inteface.Travel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers.Travel
 {
     public partial class TravelController : Controller
     {
-      
+ 
 
+        // نمایش فرم Add/Edit دوست
         [HttpGet]
         public IActionResult EditFriend(int? travelFriendId, int travelId)
         {
@@ -18,7 +20,6 @@ namespace DoonGPay.Controllers.Travel
                 fellowDto = travelService.TravelFriend(travelFriendId.Value);
                 if (fellowDto == null)
                 {
-                    // می‌تونی اینجا خطا یا View خاصی بازگردونی
                     return NotFound();
                 }
             }
@@ -30,24 +31,34 @@ namespace DoonGPay.Controllers.Travel
             return PartialView("_EditTravelFriend", fellowDto);
         }
 
-
+        // ذخیره دوست
         [HttpPost]
-        public IActionResult SaveFriend(TravelFriendDto model)
+        public JsonResult SaveFriend(TravelFriendDto model)
         {
-            travelService.SaveTravelFriend(model);
-            return Json(new
+            try
             {
-                success = true,
-                message = "ذخیره شد"
-            });
+                travelService.SaveTravelFriend(model);
+                return Json(new { success = true, message = "ذخیره شد" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
 
+        // حذف دوست
         [HttpPost]
         public JsonResult DeleteFriend(int id)
         {
-            travelService.DeleteTravelFriend(id);
-            return Json(new { success = true });
+            try
+            {
+                travelService.DeleteTravelFriend(id);
+                return Json(new { success = true, message = "حذف شد" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
-      
     }
 }
