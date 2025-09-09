@@ -23,7 +23,6 @@
         table.table th,
         table.table td {
             vertical-align: middle;
-            padding: 12px;
             font-size: 14px;
         }
 
@@ -93,7 +92,7 @@
             <span>
                 <strong>کل هزینه:</strong>
                 @Model.AllCost تومان</span>
-                <button class="btn btn-info btn-sm btnEditTravel" data-id="@Model.Id">
+            <button class="btn btn-warning btn-sm btnEditTravel" data-id="@Model.Id">
                     <i class="fa-solid fa-pen-to-square"></i>
                     </button><button class="btn btn-danger btn-sm btnDeleteTravel" data-id="@Model.Id">
                         <i class="fa-solid fa-trash"></i>
