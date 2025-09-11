@@ -13,7 +13,7 @@ namespace DoonGPay.Dto.Travel
         public virtual TravelFriendDto TravelFriend { get; set; }
         public virtual TravelCostDto TravelCost { get; set; }
 
-
+        public string CostName { get; set; }
         public string FriendName {  get; set; }
     }
 }

@@ -1,0 +1,47 @@
+﻿@using DoonGPay.Dto.Travel
+@model List<TravelCostFriendDto>
+
+<style>
+    /* وقتی روی ردیف می‌بریم موس */
+    tr.usuallyFriend {
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+        tr.usuallyFriend:hover {
+            background-color: #f1f1f1;
+        }
+</style>
+
+<div class="modal fade" id="usuallyFriendsModal" tabindex="-1" aria-labelledby="usuallyFriendsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="usuallyFriendsLabel">اطلاعات هزینه</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>اسم هزینه</th>
+                            <th>سهم فرد</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var i in Model)
+                        {
+                            <tr>
+                                <td>@i.CostName</td>
+                                <td>@i.Value</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+            </div>
+        </div>
+    </div>
+</div>

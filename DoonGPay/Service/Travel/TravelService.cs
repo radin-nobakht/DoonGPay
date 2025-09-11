@@ -6,11 +6,8 @@ using DoonGPay.Entity;
 using DoonGPay.Entity.Travel;
 using DoonGPay.Inteface;
 using DoonGPay.Inteface.Travel;
-using DoonGPay.Tools;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
-
 
 namespace DoonGPay.Service.Travel
 {
@@ -76,25 +73,52 @@ namespace DoonGPay.Service.Travel
                 db.Travels.Add(model);
             db.SaveChanges();
         }
+        public List<TravelCostFriendDto> TravelCostFriend(int travelId,int friendId)
+        {
+            var travel = db.Travels
+                         .Include(x => x.TravelFriends)
+                         .Include(x => x.TravelCosts).FirstOrDefault(x => x.Id == travelId);
+            foreach (var i in travel.TravelFriends)
+                i.TravelCostFriends = db.TravelCostFriends.Where(x => x.TravelFriendId == i.Id).ToList();
 
+            var travelDto = mapper.Map<TravelDto>(travel);
+            foreach (var i in travelDto.TravelFriends)
+                foreach (var e in i.TravelCostFriends)
+                    foreach (var t in travelDto.TravelCosts)
+                        if (t.Id == e.TravelCostId)
+                            e.CostName = t.Title;
+
+            foreach(var i in travelDto.TravelFriends)
+            {
+                if(friendId == i.Id)
+                {
+                    var travelCostFriend = i.TravelCostFriends.ToList();
+                    return travelCostFriend;
+                }
+            }
+            return new List<TravelCostFriendDto>();
+        }
         public TravelDto Travel(int? id)
         {
             TravelEntity? travel;
             var query = db.Travels
                            .Include(x => x.TravelFriends)
                            .Include(x => x.TravelCosts);
+            
             if (id > 0)
                 travel = query.FirstOrDefault(x => x.Id == id);
 
             else
                 travel = query.FirstOrDefault(x => x.UserId == mySession.UserId);
 
+
+                
+            
             if (travel == null)
                 return new TravelDto { InsertDate = DateTime.Now };
 
-            var travelDto = mapper.Map<TravelDto>(travel);
             var costTypes = TravelCostTypes();
-
+            var travelDto = mapper.Map<TravelDto>(travel);
             foreach (var tc in travelDto.TravelCosts)
                 tc.TypeStr = costTypes.FirstOrDefault(x => x.Value == tc.Type.ToString())?.Text ?? "نامشخص";
 
