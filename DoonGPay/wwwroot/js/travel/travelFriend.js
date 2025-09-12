@@ -4,12 +4,31 @@ $(document).on("click", ".btnEditFriend", function () {
     var travelId = $(this).data("travel-id");
 
     $.ajax({
-        url: "/Travel/EditFriend",
+        url: "/Travel/EditTravel",
+        type: "POST",
+        data: {FriendId, travelId },
+        success: function (result) {
+            $("#modal").html(result);
+            new bootstrap.Modal(document.getElementById("editFriend")).show();
+        },
+        error: function () {
+            $("#errorMessage").text("خطا در بارگذاری اطلاعات دوست").show();
+        }
+    });
+});
+
+$(document).on("click", ".btn-friendInfo", function () {
+    var travelFriendId = $(".btnEditFriend").data("id");
+    var travelId = $(".btnEditFriend").data("travel-id");
+
+    $.ajax({
+        url: "/Travel/TravelCostFriend",
         type: "GET",
         data: { travelFriendId, travelId },
         success: function (result) {
             $("#modal").html(result);
-            new bootstrap.Modal(document.getElementById("editFriend")).show();
+            $("#frinedInfoModal").modal("show");
+
         },
         error: function () {
             $("#errorMessage").text("خطا در بارگذاری اطلاعات دوست").show();
@@ -61,6 +80,8 @@ $(document).on("click", ".btn-deleteFriend", function () {
     });
 });
 
+
+
 // لیست دوستان همیشگی
 $(document).on("click", "#btnUsuallyFriend", function () {
     $.ajax({
@@ -75,6 +96,7 @@ $(document).on("click", "#btnUsuallyFriend", function () {
         }
     });
 });
+
 
 // انتخاب دوست از دوستان همیشگی
 $(document).on("click", ".usuallyFriend", function () {
@@ -94,3 +116,4 @@ $(document).on("click", ".usuallyFriend", function () {
         }
     });
 });
+

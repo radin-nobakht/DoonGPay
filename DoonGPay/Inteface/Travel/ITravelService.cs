@@ -12,7 +12,7 @@ namespace DoonGPay.Inteface.Travel
         void SaveUsualyFriend(UsuallyFriendDto usuallyFriend);
         List<UsuallyFriendDto> UsuallyFriends();
         UsuallyFriendDto UsuallyFriend(int usuallyFriendId);
-
+        List<TravelCostFriendDto> TravelCostFriend(int travelId, int friendId);
         void SaveTravelFriend(TravelFriendDto travelFriends);
         void SaveTravel(TravelDto travel);
         List<TravelDto> AllTravel(int travelId);

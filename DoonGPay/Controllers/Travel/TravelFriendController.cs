@@ -1,15 +1,17 @@
 ﻿using DoonGPay.Dto.Travel;
-using DoonGPay.Inteface;
-using DoonGPay.Inteface.Travel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers.Travel
 {
     public partial class TravelController : Controller
     {
- 
+        [HttpPost]
+        public IActionResult TravelCostFriend(int friendId, int travelId)
+        {
+            var model = travelService.TravelCostFriend(travelId, friendId);
+            return PartialView("_TravelCostFriendInfo", model);
+        }
 
-        // نمایش فرم Add/Edit دوست
         [HttpGet]
         public IActionResult EditFriend(int? travelFriendId, int travelId)
         {
@@ -31,7 +33,6 @@ namespace DoonGPay.Controllers.Travel
             return PartialView("_EditTravelFriend", fellowDto);
         }
 
-        // ذخیره دوست
         [HttpPost]
         public JsonResult SaveFriend(TravelFriendDto model)
         {
