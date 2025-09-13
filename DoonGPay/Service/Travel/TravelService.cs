@@ -115,7 +115,7 @@ namespace DoonGPay.Service.Travel
                 
             
             if (travel == null)
-                return new TravelDto { InsertDate = DateTime.Now };
+                return new TravelDto();
 
             var costTypes = TravelCostTypes();
             var travelDto = mapper.Map<TravelDto>(travel);

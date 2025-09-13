@@ -34,7 +34,7 @@ namespace DoonGPay.Controllers.Travel
         [HttpGet]
         public IActionResult EditTravel(int? id)
         {
-            TravelDto travelDto = new() { InsertDate = DateTime.Now };
+            TravelDto travelDto = new();
             if (id.HasValue && id.Value > 0)
                 travelDto = travelService.Travel(id.Value);
 

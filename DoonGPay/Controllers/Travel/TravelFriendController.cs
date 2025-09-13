@@ -5,10 +5,10 @@ namespace DoonGPay.Controllers.Travel
 {
     public partial class TravelController : Controller
     {
-        [HttpPost]
-        public IActionResult TravelCostFriend(int friendId, int travelId)
+        [HttpGet]
+        public IActionResult TravelCostFriend(int travelFriendId, int travelId)
         {
-            var model = travelService.TravelCostFriend(travelId, friendId);
+            var model = travelService.TravelCostFriend(travelId, travelFriendId);
             return PartialView("_TravelCostFriendInfo", model);
         }
 

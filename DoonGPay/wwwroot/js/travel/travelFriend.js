@@ -4,9 +4,9 @@ $(document).on("click", ".btnEditFriend", function () {
     var travelId = $(this).data("travel-id");
 
     $.ajax({
-        url: "/Travel/EditTravel",
-        type: "POST",
-        data: {FriendId, travelId },
+        url: "/Travel/EditFriend",
+        type: "GET",
+        data: { travelFriendId, travelId },
         success: function (result) {
             $("#modal").html(result);
             new bootstrap.Modal(document.getElementById("editFriend")).show();
@@ -18,8 +18,8 @@ $(document).on("click", ".btnEditFriend", function () {
 });
 
 $(document).on("click", ".btn-friendInfo", function () {
-    var travelFriendId = $(".btnEditFriend").data("id");
-    var travelId = $(".btnEditFriend").data("travel-id");
+    var travelFriendId = $(this).data("id");
+    var travelId = $(this).data("travel-id");
 
     $.ajax({
         url: "/Travel/TravelCostFriend",

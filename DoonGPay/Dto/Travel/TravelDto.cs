@@ -11,7 +11,7 @@ namespace DoonGPay.Dto.Travel
         public string Name { get; set; }
       
 
-        public DateTime InsertDate { get; set; }
+        public string InsertDate { get; set; }
         public virtual ICollection<TravelCostDto> TravelCosts { get; set; }
         public virtual ICollection<TravelFriendDto> TravelFriends { get; set; }
         public virtual UserDto User { get; set; }
@@ -23,6 +23,5 @@ namespace DoonGPay.Dto.Travel
             ? TravelCosts.Sum(x => x.Value)
             : 0m;
 
-        public string Date => InsertDate.ToPersianDateString();
     }
 }
