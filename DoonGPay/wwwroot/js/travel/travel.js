@@ -11,9 +11,9 @@ function loadTravels() {
         }
     });
 }
-$('#InsertDate').persianDatepicker({
-    initialValue: false
-});
+   
+
+;
 $(document).on("click", "#morebtn", function () {
     $.ajax({
         url: "/Travel/Travels",

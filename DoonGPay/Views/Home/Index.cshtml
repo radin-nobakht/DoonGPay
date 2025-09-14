@@ -1,4 +1,6 @@
-﻿@{
+﻿@using DoonGPay.Dto.Travel
+@model TravelDto
+@{
     ViewData["Title"] = "خانه";
 }
 
@@ -25,3 +27,7 @@
         <p>تیم پشتیبانی ما همیشه آماده پاسخگویی به شماست.</p>
     </div>
 </div>
+
+<input type="text" asp-for="InsertDate" class="form-control mb-3" placeholder="تاریخ" required />
+<input type="text" id="pd" />
+<input type="text" id="ShamsiDate" />
