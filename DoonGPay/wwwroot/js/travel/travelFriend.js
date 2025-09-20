@@ -38,6 +38,7 @@ $(document).on("click", ".btn-friendInfo", function () {
 
 // ذخیره دوست
 $(document).on("click", "#btnSaveFriend", function () {
+    debugger;
     $.ajax({
         url: "/Travel/SaveFriend",
         type: "POST",

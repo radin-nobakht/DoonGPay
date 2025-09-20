@@ -11,6 +11,22 @@ function loadTravels() {
         }
     });
 };
+$(document).on("click", ".travels", function () {
+    var id = $(this).attr("data-id");
+    $.ajax({
+        url: "/Travel/ChangeTravel",
+        type: "POST",
+        data: { id: id },
+        success: function (result) {
+            $("#travels").html(result)
+            $('#travelsModal').modal('hide');
+
+        },
+        error: function () {
+
+        }
+    });
+});
 
 $(document).on("click", "#morebtn", function () {
     $.ajax({
