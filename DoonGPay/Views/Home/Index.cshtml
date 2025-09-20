@@ -29,5 +29,23 @@
 </div>
 
 <input type="text" asp-for="InsertDate" class="form-control mb-3" placeholder="تاریخ" required />
+
 <input type="text" id="pd" />
 <input type="text" id="ShamsiDate" />
+
+@section scripts {
+    <script>
+                   $("#InsertDate").persianDatepicker({
+            format: "YYYY/MM/DD",    // فقط سال/ماه/روز
+            initialValue: false,     // اگر میخوای هیچ مقدار پیش‌فرض نداشته باشه
+            autoClose: true,         // بعد از انتخاب بسته شود
+            persianDigit: false,     // اعداد انگلیسی (1404/06/01)
+            timePicker: {
+                enabled: false       // غیرفعال کردن ساعت و دقیقه
+            },
+            altField: "#GregorianDate",
+            altFormat: "YYYY-MM-DD" // برای ارسال میلادی به سرور
+        });
+
+    </script>
+}

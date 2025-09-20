@@ -25,11 +25,12 @@
                     raw++;
                     var fullName = $"{i.FristName} {i.LastName}";
                 <tr data-id="@i.Id">
+                        <td hidden id="share">@i.Share</td>
 
                     <td>@raw</td>
                     <td>@fullName</td>
                     <td>@i.Person</td>
-                    <td id="share">@i.Share</td>
+                        <td>@string.Format("{0:N0}", i.Share)</td>
                     <td>
                             <button class="btn btn-info btn-sm btnEditFriend" data-id="@i.Id" data-travel-id="@i.TravelId">
                             <i class="fa-solid fa-pen-to-square"></i>

@@ -16,6 +16,13 @@ namespace DoonGPay.Controllers.Travel
             return View(model);
         }
 
+        public IActionResult LoadTravels()
+        {
+            TravelDto model = travelService.Travel(0);
+            ViewData["travelId"] = model.Id;
+            return PartialView("Index", model);
+        }
+
         // تغییر سفر فعال
         public IActionResult ChangeTravel(int id)
         {

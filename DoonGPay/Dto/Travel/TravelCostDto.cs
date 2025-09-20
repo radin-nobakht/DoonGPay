@@ -8,7 +8,7 @@ namespace DoonGPay.Dto.Travel
         public int Id { get; set; }
         public int TravelId { get; set; }
         public string Title { get; set; }
-        public decimal Value { get; set; }
+        public int Value { get; set; }
         public int Type { get; set; }
         public string TypeStr { get; set; }
         public virtual TravelDto Travel { get; set; }

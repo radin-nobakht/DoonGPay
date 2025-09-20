@@ -15,10 +15,8 @@
                     <input type="hidden" asp-for="Id" />
 
                     <input type="text" asp-for="Name" class="form-control mb-3" placeholder="نام سفر" required />
-           
 
                     <input type="text" asp-for="InsertDate" class="form-control mb-3" placeholder="تاریخ" required />
-                    
 
                     <div class="text-danger small" id="errorMessage" style="display:none;"></div>
                 </form>
@@ -30,19 +28,19 @@
         </div>
     </div>
 </div>
-@section scripts {
-    <script>
-                   $("#InsertDate").persianDatepicker({
-            format: "YYYY/MM/DD",    // فقط سال/ماه/روز
-            initialValue: false,     // اگر میخوای هیچ مقدار پیش‌فرض نداشته باشه
-            autoClose: true,         // بعد از انتخاب بسته شود
-            persianDigit: false,     // اعداد انگلیسی (1404/06/01)
+
+<script>
+    $(function() {
+        $("#InsertDate").persianDatepicker({
+            format: "YYYY/MM/DD",
+            initialValue: false,
+            autoClose: true,
+            persianDigit: false,
             timePicker: {
-                enabled: false       // غیرفعال کردن ساعت و دقیقه
+                enabled: false
             },
             altField: "#GregorianDate",
-            altFormat: "YYYY-MM-DD" // برای ارسال میلادی به سرور
+            altFormat: "YYYY-MM-DD"
         });
-
-    </script>
-}
+    });
+</script>

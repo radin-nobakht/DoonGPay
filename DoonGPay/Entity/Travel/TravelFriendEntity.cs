@@ -12,7 +12,7 @@ namespace DoonGPay.Entity.Travel
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         public int Person {  get; set; }
-        public decimal? Share { get; set; }
+        public int? Share { get; set; }
         [ForeignKey("TravelId")]
         public virtual TravelEntity Travel { get; set; }
 

@@ -1,7 +1,7 @@
 ﻿// بارگذاری لیست سفرها
 function loadTravels() {
     $.ajax({
-        url: "/Travel/Index",
+        url: "/Travel/LoadTravels",
         type: "GET",
         success: function (result) {
             $("#travels").html(result); // ← تغییر از #travelList به #travels
@@ -10,10 +10,8 @@ function loadTravels() {
             $("#errorMessage").text("خطا در بارگذاری لیست سفرها").show();
         }
     });
-}
-   
+};
 
-;
 $(document).on("click", "#morebtn", function () {
     $.ajax({
         url: "/Travel/Travels",
