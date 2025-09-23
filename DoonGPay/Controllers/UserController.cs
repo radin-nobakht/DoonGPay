@@ -34,7 +34,7 @@ namespace DoonGPay.Controllers
             var model = _userService.Users();
             foreach (var i in model)
             {
-                if (i.FristName == entity.FirstName && i.LastName == entity.LastName && i.PhoneNumber == entity.PhoneNumber)
+                if (i.FristName == entity.FristName && i.LastName == entity.LastName && i.PhoneNumber == entity.PhoneNumber)
                 {
                     return RedirectToAction("UserMangment", "User");
                 }

@@ -7,12 +7,15 @@ namespace DoonGPay.Entity
     [Table("User")]
     public class UserEntity : BaseEntity<int>
     {
+        public required string UserName { get; set; }
+
         [MaxLength(50)]
-        public required string FirstName { get; set; }
+        public required string FristName { get; set; }
         [MaxLength(50)]
         public required string LastName { get; set; }
         [MaxLength(11)]
         [MinLength(11)]
+        public required string Password { get; set; }
         public required string PhoneNumber { get; set; }
         public virtual ICollection<TravelEntity> Travels { get; set; }
         public virtual ICollection<UsuallyFrinedEntity> UsuallyFrineds { get; set; }

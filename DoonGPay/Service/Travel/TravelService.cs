@@ -181,8 +181,6 @@ namespace DoonGPay.Service.Travel
             RecalculateShares(travelFriends.TravelId);
 
         }
-
-        // داخل TravelService (یا هر جایی که _db/context هست)
         public void RecalculateShares(int travelId)
         {
             var travel = db.Travels
@@ -202,58 +200,67 @@ namespace DoonGPay.Service.Travel
 
             foreach (var cost in travel.TravelCosts)
             {
-                // فرض: cost.Amount از جنس decimal
-                decimal Value = Convert.ToDecimal(cost.Value);
+                int value = Convert.ToInt32(cost.Value); // فرض: cost.Value قابل تبدیل به int است
 
                 // پاک کردن سهم‌های قبلی (اگر لود شده باشند)
                 if (cost.TravelCostFriends != null && cost.TravelCostFriends.Any())
                     db.TravelCostFriends.RemoveRange(cost.TravelCostFriends);
 
-                decimal rawShare = Value / friendCount;
-                // گرد کردن به 2 رقم اعشار (یا هر قاعده‌ای که می‌پسندی)
-                decimal share = Math.Round(rawShare, 2, MidpointRounding.AwayFromZero);
+                int baseShare = value / friendCount;
+                int remainder = value % friendCount; // اگر تقسیم دقیق نیست، باقیمانده را مدیریت کنیم
 
+                int i = 0;
                 foreach (var friend in travel.TravelFriends)
                 {
+                    int share = baseShare;
+
+                    // برای نفر اول باقیمانده را اضافه می‌کنیم
+                    if (i < remainder)
+                        share += 1;
+
                     var tcf = new TravelCostFriendEntity
                     {
                         TravelCostId = cost.Id,
                         TravelFriendId = friend.Id,
-                        Value = share // فرض: Share هم decimal است
+                        Value = share // حالا Value از نوع int است
                     };
                     db.TravelCostFriends.Add(tcf);
+                    i++;
                 }
             }
 
             db.SaveChanges();
         }
 
+        // داخل TravelService (یا هر جایی که _db/context هست)
+
+        public void DeleteTravelFriend(int id)
+        {
+            // همه رکوردهایی که به این TravelFriend وصل هستند رو بگیر
+            var relatedCostFriends = db.TravelCostFriends
+                .Where(x => x.TravelFriendId == id)
+                .ToList();
+
+            if (relatedCostFriends.Any())
+            {
+                db.TravelCostFriends.RemoveRange(relatedCostFriends);
+            }
+
+            // حالا خود TravelFriend رو پیدا و حذف کن
+            var model = db.TravelFriends.FirstOrDefault(x => x.Id == id);
+            if (model != null)
+            {
+                db.TravelFriends.Remove(model);
+            }
+
+            db.SaveChanges();
+            RecalculateShares(model.TravelId);
+        }
+
+
         #endregion
 
-        #region Cost
-        //public void SaveTravelCost(TravelCostDto travelCost)
-        //{
-
-        //    var model = mapper.Map<TravelCostEntity>(travelCost);
-        //    bool add = true;
-        //    if (model.Id > 0)
-        //    {
-        //        db.TravelCosts.Update(model);
-        //         add = false;
-        //    }
-        //    else
-        //    {
-        //        db.TravelCosts.Add(model);
-        //         add = true;
-        //    }
-
-        //    db.SaveChanges();
-
-        //    var travelCostCalc = TravelCostCalcFactory.Create(travelCost.Type);
-        //    travelCostCalc.Calc(model.Id,model.TravelId,add);
-
-
-        //}
+        #region Cost 
         public TravelCostDto TravelCost(int? travelCostId, int travelId)
         {
             TravelCostDto travelCost;

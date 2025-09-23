@@ -1,61 +1,50 @@
-﻿@using DoonGPay.Dto
-@model LoginDto
-@{
+﻿@{
     Layout = "_Layout2";
+    ViewBag.Title = "ورود به سیستم";
 }
 
-<div class="form-container">
-    <div>
-        <img src="~/Image/login.png" alt="Login" />
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg border-0 rounded-4 p-4  text-light" style="max-width: 420px; width: 100%; background-color:black">
+        <h3 class="text-center mb-4">ورود به سیستم</h3>
+
+        @if (!string.IsNullOrEmpty(ViewBag.Error))
+        {
+            <div class="alert alert-danger text-center rounded-3">@ViewBag.Error</div>
+        }
+
+        <form asp-action="Login" asp-controller="Account" method="post">
+            <div class="mb-3">
+                <label class="form-label">نام کاربری</label>
+                <input type="text" name="UserName" id="userName" class="form-control rounded-3" placeholder="نام کاربری" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">رمز عبور</label>
+                <input type="password" name="Password" id="password" class="form-control rounded-3" placeholder="رمز عبور" required />
+            </div>
+
+            <button type="button" id="btnLoginOtp" class="btn btn-success w-100 rounded-3">ورود</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <a href="@Url.Action("Register", "Account")" class="text-decoration-none text-light">ثبت نام</a>
+        </div>
     </div>
-    <div id="errorMsg">@ViewBag.eror</div>
-    <form>
-        <label for="phoneNumber">شماره موبایل:</label>
-        <input type="number" id="txtPhoneNumber" required asp-for=PhoneNumber placeholder="شماره موبایل" />
-        <label id="lblCode" class="d-none">کد</label>
-        <input type="number" class="d-none" id="txtCode" asp-for=Code placeholder="کد دریافتی را وارد نمایی">
-        <button type="button" id="btnSendCode">ارسال</button>
-        <button type="button" class="d-none" id="btnLoginOtp">ارسال کد</button>
-        <a href="/User/Signin">ثبت نام</a>
-    </form>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 @section Scripts
 {
     <script>
-        $("#btnSendCode").click(function(){
-          $.ajax({
-            type: "POST",
-            url: "/Account/LoginSendCode",
-            data:{
-                PhoneNumber:$("#txtPhoneNumber").val()
-            },
-            success: function (result) {
-                if(result.result)
-                {
-                    $("#lblCode").removeClass("d-none");
-                    $("#txtCode").removeClass("d-none");
-                    $("#btnLoginOtp").removeClass("d-none");
-                    $("#btnSendCode").addClass("d-none");
-                    $("#txtPhoneNumber").attr("disabled",true);
-                }
-                else
-                alert(result.message);
-            },
-            error: function () {
-
-
-            }
-        });
-
-        })
         $("#btnLoginOtp").click(function(){
           $.ajax({
             type: "POST",
             url: "/Account/LoginOtp",
             data:{
-                PhoneNumber:$("#txtPhoneNumber").val(),
-                Code:$("#txtCode").val()
+                Password:$("#password").val(),
+                UserName:$("#userName").val(),
             },
             success: function (result) {
                 if(result.result)

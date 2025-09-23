@@ -8,7 +8,7 @@ namespace DoonGPay.Entity.Travel
         public int TravelCostId { get; set; }
         public int TravelFriendId { get; set; }
         public int Rate { get; set; }
-        public decimal Value { get; set; }
+        public int Value { get; set; }
         [ForeignKey("TravelCostId")]
         public virtual TravelCostEntity TravelCost { get; set; }
         [ForeignKey("TravelFriendId")]

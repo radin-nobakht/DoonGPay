@@ -9,7 +9,7 @@ namespace DoonGPay.Dto.Travel
         public int TravelFriendId { get; set; }
 
         public int Rate { get; set; }
-        public decimal Value { get; set; }
+        public int Value { get; set; }
         public virtual TravelFriendDto TravelFriend { get; set; }
         public virtual TravelCostDto TravelCost { get; set; }
 

@@ -10,7 +10,7 @@ namespace DoonGPay.Dto.Travel
         public  string LastName { get; set; }
         public  string PhoneNumber { get; set; }
         public int Person {  get; set; }
-        public decimal? Share { get; set; }
+        public int? Share { get; set; }
         public virtual TravelDto Travel { get; set; }
         public virtual ICollection<TravelCostFriendDto> TravelCostFriends { get; set; }
 

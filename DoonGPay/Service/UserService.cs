@@ -2,6 +2,7 @@
 using DoonGPay.Adapter;
 using DoonGPay.Dto;
 using DoonGPay.Entity;
+using DoonGPay.Helpers;
 using DoonGPay.INteface;
 using System.Security.Principal;
 namespace DoonGPay.Service
@@ -11,7 +12,9 @@ namespace DoonGPay.Service
         public void AddUser(UserDto user)
         {
             var model = mapper.Map<UserEntity>(user);
-
+            var Password ="";
+            Password = PasswordHelper.HashPassword(model.Password); // فقط هش می‌کنیم
+            model.Password = Password;
             db.Users.Add(model);
             db.SaveChanges();
         }
