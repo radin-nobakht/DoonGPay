@@ -79,11 +79,13 @@ namespace DoonGPay.Service.Travel
         {
 
             var friend = db.TravelFriends.Where(x => x.TravelId == travelCost.TravelId).Select(x => new { x.Id, x.Person }).ToList();
-            var share = travelCost.Value / friend.Count;
+            if (friend.Count > 0)
+            {
+                var share = travelCost.Value / friend.Count;
 
-             foreach (var tcf in travelCost.TravelCostFriends)
-                tcf.Value = share;
-
+                foreach (var tcf in travelCost.TravelCostFriends)
+                    tcf.Value = share;
+            }
             return travelCost;
 
         }

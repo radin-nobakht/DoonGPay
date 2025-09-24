@@ -1,19 +1,32 @@
 ﻿using DoonGPay.Dto.Travel;
+using DoonGPay.Helpers;
+using DoonGPay.Inteface;
 using DoonGPay.Inteface.Travel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers.Travel
 {
-    public partial class TravelController(ITravelService travelService): Controller
+    public partial class TravelController(ITravelService travelService,IMySession mySession): Controller
     {
      
 
         // صفحه اصلی سفر
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
-            TravelDto model = travelService.Travel(0);
+            var cookieValue = ConvertIdToCookie.GetCookie(Request);
+
+            if (cookieValue != null) 
+            {
+               id = int.Parse(cookieValue);
+            }
+
+            TravelDto model = travelService.Travel(id);
             ViewData["travelId"] = model.Id;
-            return View(model);
+           var userId= mySession.UserId;
+            if (userId > 0)
+                return View(model);
+            else
+                return RedirectToAction("Login","Account");
         }
 
         public IActionResult LoadTravels()
@@ -27,6 +40,9 @@ namespace DoonGPay.Controllers.Travel
         public IActionResult ChangeTravel(int id)
         {
             var model = travelService.Travel(id);
+
+            ConvertIdToCookie.AddCookie(Response, id.ToString(), 7);
+
             return PartialView("_Travel", model);
         }
 

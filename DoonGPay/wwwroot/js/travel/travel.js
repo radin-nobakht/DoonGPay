@@ -21,6 +21,8 @@ $(document).on("click", ".travels", function () {
             $("#travels").html(result)
             $('#travelsModal').modal('hide');
 
+            history.pushState(null, "", "/Travel/Index/" + id);
+
         },
         error: function () {
 
