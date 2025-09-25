@@ -1,54 +1,37 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
-<head >
+<html lang="fa" dir="rtl">
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - DoonGPay</title>
+
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
+    <!-- Persian Datepicker -->
+    <link rel="stylesheet" href="~/lib/pwt.datepicker-master/dist/css/persian-datepicker.css" />
+    <!-- Site CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/DoonGPay.styles.css" asp-append-version="true" />
-    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
-    <link href="~/lib/pwt.datepicker-master/dist/css/persian-datepicker.css" rel="stylesheet" />
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: "Tahoma", sans-serif;
-        }
-
-        header {
-            background-color: #343a40;
-            padding: 15px;
-            background-color:#343a40;
-        }
-
-            header a.navbar-brand {
-                color: #ffc107;
-                font-weight: bold;
-                font-size: 1.5rem;
-            }
-
-        footer {
-            background-color: #343a40;
-            color: #ddd;
-            padding: 10px 0;
-            text-align: center;
-            margin-top: 40px;
-        }
-    </style>
 </head>
-<body dir="rtl">
+<body class="d-flex flex-column min-vh-100 bg-light" style="font-family:Tahoma, sans-serif;">
+
+    <!-- Navbar -->
     @await Component.InvokeAsync("Navbar")
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-            <!-- Modal -->
-            <div id="modal"></div>
-        </main>
-    </div>
 
-    @Html.Partial("_Footer")
+    <!-- Main Content -->
+    <main class="flex-grow-1 container my-3">
+        @RenderBody()
+        <div id="modal"></div>
+    </main>
 
+    <!-- Footer -->
+    <footer class="bg-dark text-light text-center py-3 mt-auto">
+        @Html.Partial("_Footer")
+    </footer>
 
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -29,11 +29,22 @@ namespace DoonGPay.Controllers.Travel
                 return RedirectToAction("Login","Account");
         }
 
-        public IActionResult LoadTravels()
+        public IActionResult LoadTravels(int id)
         {
-            TravelDto model = travelService.Travel(0);
+            var cookieValue = ConvertIdToCookie.GetCookie(Request);
+
+            if (cookieValue != null)
+            {
+                id = int.Parse(cookieValue);
+            }
+
+            TravelDto model = travelService.Travel(id);
             ViewData["travelId"] = model.Id;
-            return PartialView("Index", model);
+            var userId = mySession.UserId;
+            if (userId > 0)
+                return PartialView("Index",model);
+            else
+                return RedirectToAction("Login", "Account");
         }
 
         // تغییر سفر فعال
