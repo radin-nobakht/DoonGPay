@@ -14,8 +14,70 @@
     <!-- Site CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/DoonGPay.styles.css" asp-append-version="true" />
+
+    <style>
+        /* ====== Global ====== */
+        body {
+            font-family: Tahoma, sans-serif;
+            background-color: #f8f9fa; /* خاکستری خیلی روشن */
+            color: #333;
+        }
+
+        /* ====== Navbar ====== */
+        .navbar {
+            background-color: #1e2761 !important; /* سرمه‌ای */
+        }
+
+            .navbar .nav-link,
+            .navbar .navbar-brand {
+                color: #ffffff !important;
+                transition: color 0.3s ease;
+            }
+
+                .navbar .nav-link:hover {
+                    color: #408ec6 !important; /* آبی روشن */
+                }
+
+        /* ====== Buttons ====== */
+        .btn-primary {
+            background-color: #408ec6;
+            border-color: #408ec6;
+        }
+
+            .btn-primary:hover {
+                background-color: #1e2761;
+                border-color: #1e2761;
+            }
+
+        .btn-danger {
+            background-color: #7a2048;
+            border-color: #7a2048;
+        }
+
+            .btn-danger:hover {
+                background-color: #5c1435;
+                border-color: #5c1435;
+            }
+
+        /* ====== Footer ====== */
+        footer {
+            background-color: #1e2761;
+            color: #ffffff;
+        }
+
+        /* ====== Links ====== */
+        a {
+            color: #408ec6;
+            text-decoration: none;
+        }
+
+            a:hover {
+                color: #7a2048;
+                text-decoration: underline;
+            }
+    </style>
 </head>
-<body class="d-flex flex-column min-vh-100 bg-light" style="font-family:Tahoma, sans-serif;">
+<body class="d-flex flex-column min-vh-100">
 
     <!-- Navbar -->
     @await Component.InvokeAsync("Navbar")
@@ -27,7 +89,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-light text-center py-3 mt-auto">
+    <footer class="text-center py-3 mt-auto">
         @Html.Partial("_Footer")
     </footer>
 

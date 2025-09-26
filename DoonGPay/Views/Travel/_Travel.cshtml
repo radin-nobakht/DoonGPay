@@ -15,22 +15,22 @@
         width: 20px;
     }
 
-        table.table thead {
-            background-color: #343a40;
-            color: white;
-        }
+    table.table thead {
+        background-color: #343a40;
+        color: white;
+    }
 
-        table.table th,
-        table.table td {
-            vertical-align: middle;
-            font-size: 14px;
-        }
+    table.table th,
+    table.table td {
+        vertical-align: middle;
+        font-size: 14px;
+    }
 
-        /* ردیف‌های جدول هنگام هاور */
-        table.table tbody tr:hover {
-            background-color: #f2f2f2;
-            transition: 0.2s ease-in-out;
-        }
+    /* ردیف‌های جدول هنگام هاور */
+    table.table tbody tr:hover {
+        background-color: #f2f2f2;
+        transition: 0.2s ease-in-out;
+    }
 
     /* استایل دکمه‌ها */
     button.btn {
@@ -74,50 +74,53 @@
 
 </style>
 <div id="travelAndCostAndFriend ">
-<button class="btn btn-success btnEditTravel" id="btnAddTravel" data-id="0">سفر جدید</button>
+    <button class="btn btn-success btnEditTravel" id="btnAddTravel" data-id="0">سفر جدید</button>
 
-<button type="button" class="btn btn-primary" id="morebtn">بیشتر</button>
+    <button type="button" class="btn btn-primary" id="morebtn">بیشتر</button>
 
-<link href="~/css/travel/travelstable.css" rel="stylesheet" />
+    <link href="~/css/travel/travelstable.css" rel="stylesheet" />
 
-@if (Model != null){
-<div class="p-2 bg-light rounded shadow-sm d-inline-flex align-items-center gap-2" data-id="@Model.Id">
-    <span class="fw-bold">@Model.Name</span>
-    <span>
-        <strong>تاریخ:</strong>
-        @Model.InsertDate</span>
-        <span>
-            <strong>تعداد نفرات:</strong> 
-            @Model.AllPerson</span>
+    @if (Model != null)
+    {
+        <div class="p-2 bg-light rounded shadow-sm d-inline-flex align-items-center gap-2" data-id="@Model.Id">
+            <span class="fw-bold">@Model.Name</span>
+            <span>
+                <strong>تاریخ:</strong>
+                @Model.InsertDate
+            </span>
+            <span>
+                <strong>تعداد نفرات:</strong>
+                @Model.AllPerson
+            </span>
             <span>
                 <strong>کل هزینه:</strong>
-               @string.Format("{0:N0}", Model.AllCost)
+                @string.Format("{0:N0}", Model.AllCost)
             </span>
-                <button class="btn btn-info btn-sm btnEditTravel" data-id="@Model.Id">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    </button><button class="btn btn-danger btn-sm btnDeleteTravel" data-id="@Model.Id">
-                        <i class="fa-solid fa-trash"></i>
-                        </button>
-                        </div>
-                        }
-<div class="container ">
-    <div class="row">
+            <button class="btn btn-info btn-sm btnEditTravel" data-id="@Model.Id">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </button><button class="btn btn-danger btn-sm btnDeleteTravel" data-id="@Model.Id">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
+    }
+    <div class="container ">
+        <div class="row">
 
 
-        <div class="col-6">
-            <div id="travelCosts">
-                <partial name="_TravelCost" model="Model.TravelCosts" />
-            </div>
-        </div>@*cost*@
-        <div class="col-6">
-            <div id="travelFriend">
-                <partial name="_TravelFriend" model="Model.TravelFriends" />
-            </div>
-        </div>@*friend*@
+            <div class="col-6">
+                <div id="travelCosts">
+                    <partial name="_TravelCost" model="Model.TravelCosts" />
+                </div>
+            </div>@*cost*@
+            <div class="col-6">
+                <div id="travelFriend">
+                    <partial name="_TravelFriend" model="Model.TravelFriends" />
+                </div>
+            </div>@*friend*@
+
+        </div>
 
     </div>
-
-</div>
 
 
 

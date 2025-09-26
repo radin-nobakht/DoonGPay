@@ -2,38 +2,42 @@
 @model List<UsuallyFriendDto>
 
 <style>
-    /* استایل کلی جدول‌ها */
+    /* ====== جدول ====== */
     table.table {
-        background-color: #fff;
+        background-color: #ffffff; /* سفید */
         border-collapse: collapse;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         border-radius: 10px;
         overflow: hidden;
     }
 
-    img {
-        width: 20px;
-    }
+        table.table thead {
+            background-color: #1e2761; /* سرمه‌ای */
+            color: #ffffff;
+        }
 
-    table.table thead {
-        background-color: #343a40;
-        color: white;
-    }
+        table.table th,
+        table.table td {
+            vertical-align: middle;
+            padding: 12px;
+            font-size: 14px;
+        }
 
-    table.table th,
-    table.table td {
-        vertical-align: middle;
-        padding: 12px;
-        font-size: 14px;
-    }
+        table.table tbody tr:nth-child(even) {
+            background-color: #f8f9fa; /* خاکستری روشن */
+        }
 
-    /* ردیف‌های جدول هنگام هاور */
-    table.table tbody tr:hover {
-        background-color: #f2f2f2;
-        transition: 0.2s ease-in-out;
-    }
+        table.table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
 
-    /* استایل دکمه‌ها */
+        table.table tbody tr:hover {
+            background-color: #408ec6; /* آبی روشن */
+            color: #ffffff;
+            transition: 0.2s ease-in-out;
+        }
+
+    /* ====== دکمه‌ها ====== */
     button.btn {
         border-radius: 6px !important;
         font-size: 13px !important;
@@ -41,64 +45,80 @@
         min-width: 70px;
     }
 
+    /* دکمه افزودن */
+    button.btn-success {
+        background-color: #408ec6;
+        border-color: #408ec6;
+        color: #ffffff;
+    }
+
+        button.btn-success:hover {
+            background-color: #1e2761;
+            border-color: #1e2761;
+        }
+
     /* دکمه ویرایش */
     button.btn-info {
-        background-color: #17a2b8;
-        border-color: #17a2b8;
-        color: white;
+        background-color: #408ec6;
+        border-color: #408ec6;
+        color: #ffffff;
     }
+
+        button.btn-info:hover {
+            background-color: #1e2761;
+            border-color: #1e2761;
+        }
 
     /* دکمه حذف */
     button.btn-danger {
-        background-color: #dc3545;
-        border-color: #dc3545;
-        color: white;
+        background-color: #7a2048; /* زرشکی */
+        border-color: #7a2048;
+        color: #ffffff;
     }
 
-    /* دکمه افزودن */
-    button.btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
-        color: white;
-    }
+        button.btn-danger:hover {
+            background-color: #5c1435;
+            border-color: #5c1435;
+        }
 
-    /* فاصله بین دکمه‌ها */
     button + button {
         margin-right: 5px;
     }
 
-    /* فاصله دکمه بالا */
     .mb-3 {
         margin-bottom: 15px !important;
         font-weight: bold;
     }
 
+    img {
+        width: 20px;
+    }
 </style>
-<button class="btn btn-success btnEditusuallyFriend" id="btnAddusuallyFriend" data-id="0">دوستان همیشگی جدید</button>
 
+<!-- دکمه افزودن -->
+<button class="btn btn-success mb-3 btnEditusuallyFriend" id="btnAddusuallyFriend" data-id="0">
+    دوستان همیشگی جدید
+</button>
 
 <link href="~/css/travel/travelstable.css" rel="stylesheet" />
 
-
+<!-- جدول دوستان -->
 <table class="table table-bordered text-center usuallyFriendRows" id="FtTable">
-    <thead class="thead-dark">
+    <thead>
         <tr>
-
             <th>نام</th>
-            <th>نام خوانوادگی</th>
+            <th>نام خانوادگی</th>
             <th>شماره تلفن</th>
-            <th></th>
+            <th>عملیات</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var i in Model)
         {
-            <tr data-id="@i.Id" c>
+            <tr data-id="@i.Id" class="usuallyFriend">
                 <td>@i.FirstName</td>
                 <td>@i.LastName</td>
                 <td>@i.PhoneNumber</td>
-             
-               
                 <td>
                     <button class="btn btn-info btn-sm btnEditusuallyFriend" data-id="@i.Id">
                         <i class="fa-solid fa-pen-to-square"></i>
@@ -106,14 +126,13 @@
 
                     <button class="btn btn-danger btn-sm btnDeleteUsuallyFriend" data-id="@i.Id">
                         <i class="fa-solid fa-trash"></i>
-
                     </button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-@section Scripts {
 
-<script src="~/js/usuallyfriends.js"></script>
+@section Scripts {
+    <script src="~/js/usuallyfriends.js"></script>
 }

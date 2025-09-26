@@ -1,106 +1,103 @@
 ﻿@using DoonGPay.Dto
 @model List<UserDto>
+
 <style>
     body {
         direction: rtl;
         font-family: 'B Nazanin', Tahoma, sans-serif;
-        background-color: white; /* نارنجی بسیار روشن */
+        background-color: #f0f4ff; /* آبی خیلی روشن برای زمینه */
         margin-bottom: 60px;
     }
 
-    /* فرم */
+    /* فرم و مودال */
     .form-container {
         width: 400px;
-        margin: 50px auto 30px;
-        background-color: white; /* نارنجی روشن */
+        margin: 20px auto;
+        background-color: #1e2761; /* آبی تیره */
         padding: 20px;
         border-radius: 10px;
-        border: 1px solid #ff9800; /* نارنجی */
-        box-shadow: 0 0 10px rgba(255, 152, 0, 0.3);
+        color: white;
     }
 
-        .form-container h2 {
+        .form-container h2, .form-container h5 {
             text-align: center;
-            margin-bottom: 20px;
-            color: #e65100; /* نارنجی تیره */
+            color: #408ec6; /* آبی روشن */
         }
 
         .form-container input {
             width: 100%;
             padding: 8px;
-            margin: 10px 0;
-            font-family: 'B Nazanin', Tahoma, sans-serif;
-            font-size: 16px;
-            border: 1px solid #ffb74d; /* نارنجی روشن */
+            margin: 8px 0;
+            border: 1px solid #408ec6;
             border-radius: 8px;
-            background-color: #fff8e1; /* پس‌زمینه خیلی روشن نارنجی */
-            color: #5d4037; /* قهوه‌ای تیره برای متن */
+            background-color: #f0f4ff;
+            color: #1e2761;
+            font-size: 14px;
             transition: border-color 0.3s;
         }
 
             .form-container input:focus {
-                border-color: #ff6f00; /* نارنجی پررنگ */
+                border-color: #7a2048; /* بنفش/شرابی */
                 outline: none;
-                background-color: #fff3e0;
+                background-color: #e0e7ff;
             }
 
         .form-container button {
             width: 100%;
             padding: 10px;
-            background-color: #ff9800; /* نارنجی */
+            background-color: #408ec6;
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
 
             .form-container button:hover {
-                background-color: #ef6c00; /* نارنجی تیره */
+                background-color: #1e2761;
             }
 
     .error {
-        color: #d32f2f; /* قرمز تیره */
-        margin-bottom: 10px;
+        color: #ff6f61;
         font-size: 14px;
+        margin-bottom: 10px;
         display: none;
     }
 
-    /* جدول نارنجی */
+    /* جدول */
     table {
         border-collapse: collapse;
         width: 100%;
         max-width: 900px;
-        margin: 0 auto 50px;
+        margin: 20px auto 50px;
         font-family: Tahoma, sans-serif;
-        box-shadow: 0 0 8px rgba(255, 152, 0, 0.4);
+        box-shadow: 0 0 8px rgba(64, 142, 198, 0.4);
     }
 
     th {
-        background-color: #ff9800; /* نارنجی */
+        background-color: #408ec6;
         color: white;
         padding: 10px;
-        border: 1px solid #ffa726;
+        border: 1px solid #1e2761;
         text-align: center;
     }
 
     td {
         padding: 10px;
-        border: 1px solid #ffcc80;
+        border: 1px solid #ddd;
         text-align: center;
-        color: #5d4037;
+        color: #1e2761;
     }
 
     tbody tr:nth-child(even) {
-        background-color: #ffe0b2; /* نارنجی خیلی روشن */
+        background-color: #e0e7ff;
     }
 
     tbody tr:hover {
-        background-color: #ffcc80; /* نارنجی متوسط */
+        background-color: #d0e0ff;
     }
 
-    /* دکمه‌ها داخل جدول */
     .btn {
         padding: 5px 10px;
         border-radius: 5px;
@@ -112,85 +109,36 @@
     }
 
     .btn-update {
-        background-color: #fb8c00; /* نارنجی */
+        background-color: #408ec6;
     }
 
     .btn-delete {
-        background-color: #e64a19; /* نارنجی قرمز */
+        background-color: #7a2048;
     }
 
     .btn-update:hover {
-        background-color: #ef6c00; /* نارنجی تیره */
+        background-color: #1e2761;
     }
 
     .btn-delete:hover {
-        background-color: #bf360c; /* نارنجی تیره */
+        background-color: #5e1e44;
     }
 
-    img.img {
-        max-width: 100px;
-        height: auto;
-        display: block;
-        margin: 0 auto;
-        border-radius: 5px;
-        box-shadow: 0 0 5px rgba(255, 152, 0, 0.5);
-    }
-        
-
- 
-
-    .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-        box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    #btnAdd {
+        margin: 15px;
+        background-color: #408ec6;
     }
 
-    html {
-        position: relative;
-        min-height: 100%;
-    }
-
-    body {
-        margin-bottom: 60px;
-    }
-
-    body {
-        direction: rtl;
-        font-family: 'B Nazanin';
-    }
-
-
-
-
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        font-family: Tahoma, sans-serif;
-    }
-
-    th {
-        background-color: orange;
-        color: white;
-        padding: 10px;
-        border: 1px solid #ddd;
-    }
-
-    td {
-        padding: 10px;
-        border: 1px solid #ddd;
-    }
-
-    tbody tr:nth-child(even) {
-        background-color: #f2f6fc;
-    }
-
-    tbody tr:hover {
-        background-color: #d0e7ff;
-    }
+        #btnAdd:hover {
+            background-color: #1e2761;
+        }
 
 </style>
+
 <button class="btn btn-success mb-3" id="btnAdd">کاربر جدید</button>
 
 <table class="table table-bordered text-center" id="userTable">
-    <thead class="thead-dark">
+    <thead>
         <tr>
             <th>ویرایش</th>
             <th>حذف</th>
@@ -203,12 +151,8 @@
         @foreach (var user in Model)
         {
             <tr data-id="@user.Id">
-                <td>
-                    <button class="btn btn-info btn-sm btn-edit" data-id="@user.Id">ویرایش</button>
-                </td>
-                <td>
-                    <button class="btn btn-danger btn-sm btn-delete" data-id="@user.Id">حذف</button>
-                </td>
+                <td><button class="btn btn-update btn-sm btn-edit" data-id="@user.Id">ویرایش</button></td>
+                <td><button class="btn btn-delete btn-sm btn-delete" data-id="@user.Id">حذف</button></td>
                 <td>@user.FristName</td>
                 <td>@user.LastName</td>
                 <td>@user.PhoneNumber</td>
@@ -243,8 +187,6 @@
 @section Scripts {
     <script>
         $(function () {
-
-            // افزودن
             $("#btnAdd").click(function () {
                 $("#userForm")[0].reset();
                 $("#Id").val(0);
@@ -253,12 +195,10 @@
                 $("#userModal").modal("show");
             });
 
-            // ویرایش
             $(".btn-edit").click(function () {
                 var id = $(this).data("id");
                 $.get("/User/AddOrEditUser", { id: id }, function (data) {
                     $("#Id").val(data.id);
-                    $("#Name").val(data.name);
                     $("#Name").val(data.name);
                     $("#LName").val(data.lName);
                     $("#PhoneNumber").val(data.phoneNumber);
@@ -268,7 +208,6 @@
                 });
             });
 
-            // ارسال فرم
             $("#userForm").submit(function (e) {
                 e.preventDefault();
                 $.ajax({
@@ -278,7 +217,7 @@
                     success: function (res) {
                         if (res.success) {
                             $("#userModal").modal("hide");
-                            location.reload(); // در صورت نیاز به رفرش جدول بدون reload بگو تا اونم پیاده‌سازی کنم
+                            location.reload();
                         } else {
                             $("#errorMessage").text(res.message).show();
                         }
@@ -289,23 +228,18 @@
                 });
             });
 
-            // حذف
             $(".btn-delete").click(function () {
                 var row = $(this).closest("tr");
                 var id = $(this).data("id");
                 if (!confirm("آیا از حذف اطمینان دارید؟")) return;
-
                 $.post("/User/Delete", { id: id }, function (res) {
                     if (res.success) {
-                        row.fadeOut(300, function () {
-                            $(this).remove();
-                        });
+                        row.fadeOut(300, function () { $(this).remove(); });
                     } else {
                         alert("حذف ناموفق بود.");
                     }
                 });
             });
-
         });
     </script>
 }

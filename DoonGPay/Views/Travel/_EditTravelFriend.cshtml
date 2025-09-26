@@ -1,6 +1,91 @@
 ﻿@using DoonGPay.Dto.Travel
 @model TravelFriendDto
 <link href="~/css/travel/travelsmodals.css" rel="stylesheet" />
+
+<style>
+    .form-container {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    /* هدر مودال */
+    .modal-header {
+        background-color: #1e2761; /* آبی تیره */
+        color: white;
+        border-bottom: none;
+    }
+
+        .modal-header h5 {
+            color: #408ec6; /* آبی روشن */
+        }
+
+        .modal-header .btn-close {
+            filter: invert(1); /* دکمه سفید */
+        }
+
+    /* بدنه مودال */
+    .modal-body {
+        background-color: #f0f4ff; /* آبی خیلی روشن */
+    }
+
+        .modal-body input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #408ec6;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: white;
+            color: #1e2761;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+            .modal-body input:focus {
+                border-color: #7a2048; /* شرابی */
+                outline: none;
+                background-color: #e0e7ff;
+            }
+
+    /* پیام خطا */
+    #errorMessage {
+        color: #7a2048;
+        font-size: 13px;
+    }
+
+    /* فوتر مودال */
+    .modal-footer {
+        background-color: #f0f4ff;
+        border-top: none;
+        display: flex;
+        justify-content: space-between;
+    }
+
+        .modal-footer .btn {
+            border-radius: 6px;
+            padding: 6px 20px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .modal-footer .btn-info {
+            background-color: #408ec6;
+            color: white;
+        }
+
+            .modal-footer .btn-info:hover {
+                background-color: #1e2761;
+            }
+
+        .modal-footer .btn-success {
+            background-color: #7a2048;
+            color: white;
+        }
+
+            .modal-footer .btn-success:hover {
+                background-color: #1e2761;
+            }
+</style>
+
 <div class="modal fade" aria-hidden="true" id="editFriend">
     <div class="modal-dialog" role="document">
         <div class="modal-content form-container">

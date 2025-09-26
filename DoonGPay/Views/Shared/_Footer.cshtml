@@ -1,5 +1,22 @@
-﻿<footer class="border-top footer text-muted">
+﻿<footer class="footer text-center py-3 mt-auto" style="background-color:#1e2761; color:#ffffff;">
     <div class="container">
-        &copy; 2025 - DoonGPay - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        &copy; 2025 - DoonGPay -
+        <a asp-area="" asp-controller="Home" asp-action="Privacy"
+           style="color:#408ec6; text-decoration:none;"
+           onmouseover="this.style.color='#7a2048'"
+           onmouseout="this.style.color='#408ec6'">
+            Privacy
+        </a>
     </div>
 </footer>
+
+<style>
+    footer a {
+        transition: color 0.3s ease;
+    }
+
+        footer a:hover {
+            color: #7a2048 !important;
+            text-decoration: underline;
+        }
+</style>

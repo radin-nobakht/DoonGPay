@@ -1,13 +1,79 @@
 ﻿@using DoonGPay.Dto.Travel
 @model List<TravelCostDto>
+
 <style>
-    img {
-        width: 20px;
+    table.table {
+        width: 100%;
+        border-collapse: collapse;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 15px;
     }
+
+        table.table th {
+            background-color: #408ec6; /* آبی روشن */
+            color: white;
+            padding: 10px;
+            border: 1px solid #1e2761;
+        }
+
+        table.table td {
+            padding: 8px;
+            border: 1px solid #1e2761;
+            text-align: center;
+            color: #1e2761;
+        }
+
+        table.table tbody tr:nth-child(even) {
+            background-color: #e0e7ff; /* آبی خیلی روشن */
+        }
+
+        table.table tbody tr:hover {
+            background-color: #d0e0ff;
+            transition: 0.2s ease-in-out;
+        }
+
+    /* دکمه‌ها */
+    .btn {
+        border-radius: 5px;
+        font-size: 13px;
+        padding: 5px 10px;
+        min-width: 70px;
+        color: white;
+        transition: 0.3s;
+    }
+
+    .btn-success {
+        background-color: #408ec6;
+    }
+
+        .btn-success:hover {
+            background-color: #1e2761;
+        }
+
+    .btn-info {
+        background-color: #7a2048;
+    }
+
+        .btn-info:hover {
+            background-color: #5e193d;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+    }
+
+        .btn-danger:hover {
+            background-color: #a71d2a;
+        }
+
 </style>
-<link href="~/css/travel/travelstable.css" rel="stylesheet" />
+
 <div name="wer">
-    <button class="btn btn-success mb-3 btnTravelCostEdit" id="btnAddCost" data-id="0" data-travel-id="@ViewData["travelId"]">هزینه جدید</button>
+    <button class="btn btn-success mb-3 btnTravelCostEdit" id="btnAddCost" data-id="0" data-travel-id="@ViewData["travelId"]">
+        هزینه جدید
+    </button>
 
     <table class="table table-bordered text-center">
         <thead>

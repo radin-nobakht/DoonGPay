@@ -1,18 +1,17 @@
 ﻿@using DoonGPay.ViewModel
 @model UserViewModel
-<div class=" text-light" style=" background-color:#343a40">
-@if (Model.IsLogin)
-{
-        <a href="@Url.Action("Logout", "Account")" class="text-decoration-none text-danger">
+
+<div class="d-flex align-items-center justify-content-end p-2" style="background-color:#1e2761;">
+    @if (Model.IsLogin)
+    {
+        <span class="me-3 text-light">@Model.Name</span>
+        <a href="@Url.Action("Logout", "Account")" class="text-decoration-none" style="color:#7a2048;">
             خروج
         </a>
-    <label  >@Model.Name</label>
-
-}
-else
-{
-        <a  class="btn btn-info" href="/Login">ورود</a>
-        <a href="/signin" class="btn btn-primary">ثبت نام</a>
-
-}
+    }
+    else
+    {
+        <a class="btn me-2" style="background-color:#408ec6; color:white;" href="/Login">ورود</a>
+        <a class="btn" style="background-color:#7a2048; color:white;" href="/signin">ثبت نام</a>
+    }
 </div>

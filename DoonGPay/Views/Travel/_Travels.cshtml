@@ -1,16 +1,56 @@
 ﻿@using DoonGPay.Dto.Travel
 @model List<TravelDto>
 
+<style>
+    /* جدول سفرها */
+    #travelsModal table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    #travelsModal th {
+        background-color: #408ec6; /* آبی روشن */
+        color: white;
+        padding: 10px;
+        border: 1px solid #1e2761;
+    }
+
+    #travelsModal td {
+        padding: 8px;
+        border: 1px solid #1e2761;
+        color: #1e2761;
+    }
+
+    #travelsModal tbody tr:hover {
+        background-color: #d0e0ff;
+        cursor: pointer;
+        transition: 0.2s ease-in-out;
+    }
+
+    /* دکمه‌ها */
+    #travelsModal .btn-secondary {
+        background-color: #7a2048;
+        color: white;
+        border: none;
+    }
+
+        #travelsModal .btn-secondary:hover {
+            background-color: #5e193d;
+        }
+</style>
+
 <div class="modal fade" id="travelsModal" tabindex="-1" aria-labelledby="travelLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background-color:#408ec6; color:white;">
                 <h5 class="modal-title" id="travelLabel">سفرها</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="بستن"></button>
             </div>
             <div class="modal-body">
                 <table class="table table-bordered text-center">
-                    <thead class="thead-dark">
+                    <thead>
                         <tr>
                             <th>نام</th>
                             <th>تاریخ</th>
@@ -23,6 +63,11 @@
                             <tr data-id="@i.Id" class="travels">
                                 <td>@i.Name</td>
                                 <td>@i.InsertDate</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm btnSelectTravel" data-id="@i.Id">
+                                        انتخاب
+                                    </button>
+                                </td>
                             </tr>
                         }
                     </tbody>

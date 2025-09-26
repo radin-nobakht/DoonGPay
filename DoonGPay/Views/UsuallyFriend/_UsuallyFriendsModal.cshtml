@@ -8,9 +8,49 @@
         transition: background-color 0.2s ease-in-out;
     }
 
-    tr.usuallyFriend:hover {
-        background-color: #f1f1f1;
+        tr.usuallyFriend:hover {
+            background-color: #408ec6; /* آبی روشن */
+            color: #ffffff;
+        }
+
+    /* Modal Header */
+    #usuallyFriendsModal .modal-header {
+        background-color: #1e2761; /* سرمه‌ای */
+        color: #ffffff;
+        border-bottom: 2px solid #408ec6;
     }
+
+    /* Modal Footer */
+    #usuallyFriendsModal .modal-footer {
+        border-top: 2px solid #408ec6;
+    }
+
+    /* Table */
+    #usuallyFriendsModal table thead {
+        background-color: #1e2761; /* سرمه‌ای */
+        color: #ffffff;
+    }
+
+    #usuallyFriendsModal table tbody tr:nth-child(odd) {
+        background-color: #f8f9fa; /* خاکستری روشن */
+    }
+
+    #usuallyFriendsModal table tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    /* Buttons */
+    #usuallyFriendsModal .btn-secondary {
+        background-color: #7a2048; /* زرشکی */
+        border-color: #7a2048;
+        color: #ffffff;
+    }
+
+        #usuallyFriendsModal .btn-secondary:hover {
+            background-color: #5c1435;
+            border-color: #5c1435;
+            transition: all 0.3s ease;
+        }
 </style>
 
 <div class="modal fade" id="usuallyFriendsModal" tabindex="-1" aria-labelledby="usuallyFriendsLabel" aria-hidden="true">
@@ -18,11 +58,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="usuallyFriendsLabel">دوستان همیشگی</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="بستن"></button>
             </div>
             <div class="modal-body">
                 <table class="table table-bordered text-center">
-                    <thead class="table-dark">
+                    <thead>
                         <tr>
                             <th>نام</th>
                             <th>شماره تلفن</th>

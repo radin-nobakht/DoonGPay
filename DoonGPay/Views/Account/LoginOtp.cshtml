@@ -3,9 +3,9 @@
     ViewBag.Title = "ورود به سیستم";
 }
 
-<div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="card shadow-lg border-0 rounded-4 p-4  text-light" style="max-width: 420px; width: 100%; background-color:black">
-        <h3 class="text-center mb-4">ورود به سیستم</h3>
+<div class="d-flex justify-content-center align-items-center vh-100" style="background-color:#f8f9fa;">
+    <div class="card shadow-lg border-0 rounded-4 p-4 text-dark" style="max-width: 420px; width: 100%; background-color:#ffffff;">
+        <h3 class="text-center mb-4" style="color:#1e2761;">ورود به سیستم</h3>
 
         @if (!string.IsNullOrEmpty(ViewBag.Error))
         {
@@ -14,57 +14,46 @@
 
         <form asp-action="Login" asp-controller="Account" method="post">
             <div class="mb-3">
-                <label class="form-label">نام کاربری</label>
-                <input type="text" name="UserName" id="userName" class="form-control rounded-3" placeholder="نام کاربری" required />
+                <label class="form-label" style="color:#1e2761;">نام کاربری</label>
+                <input type="text" name="UserName" id="userName" class="form-control rounded-3 border-primary" placeholder="نام کاربری" required />
             </div>
 
             <div class="mb-3">
-                <label class="form-label">رمز عبور</label>
-                <input type="password" name="Password" id="password" class="form-control rounded-3" placeholder="رمز عبور" required />
+                <label class="form-label" style="color:#1e2761;">رمز عبور</label>
+                <input type="password" name="Password" id="password" class="form-control rounded-3 border-primary" placeholder="رمز عبور" required />
             </div>
 
-            <button type="button" id="btnLoginOtp" class="btn btn-success w-100 rounded-3">ورود</button>
+            <button type="button" id="btnLoginOtp" class="btn btn-primary w-100 rounded-3">ورود</button>
         </form>
 
         <div class="text-center mt-3">
-            <a href="@Url.Action("Register", "Account")" class="text-decoration-none text-light">ثبت نام</a>
+            <a href="@Url.Action("Register", "Account")" class="text-decoration-none" style="color:#408ec6;">ثبت نام</a>
         </div>
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 
 @section Scripts
 {
     <script>
         $("#btnLoginOtp").click(function(){
-          $.ajax({
-            type: "POST",
-            url: "/Account/LoginOtp",
-            data:{
-                Password:$("#password").val(),
-                UserName:$("#userName").val(),
-            },
-            success: function (result) {
-                if(result.result)
-                {
-                    window.location.reload("/Home");
-                    window.location.href="/Home";
+            $.ajax({
+                type: "POST",
+                url: "/Account/LoginOtp",
+                data: {
+                    Password: $("#password").val(),
+                    UserName: $("#userName").val(),
+                },
+                success: function (result) {
+                    if(result.result) {
+                        window.location.href="/Home";
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    alert("خطا در ارسال اطلاعات");
                 }
-                 else
-                alert(result.message);
-
-            },
-            error: function () {
-
-
-            }
+            });
         });
-
-        })
-
-
     </script>
 }
-

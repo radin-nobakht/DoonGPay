@@ -2,11 +2,72 @@
 @model List<TravelFriendDto>
 
 <link href="~/css/travel/travelstable.css" rel="stylesheet" />
+
+<style>
+    /* جدول */
+    table#FtTable {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+        table#FtTable th {
+            background-color: #408ec6; /* آبی روشن */
+            color: white;
+            padding: 10px;
+            border: 1px solid #1e2761;
+        }
+
+        table#FtTable td {
+            padding: 8px;
+            border: 1px solid #1e2761;
+            color: #1e2761;
+        }
+
+    tbody tr:nth-child(even) {
+        background-color: #e0e7ff; /* آبی خیلی روشن */
+    }
+
+    tbody tr:hover {
+        background-color: #d0e0ff;
+        transition: 0.2s ease-in-out;
+    }
+
+    /* دکمه‌ها */
+    .btn-success {
+        background-color: #408ec6;
+        color: white;
+    }
+
+        .btn-success:hover {
+            background-color: #1e2761;
+        }
+
+    .btn-info {
+        background-color: #7a2048;
+        color: white;
+    }
+
+        .btn-info:hover {
+            background-color: #5e193d;
+        }
+
+    .btn-danger {
+        background-color: #1e2761;
+        color: white;
+    }
+
+        .btn-danger:hover {
+            background-color: #121a3a;
+        }
+</style>
+
 <div>
     <button class="btn btn-success mb-3 btnEditFriend" id="btnAddFriend" data-id="0" data-travel-id="@ViewData["travelId"]">همسفر جدید</button>
 
     <table class="table table-bordered text-center" id="FtTable">
-        <thead class="thead-dark">
+        <thead>
             <tr>
                 <th>ردیف</th>
                 <th>نام کامل</th>
@@ -18,35 +79,29 @@
         <tbody>
             @if (Model != null)
             {
-
                 var raw = 0;
-            @foreach (var i in Model)
-            {
+                @foreach (var i in Model)
+                {
                     raw++;
                     var fullName = $"{i.FristName} {i.LastName}";
-                <tr data-id="@i.Id">
-                        <td hidden id="share">@i.Share</td>
-
-                    <td>@raw</td>
-                    <td>@fullName</td>
-                    <td>@i.Person</td>
+                    <tr data-id="@i.Id">
+                        <td>@raw</td>
+                        <td>@fullName</td>
+                        <td>@i.Person</td>
                         <td>@string.Format("{0:N0}", i.Share)</td>
-                    <td>
+                        <td>
                             <button class="btn btn-info btn-sm btnEditFriend" data-id="@i.Id" data-travel-id="@i.TravelId">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </button>
-
-                        <button class="btn btn-danger btn-sm btn-deleteFriend" data-id="@i.Id" data-travel-id="@i.TravelId">
-                            <i class="fa-solid fa-trash"></i>
-
-                        </button>
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm btn-deleteFriend" data-id="@i.Id" data-travel-id="@i.TravelId">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
                             <button class="btn btn-info btn-sm btn-friendInfo" data-id="@i.Id" data-travel-id="@i.TravelId">
                                 <i class="fa-solid fa-info"></i>
-
-                        </button>
-                    </td>
-                </tr>
-            }
+                            </button>
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

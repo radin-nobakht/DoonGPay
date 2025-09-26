@@ -1,29 +1,123 @@
 ﻿@using DoonGPay.Dto.Travel
 @model TravelCostDto
 <link href="~/css/travel/travelsmodals.css" rel="stylesheet" />
+
+<style>
+    .form-container {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    /* هدر مودال */
+    .modal-header {
+        background-color: #1e2761; /* آبی تیره */
+        color: white;
+        border-bottom: none;
+    }
+
+        .modal-header h5 {
+            color: #408ec6; /* آبی روشن */
+        }
+
+        .modal-header .btn-close {
+            filter: invert(1); /* دکمه سفید */
+        }
+
+    /* بدنه مودال */
+    .modal-body {
+        background-color: #f0f4ff; /* آبی خیلی روشن */
+    }
+
+        .modal-body input,
+        .modal-body select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #408ec6;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: white;
+            color: #1e2761;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+            .modal-body input:focus,
+            .modal-body select:focus {
+                border-color: #7a2048; /* شرابی */
+                outline: none;
+                background-color: #e0e7ff;
+            }
+
+    /* جدول داخلی (manual) */
+    #manual table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+    #manual th {
+        background-color: #408ec6;
+        color: white;
+        padding: 6px;
+        border: 1px solid #1e2761;
+    }
+
+    #manual td {
+        border: 1px solid #1e2761;
+        padding: 6px;
+    }
+
+    /* پیام خطا */
+    #errorMessage {
+        color: #7a2048;
+        font-size: 13px;
+    }
+
+    /* فوتر مودال */
+    .modal-footer {
+        background-color: #f0f4ff;
+        border-top: none;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+        .modal-footer .btn {
+            border-radius: 6px;
+            padding: 6px 20px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            color: white;
+        }
+
+        .modal-footer .btn-success {
+            background-color: #408ec6;
+        }
+
+            .modal-footer .btn-success:hover {
+                background-color: #1e2761;
+            }
+</style>
+
 <div class="modal fade" aria-hidden="true" id="editCost">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content form-container">
             <div class="modal-header">
-                <h5 class="modal-title">@(Model.Id > 0 ? " ویرایش " : "افزودن ") هزینه</h5>
+                <h5 class="modal-title">@((Model.Id > 0) ? "ویرایش" : "افزودن") هزینه</h5>
                 <button type="button" class="btn-close btn-close-white" style="margin:0;" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="CostForm">
                     <input type="hidden" id="id" name="Id" value="@Model.Id" />
                     <input type="hidden" id="travelId" name="TravelId" value="@Model.TravelId" />
-                    <input type="text" id="title" name="Title" value="@Model.Title" class="form-control mb-3" placeholder="عنوان" required />
-                    <input type="number" id="value" name="Value" value="@Model.Value" class="form-control mb-3" placeholder="مقدار" required />
-                    @Html.DropDownListFor(model => model.Type, Model.CostTypes, new { @class = "form-control mb-3  type", name = "Type"})
-                    <style>
-                        div#manual 
-                        {
-                            display:none;
-                        }
-                    </style>
-                    <div id="manual" >
+
+                    <input type="text" id="title" name="Title" value="@Model.Title" class="form-control" placeholder="عنوان" required />
+                    <input type="number" id="value" name="Value" value="@Model.Value" class="form-control" placeholder="مقدار" required />
+
+                    @Html.DropDownListFor(model => model.Type, Model.CostTypes, new { @class = "form-control type", name = "Type" })
+
+                    <div id="manual" style="display:none;">
                         <table class="table table-sm table-bordered text-center">
-                            <thead class="thead-light">
+                            <thead>
                                 <tr>
                                     <th>اسم</th>
                                     <th id="typeStr"></th>
@@ -38,10 +132,7 @@
                                             <input type="hidden" name="TravelCostFriends[@tcf.i].TravelFriendId" value="@tcf.x.TravelFriendId" />
                                             <input type="hidden" name="TravelCostFriends[@tcf.i].Id" value="@tcf.x.Id" />
                                             <input type="hidden" name="TravelCostFriends[@tcf.i].TravelCostId" value="@tcf.x.TravelCostId" />
-                                            <input type="number"
-                                                   name="TravelCostFriends[@tcf.i].Rate"
-                                                   value="@tcf.x.Rate"
-                                                   class="form-control" />
+                                            <input type="number" name="TravelCostFriends[@tcf.i].Rate" value="@tcf.x.Rate" class="form-control" />
                                         </td>
                                     </tr>
                                 }

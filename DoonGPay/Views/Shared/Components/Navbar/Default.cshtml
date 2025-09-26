@@ -1,51 +1,65 @@
-﻿<style>
-    .nav-item{
-        color :white;
-        
-    }
-
-
-</style>
-<div style="background-color: #343a40 ;
-        color: #343a40;">
-<header  style="background-color:#343a40">
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container-fluid" style="background-color:#343a40">
-            <a class="navbar-brand"style="color:white" asp-area="" asp-controller="Home" asp-action="Index">DoonGPay</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+﻿<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark" style="background-color:#1e2761;">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DoonGPay</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                   
-                   
-
-                    
-                    <li class="nav-item">
-                        <a class=" btn" id="login" style="color :white" asp-area="" asp-controller="User" asp-action="UserMangment">مدریت کاربران</a>
-
+                    <li class="nav-item me-2">
+                        <a class="btn btn-primary" asp-area="" asp-controller="User" asp-action="UserMangment">مدیریت کاربران</a>
                     </li>
-                    <li class="nav-item">
-                        <a class=" btn" id="login" style="color :white" asp-area="" asp-controller="Travel" asp-action="Index">سفر </a>
+                    <li class="nav-item me-2">
+                        <a class="btn btn-primary" asp-area="" asp-controller="Travel" asp-action="Index">سفر</a>
                     </li>
-
-                        <li class="nav-item">
-                            <a asp-controller="UsuallyFriend" asp-action="Index"
-                               style="color :white"
-                               class=" btn">
-                                دوستان
-                              
-                            </a>
-                        </li>
-
-
+                    <li class="nav-item me-2">
+                        <a class="btn btn-primary" asp-controller="UsuallyFriend" asp-action="Index">دوستان</a>
+                    </li>
                 </ul>
-            </div>
-            <div class="d-flex">
-                @await Component.InvokeAsync("User")
+
+                <div class="d-flex">
+                    @await Component.InvokeAsync("User")
+                </div>
             </div>
         </div>
     </nav>
 </header>
-</div>
+
+<style>
+    .navbar-brand {
+        color: #ffffff !important;
+    }
+
+        .navbar-brand:hover {
+            color: #408ec6 !important;
+        }
+
+    .btn-primary {
+        background-color: #408ec6;
+        border-color: #408ec6;
+        color: #ffffff;
+    }
+
+        .btn-primary:hover {
+            background-color: #1e2761;
+            border-color: #1e2761;
+        }
+
+    .btn-danger {
+        background-color: #7a2048;
+        border-color: #7a2048;
+        color: #ffffff;
+    }
+
+        .btn-danger:hover {
+            background-color: #5c1435;
+            border-color: #5c1435;
+        }
+
+    .nav-item .btn {
+        transition: all 0.3s ease;
+    }
+</style>

@@ -4,15 +4,15 @@
 }
 
 <div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="card shadow-lg border-0 rounded-4 p-4y text-light" style="max-width: 450px; width: 100%; background-color:black">
+    <div class="card shadow-lg border-0 rounded-4 p-4 text-light" style="max-width: 450px; width: 100%; background-color:#343a40">
         <h3 class="text-center mb-4">عضویت</h3>
 
-        <div id="errorMsg" class="text-danger text-center mb-3"></div>
+        <div id="errorMsg" class="alert alert-danger text-center mb-3 hide"></div>
 
-        <form id="loginForm" method="post" action="/User/Login">
+        <form id="signupForm" method="post" action="/User/Signin">
             <div class="mb-3">
                 <label class="form-label">نام</label>
-                <input type="text" id="FristName" name="FristName" class="form-control  rounded-3" placeholder="نام" required />
+                <input type="text" id="FristName" name="FristName" class="form-control rounded-3" placeholder="نام" required />
             </div>
 
             <div class="mb-3">
@@ -27,21 +27,18 @@
 
             <div class="mb-3">
                 <label class="form-label">رمز عبور</label>
-                <input type="password" id="Password" name="Password" class="form-control  border-0 rounded-3" placeholder="رمز عبور" required />
+                <input type="password" id="Password" name="Password" class="form-control rounded-3" placeholder="رمز عبور" required />
             </div>
 
             <div class="mb-3">
                 <label class="form-label">شماره تلفن</label>
-                <input type="text" id="phoneNumber" name="PhoneNumber" class="form-control text-light border-0 rounded-3" placeholder="شماره تلفن" required />
+                <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control rounded-3" placeholder="شماره تلفن" required />
             </div>
 
-
-            <button type="button" id="send" class="btn btn-success w-100 rounded-3 mb-2">ورود</button>
-            
+            <button type="button" id="send" class="btn btn-success w-100 rounded-3 mb-2">ثبت نام</button>
         </form>
     </div>
 </div>
-
 
 <style>
     .hide {
@@ -49,37 +46,30 @@
     }
 </style>
 
-
-
 @section Scripts {
-
-<script>
-    $(document).ready(function () {
-
-                $("#send").click(function () {
-           
-
-           
-            $.ajax({
-                url: '/User/Signin',
-                type: 'POST',
-                data: $("#loginForm").serialize(),
-                success: function (response) {
-                    if (response.redirectUrl) {
-                        $('#errorMsg').text("با موفقیت ذخیره شد، در حال انتقال...");
-                        setTimeout(function () {
-                            window.location.href = response.redirectUrl;
-                        }, 1000);
-                    } else {
-                        $('#errorMsg').text("ذخیره انجام شد اما مسیر بازگشتی یافت نشد.");
+    <script>
+        $(document).ready(function () {
+            $("#send").click(function () {
+                $.ajax({
+                    url: '/User/Signin',
+                    type: 'POST',
+                    data: $("#signupForm").serialize(),
+                    success: function (response) {
+                        if (response.redirectUrl) {
+                            $('#errorMsg').removeClass('hide').removeClass('alert-danger').addClass('alert-success').text("با موفقیت ذخیره شد، در حال انتقال...");
+                            setTimeout(function () {
+                                window.location.href = response.redirectUrl;
+                            }, 1000);
+                        } else {
+                            $('#errorMsg').removeClass('hide').removeClass('alert-success').addClass('alert-danger').text("ذخیره انجام شد اما مسیر بازگشتی یافت نشد.");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        $('#errorMsg').removeClass('hide').removeClass('alert-success').addClass('alert-danger').text('خطا در ذخیره اطلاعات: ' + error);
+                        console.log(xhr.responseText);
                     }
-                },
-                error: function (xhr, status, error) {
-                    $('#errorMsg').text('خطا در ذخیره اطلاعات: ' + error);
-                    console.log(xhr.responseText);
-                }
+                });
             });
         });
-    });
-</script>
+    </script>
 }
