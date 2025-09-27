@@ -2,9 +2,14 @@
     Layout = "_Layout2";
     ViewBag.Title = "ورود به سیستم";
 }
-
+<style>
+    #loginTemplate{
+      border-radius:8px ;
+        border:1px solid var(--color-neutral-200)
+    }
+    </style>
 <div class="d-flex justify-content-center align-items-center vh-100" style="background-color:#f8f9fa;">
-    <div class="card shadow-lg border-0 rounded-4 p-4 text-dark" style="max-width: 420px; width: 100%; background-color:#ffffff;">
+    <div class="card shadow-lg  rounded-4 p-4 text-dark" id="loginTemplate" style="max-width: 420px; width: 100%; background-color:#ffffff;">
         <h3 class="text-center mb-4" style="color:#1e2761;">ورود به سیستم</h3>
 
         @if (!string.IsNullOrEmpty(ViewBag.Error))
@@ -27,7 +32,7 @@
         </form>
 
         <div class="text-center mt-3">
-            <a href="@Url.Action("Register", "Account")" class="text-decoration-none" style="color:#408ec6;">ثبت نام</a>
+            <a href="@Url.Action("Register", "Account")" class="text-decoration-none btn btn-primary " style="color:white;">ثبت نام</a>
         </div>
     </div>
 </div>

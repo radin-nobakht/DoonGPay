@@ -1,5 +1,7 @@
-html {
-  font-size: 14px;
+body {
+    font-size: 14px;
+    font-family: 'Vazir', Tahoma, Arial, sans-serif;
+    font-weight: bold !important;
 }
 
 @media (min-width: 768px) {

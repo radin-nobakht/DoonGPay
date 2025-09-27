@@ -10,6 +10,10 @@
       "provider": "unpkg",
       "library": "persian-date@1.1.0",
       "destination": "wwwroot/lib/persian-date/"
+    },
+    {
+      "library": "vazir-font@30.1.0",
+      "destination": "wwwroot/lib/vazir-font/"
     }
   ]
 }
