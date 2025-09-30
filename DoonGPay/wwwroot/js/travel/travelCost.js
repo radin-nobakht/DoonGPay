@@ -55,12 +55,12 @@ $(document).on("click", ".btnDeleteTravelCost", function () {
 
     $.ajax({
         url: "/Travel/DeleteTravelCost",
-        url: "/Travel/DeleteTravelCost",
         type: "POST",
         data: { id: id },
         success: function (res) {
             if (res.success) {
                 row.fadeOut(300, function () { $(this).remove(); });
+                loadTravels();
             } else {
                 alert(res.message || "حذف ناموفق بود.");
             }

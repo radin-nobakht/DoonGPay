@@ -71,6 +71,7 @@ $(document).on("click", ".btn-deleteFriend", function () {
         success: function (res) {
             if (res.success) {
                 row.fadeOut(300, function () { $(this).remove(); });
+                loadTravels();
             } else {
                 alert(res.message || "حذف ناموفق بود.");
             }

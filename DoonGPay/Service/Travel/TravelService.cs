@@ -416,7 +416,7 @@ namespace DoonGPay.Service.Travel
             var model = db.TravelCosts.FirstOrDefault(x => x.Id == id);
 
             db.TravelCosts.Remove(model);
-            var travelCostFriend = db.TravelCostFriends.Where(x => x.TravelFriendId == id);
+            var travelCostFriend = db.TravelCostFriends.Where(x => x.TravelCostId == id);
             foreach (var tcf in travelCostFriend)
                 db.TravelCostFriends.Remove(tcf);
             db.SaveChanges();
