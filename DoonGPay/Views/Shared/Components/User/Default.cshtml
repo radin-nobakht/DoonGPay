@@ -1,25 +1,41 @@
 ﻿@using DoonGPay.ViewModel
 @model UserViewModel
 <style>
-    /* منو سمت راست و درست زیر عکس */
+
+
+    .dropdown {
+        display: inline-block;
+        position: relative;
+    }
+
     .dropdown-menu {
-        right: 0;
-        left: auto;
+        position: absolute;
+        right: auto;
+        left: 0px;
         top: 100%;
+        min-width: 180px;
+        text-align: center;
+        padding: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+    }
+
+    .dropdown img {
+        cursor: pointer;
+        border-radius: 50%;
     }
 </style>
 <div class="d-flex align-items-center justify-content-end p-2" style="background-color:#1e2761;">
     @if (Model.IsLogin)
     {
-        <div class="dropdown text-end" style="display:inline-block;">
+        <div class="dropdown text-end">
             <!-- عکس کاربر -->
             <a href="#" id="userMenuToggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="~/image/user.png" width="40" height="40" style="cursor: pointer; border-radius:50%;" />
+                <img src="@Model.Image" width="40" height="40" alt="User" />
             </a>
 
             <!-- منو -->
-            <ul class="dropdown-menu dropdown-menu-end text-center p-2 shadow"
-                aria-labelledby="userMenuToggle" style="min-width:180px;">
+            <ul class="dropdown-menu shadow" aria-labelledby="userMenuToggle">
                 <li class="mb-2">
                     <span class="fw-bold">@Model.Name</span>
                 </li>
@@ -39,23 +55,23 @@
 </div>
 @section Scripts {
 
-<script>
-            $(function () {
+    <script>
+        $(function () {
             let clicked = false;
 
-            // هاور: فقط وقتی کلیک نکردیم
-            $('.dropdown').on('mouseenter', function () {
+            // هاور روی عکس
+            $('#userMenuToggle img').on('mouseenter', function () {
                 if (!clicked) {
-                    bootstrap.Dropdown.getOrCreateInstance($(this).find('[data-bs-toggle="dropdown"]')[0]).show();
+                    bootstrap.Dropdown.getOrCreateInstance($('#userMenuToggle')[0]).show();
                 }
             }).on('mouseleave', function () {
                 if (!clicked) {
-                    bootstrap.Dropdown.getOrCreateInstance($(this).find('[data-bs-toggle="dropdown"]')[0]).hide();
+                    bootstrap.Dropdown.getOrCreateInstance($('#userMenuToggle')[0]).hide();
                 }
             });
 
-            // کلیک روی عکس → باز بمونه
-            $('[data-bs-toggle="dropdown"]').on('click', function (e) {
+            // کلیک روی عکس
+            $('#userMenuToggle').on('click', function (e) {
                 e.preventDefault();
                 let bsDropdown = bootstrap.Dropdown.getOrCreateInstance(this);
                 if (clicked) {
@@ -67,15 +83,13 @@
                 }
             });
 
-            // کلیک بیرون → بستن
+            // کلیک بیرون از منو
             $(document).on('click', function (e) {
                 if (!$(e.target).closest('.dropdown').length) {
-                    $('[data-bs-toggle="dropdown"]').each(function () {
-                        bootstrap.Dropdown.getOrCreateInstance(this).hide();
-                    });
+                    bootstrap.Dropdown.getOrCreateInstance($('#userMenuToggle')[0]).hide();
                     clicked = false;
                 }
             });
         });
-            </script>
+    </script>
 }

@@ -7,15 +7,38 @@ using DoonGPay.Dto;
 
 namespace DoonGPay.Controllers
 {
-    public class UserController : Controller
+    public class UserController(IUserService userService, IWebHostEnvironment env) : Controller
     {
-        private readonly IUserService _userService;
-
-        public UserController( IUserService userService)
+        
+        public async Task<IActionResult> ImageSaving(IFormFile image)
         {
-            _userService = userService;
-        }
+            if (image != null && image.Length > 0)
+            {
+                string uploadFolder = Path.Combine(env.WebRootPath, "Image");
 
+                if (!Directory.Exists(uploadFolder))
+                    Directory.CreateDirectory(uploadFolder);
+
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                string filePath = Path.Combine(uploadFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await image.CopyToAsync(stream);
+                }
+
+                // اینجا فقط آدرس نسبی فایل رو می‌گیری
+                string relativePath = "~/Image/" + fileName;
+
+                // می‌تونی تو ViewBag برگردونی
+                ViewBag.FileUrl = relativePath;
+
+                // یا مثلا به صورت JSON برگردونی
+                return Json(new { url = relativePath });
+            }
+
+            return BadRequest("هیچ فایلی انتخاب نشده است");
+        }
 
         public IActionResult Index()
         {
@@ -31,7 +54,7 @@ namespace DoonGPay.Controllers
         [HttpPost]
         public ActionResult Login(UserEntity entity)
         {
-            var model = _userService.Users();
+            var model = userService.Users();
             foreach (var i in model)
             {
                 if (i.FristName == entity.FristName && i.LastName == entity.LastName && i.PhoneNumber == entity.PhoneNumber)
@@ -53,18 +76,20 @@ namespace DoonGPay.Controllers
         [HttpPost]
         public IActionResult Signin(UserDto user)
         {
-            _userService.AddUser(user);
+
+            userService.AddUser(user);
+            
             return Json(new
             {
                 success = true,
-                redirectUrl = Url.Action("UserMangment", "User")
+                redirectUrl = Url.Action("Index", "Home")
             });
         }
 
         public IActionResult UserMangment()
         {
        
-            return View(_userService.Users());
+            return View(userService.Users());
         }
 
         [HttpGet]
@@ -73,7 +98,7 @@ namespace DoonGPay.Controllers
             if (id == null)
                 return Json(new UserDto());
 
-            var entity = _userService.GetById(id.Value);
+            var entity = userService.GetById(id.Value);
             if (entity == null)
                 return Json(new { success = false, message = "کاربر یافت نشد" });
 
@@ -85,7 +110,7 @@ namespace DoonGPay.Controllers
         [HttpPost]
         public JsonResult Delete(int id)
         {
-            _userService.DeleteUser(id);
+            userService.DeleteUser(id);
             return Json(new { success = true });
         }
 

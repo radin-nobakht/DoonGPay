@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers.Travel
 {
-    public partial class TravelController(ITravelService travelService,IMySession mySession): Controller
+    public partial class TravelController(ITravelService travelService,IMySession mySession, IWebHostEnvironment env): Controller
     {
-     
+        
+
+
 
         // صفحه اصلی سفر
         public IActionResult Index(int id)

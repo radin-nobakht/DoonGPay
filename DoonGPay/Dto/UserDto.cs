@@ -10,6 +10,8 @@ namespace DoonGPay.Dto
         public  string LastName { get; set; }
         public  string Password { get; set; }
         public  string PhoneNumber { get; set; }
+        public  string UserAvatar { get; set; }
+        public  string TravelImage { get; set; }
         public virtual ICollection<TravelDto> Travels { get; set; }
         public virtual ICollection<UsuallyFriendDto> UsuallyFriends { get; set; }
 
