@@ -4,41 +4,14 @@ using DoonGPay.INteface;
 using DoonGPay.Models;
 using System.Diagnostics;
 using DoonGPay.Dto;
+using DoonGPay.Inteface;
 
 namespace DoonGPay.Controllers
 {
-    public class UserController(IUserService userService, IWebHostEnvironment env) : Controller
+    public class UserController(IUserService userService, IWebHostEnvironment env,IImageSaverService imageSaver) : Controller
     {
         
-        public async Task<IActionResult> ImageSaving(IFormFile image)
-        {
-            if (image != null && image.Length > 0)
-            {
-                string uploadFolder = Path.Combine(env.WebRootPath, "Image");
-
-                if (!Directory.Exists(uploadFolder))
-                    Directory.CreateDirectory(uploadFolder);
-
-                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-                string filePath = Path.Combine(uploadFolder, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await image.CopyToAsync(stream);
-                }
-
-                // اینجا فقط آدرس نسبی فایل رو می‌گیری
-                string relativePath = "~/Image/" + fileName;
-
-                // می‌تونی تو ViewBag برگردونی
-                ViewBag.FileUrl = relativePath;
-
-                // یا مثلا به صورت JSON برگردونی
-                return Json(new { url = relativePath });
-            }
-
-            return BadRequest("هیچ فایلی انتخاب نشده است");
-        }
+        
 
         public IActionResult Index()
         {
@@ -78,7 +51,9 @@ namespace DoonGPay.Controllers
         {
 
             userService.AddUser(user);
-            
+
+           user.UserAvatarStr = imageSaver.SaveImage(user.UserAvatar);
+
             return Json(new
             {
                 success = true,

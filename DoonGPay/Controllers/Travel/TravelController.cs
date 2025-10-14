@@ -6,13 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers.Travel
 {
-    public partial class TravelController(ITravelService travelService,IMySession mySession, IWebHostEnvironment env): Controller
+    public partial class TravelController(ITravelService travelService,IMySession mySession): Controller
     {
-        
-
-
-
-        // صفحه اصلی سفر
         public IActionResult Index(int id)
         {
             var cookieValue = ConvertIdToCookie.GetCookie(Request);

@@ -19,7 +19,7 @@ builder.Services.AddDbContext<MyContext>(option =>
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITravelService, TravelService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
-//builder.Services.AddScoped<ISmsService, SmsService>();
+builder.Services.AddScoped<IImageSaverService, ImageSaverService>();
 builder.Services.AddScoped<ICalcService, CalcService>();
 builder.Services.AddScoped<IMySession, MySession>();
 
