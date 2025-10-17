@@ -10,7 +10,7 @@ namespace DoonGPay.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
 
-            return View(new UserViewModel {IsLogin=mySession.IsLogin ,Name=mySession.FullName });
+            return View(new UserViewModel {IsLogin=mySession.IsLogin ,Name=mySession.FullName,Image=mySession.ImageStr() });
         }
     }
 }

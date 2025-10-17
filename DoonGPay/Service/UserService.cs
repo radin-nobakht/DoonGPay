@@ -11,10 +11,23 @@ namespace DoonGPay.Service
     {
         public void AddUser(UserDto user)
         {
+            // مرحله ۱: تبدیل Dto به Entity (به جز تصویر)
             var model = mapper.Map<UserEntity>(user);
-            var Password ="";
-            Password = PasswordHelper.HashPassword(model.Password); // فقط هش می‌کنیم
-            model.Password = Password;
+
+            // مرحله ۲: هش کردن پسورد
+            model.Password = PasswordHelper.HashPassword(model.Password);
+
+            // مرحله ۳: بررسی و تبدیل عکس در صورت وجود
+            if (user.TravelImage != null && user.TravelImage.Length > 0)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    user.TravelImage.CopyTo(ms);
+                    model.TravelImage = ms.ToArray(); // تبدیل به byte[]
+                }
+            }
+
+            // مرحله ۴: ذخیره در دیتابیس
             db.Users.Add(model);
             db.SaveChanges();
         }

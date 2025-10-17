@@ -49,10 +49,9 @@ namespace DoonGPay.Controllers
         [HttpPost]
         public IActionResult Signin(UserDto user)
         {
+            user.UserAvatarStr = imageSaver.SaveImage(user.UserAvatar);
 
             userService.AddUser(user);
-
-           user.UserAvatarStr = imageSaver.SaveImage(user.UserAvatar);
 
             return Json(new
             {
@@ -80,16 +79,12 @@ namespace DoonGPay.Controllers
             return Json(entity);
         }
 
-      
-
         [HttpPost]
         public JsonResult Delete(int id)
         {
             userService.DeleteUser(id);
             return Json(new { success = true });
         }
-
-        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

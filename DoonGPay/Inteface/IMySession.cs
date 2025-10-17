@@ -7,5 +7,6 @@
         string? LastName { get; }
         bool IsLogin { get; }
         string? FullName { get; }
+        string? ImageStr();
     }
 }

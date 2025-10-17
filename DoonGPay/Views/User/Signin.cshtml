@@ -9,7 +9,7 @@
 
         <div id="errorMsg" class="alert alert-danger text-center mb-3 hide"></div>
 
-        <form id="signupForm" method="post" action="/User/Signin">
+        <form id="signupForm" method="post" action="/User/Signin" enctype="multipart/form-data">
             <div class="mb-3">
                 <label class="form-label">نام</label>
                 <input type="text" id="FristName" name="FristName" class="form-control rounded-3" placeholder="نام" required />
@@ -37,12 +37,12 @@
 
             <div class="mb-3">
                 <label class="form-label">عکس بک گراند</label>
-                <input type="file" id="travelImage" name="travelImage" class="form-control rounded-3" placeholder="عکس بک گراند" required />
+                <input type="file" id="travelImage" name="TravelImage" class="form-control rounded-3" placeholder="عکس بک گراند" required />
             </div>
 
             <div class="mb-3">
                 <label class="form-label">اواتار کاربر</label>
-                <input type="file" id="userAvatar" name="userAvatar" class="form-control rounded-3" placeholder="اواتار کاربر" required />
+                <input type="file" id="userAvatar" name="UserAvatar" class="form-control rounded-3" placeholder="اواتار کاربر" required />
             </div>
 
             <button type="button" id="send" class="btn btn-success w-100 rounded-3 mb-2">ثبت نام</button>
@@ -59,27 +59,45 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $("#send").click(function () {
-                $.ajax({
-                    url: '/User/Signin',
-                    type: 'POST',
-                    data: $("#signupForm").serialize(),
-                    success: function (response) {
-                        if (response.redirectUrl) {
-                            $('#errorMsg').removeClass('hide').removeClass('alert-danger').addClass('alert-success').text("با موفقیت ذخیره شد، در حال انتقال...");
-                            setTimeout(function () {
-                                window.location.href = response.redirectUrl;
-                            }, 1000);
-                        } else {
-                            $('#errorMsg').removeClass('hide').removeClass('alert-success').addClass('alert-danger').text("ذخیره انجام شد اما مسیر بازگشتی یافت نشد.");
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        $('#errorMsg').removeClass('hide').removeClass('alert-success').addClass('alert-danger').text('خطا در ذخیره اطلاعات: ' + error);
-                        console.log(xhr.responseText);
-                    }
-                });
-            });
-        });
+        $("#send").click(function () {
+              var form = $('#signupForm')[0];
+              var formData = new FormData(form); // به‌جای serialize()
+
+              $.ajax({
+                  url: '/User/Signin',
+                  type: 'POST',
+                  data: formData,
+                  processData: false, // ❗ ضروری برای ارسال فایل
+                  contentType: false, // ❗ ضروری برای ارسال فایل
+                  success: function (response) {
+                      if (response.redirectUrl) {
+                          $('#errorMsg')
+                              .removeClass('hide')
+                              .removeClass('alert-danger')
+                              .addClass('alert-success')
+                              .text("با موفقیت ذخیره شد، در حال انتقال...");
+
+                          setTimeout(function () {
+                              window.location.href = response.redirectUrl;
+                          }, 1000);
+                      } else {
+                          $('#errorMsg')
+                              .removeClass('hide')
+                              .removeClass('alert-success')
+                              .addClass('alert-danger')
+                              .text("ذخیره انجام شد اما مسیر بازگشتی یافت نشد.");
+                      }
+                  },
+                  error: function (xhr, status, error) {
+                      $('#errorMsg')
+                          .removeClass('hide')
+                          .removeClass('alert-success')
+                          .addClass('alert-danger')
+                          .text('خطا در ذخیره اطلاعات: ' + error);
+
+                      console.log(xhr.responseText);
+                  }
+              });
+          });        });
     </script>
 }
