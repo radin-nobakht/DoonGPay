@@ -8,7 +8,7 @@ using DoonGPay.Inteface;
 
 namespace DoonGPay.Controllers
 {
-    public class UserController(IUserService userService, IWebHostEnvironment env,IImageSaverService imageSaver) : Controller
+    public class UserController(IUserService userService, IWebHostEnvironment env,IImageService imageSaver) : Controller
     {
         
         

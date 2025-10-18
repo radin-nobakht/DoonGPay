@@ -13,7 +13,6 @@ namespace DoonGPay.Dto
         public IFormFile TravelImage { get; set; }
         public IFormFile UserAvatar { get; set; }
         public string UserAvatarStr { get; set; }
-        public string TravelImagestr { get; set; }
         public virtual ICollection<TravelDto> Travels { get; set; }
         public virtual ICollection<UsuallyFriendDto> UsuallyFriends { get; set; }
 

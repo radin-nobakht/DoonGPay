@@ -2,22 +2,27 @@
 using DoonGPay.Helpers;
 using DoonGPay.Inteface;
 using DoonGPay.Inteface.Travel;
+using DoonGPay.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers.Travel
 {
-    public partial class TravelController(ITravelService travelService,IMySession mySession): Controller
+    public partial class TravelController(ITravelService travelService,IMySession mySession,IImageService imageService): Controller
     {
+        public IActionResult GetImage() {
+            return imageService.ConvertToBase64();
+        }
         public IActionResult Index(int id)
         {
+            
+
             var cookieValue = ConvertIdToCookie.GetCookie(Request);
 
             if (cookieValue != null) 
             {
                id = int.Parse(cookieValue);
             }
-
-            TravelDto model = travelService.Travel(id);
+             TravelDto model = travelService.Travel(id);
             ViewData["travelId"] = model.Id;
            var userId= mySession.UserId;
             if (userId > 0)

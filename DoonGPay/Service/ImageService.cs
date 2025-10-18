@@ -1,10 +1,14 @@
 ﻿
 
+using DoonGPay.Adapter;
 using DoonGPay.Inteface;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DoonGPay.Service
 {
-    public class ImageSaverService(IWebHostEnvironment env) : IImageSaverService
+    public class ImageService(IWebHostEnvironment env,MyContext db,IMySession mySession) : IImageService
     {
         public string SaveImage(IFormFile image)
         {
@@ -33,5 +37,19 @@ namespace DoonGPay.Service
                 return ""; // در صورت خطا هم رشته خالی برمی‌گردد
             }
         }
+
+        public FileContentResult ConvertToBase64()
+        {
+            var userId = mySession.UserId;
+
+            var image =db.Users.Where(x=> x.Id==userId).Select(x=> x.TravelImage).FirstOrDefault();
+
+            if (image == null)
+                return null;
+
+            // برگرداندن byte[] به عنوان فایل JPG
+            return new FileContentResult(image, "image/jpeg");
+        }
+
     }
 }
