@@ -2,7 +2,6 @@
 using DoonGPay.Helpers;
 using DoonGPay.Inteface;
 using DoonGPay.Inteface.Travel;
-using DoonGPay.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoonGPay.Controllers.Travel
@@ -23,6 +22,8 @@ namespace DoonGPay.Controllers.Travel
                id = int.Parse(cookieValue);
             }
              TravelDto model = travelService.Travel(id);
+            //model.FriendAndCostPagation.Friends = travelService.FriendList(pageNum, "/Admin/Product/Index?PageNum=", model.Travel.Id);
+            //model.FriendAndCostPagation.Costs = travelService.CostList(pageNum, "/Admin/Product/Index?PageNum=", model.Travel.Id);
             ViewData["travelId"] = model.Id;
            var userId= mySession.UserId;
             if (userId > 0)

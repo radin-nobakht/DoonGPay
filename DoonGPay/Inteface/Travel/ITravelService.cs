@@ -8,6 +8,8 @@ namespace DoonGPay.Inteface.Travel
 {
     public interface ITravelService
     {
+        PagationViewModel<TravelCostDto> CostList(int pageNum, string url, int travelId);
+        PagationViewModel<TravelFriendDto> FriendList(int pageNum, string url, int travelId);
         void DeleteUsuallyFriend(int id);
         void SaveUsualyFriend(UsuallyFriendDto usuallyFriend);
         List<UsuallyFriendDto> UsuallyFriends();

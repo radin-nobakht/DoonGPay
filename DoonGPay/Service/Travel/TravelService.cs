@@ -6,8 +6,10 @@ using DoonGPay.Entity;
 using DoonGPay.Entity.Travel;
 using DoonGPay.Inteface;
 using DoonGPay.Inteface.Travel;
+using DoonGPay.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Net.WebSockets;
 
 namespace DoonGPay.Service.Travel
 {
@@ -73,7 +75,7 @@ namespace DoonGPay.Service.Travel
                 db.Travels.Add(model);
             db.SaveChanges();
         }
-        public List<TravelCostFriendDto> TravelCostFriend(int travelId,int friendId)
+        public List<TravelCostFriendDto> TravelCostFriend(int travelId, int friendId)
         {
             var travel = db.Travels
                          .Include(x => x.TravelFriends)
@@ -88,9 +90,9 @@ namespace DoonGPay.Service.Travel
                         if (t.Id == e.TravelCostId)
                             e.CostName = t.Title;
 
-            foreach(var i in travelDto.TravelFriends)
+            foreach (var i in travelDto.TravelFriends)
             {
-                if(friendId == i.Id)
+                if (friendId == i.Id)
                 {
                     var travelCostFriend = i.TravelCostFriends.ToList();
                     return travelCostFriend;
@@ -104,7 +106,7 @@ namespace DoonGPay.Service.Travel
             var query = db.Travels
                            .Include(x => x.TravelFriends)
                            .Include(x => x.TravelCosts);
-            
+
             if (id > 0)
                 travel = query.FirstOrDefault(x => x.Id == id);
 
@@ -112,8 +114,8 @@ namespace DoonGPay.Service.Travel
                 travel = query.FirstOrDefault(x => x.UserId == mySession.UserId);
 
 
-                
-            
+
+
             if (travel == null)
                 return new TravelDto();
 
@@ -155,6 +157,30 @@ namespace DoonGPay.Service.Travel
         #endregion
 
         #region Friend
+        public PagationViewModel<TravelFriendDto> FriendList(int pageNum, string url, int travelId)
+        {
+
+            pageNum = pageNum == 0 ? 1 : pageNum;
+            var count = db.TravelFriends.Count();
+
+            int skipNum = pageNum - 1;
+            skipNum = skipNum * 10;
+            var list = db.TravelFriends.Where(x => x.TravelId == travelId).Skip(skipNum).Take(10).ToList();
+            return new PagationViewModel<TravelFriendDto>
+            {
+
+                List = mapper.Map<List<TravelFriendDto>>(list),
+                PagationModel = new PagationModel
+                {
+                    TotalItem = count,
+                    CurrentPage = pageNum,
+                    Url = url
+                }
+            };
+
+
+        }
+
         public List<TravelFriendDto> TravelFriends(int travelId)
         {
             var data = db.TravelFriends.Where(x => x.TravelId == travelId).ToList();
@@ -261,6 +287,28 @@ namespace DoonGPay.Service.Travel
         #endregion
 
         #region Cost 
+        public PagationViewModel<TravelCostDto> CostList(int pageNum, string url, int travelId)
+        {
+
+            pageNum = pageNum == 0 ? 1 : pageNum;
+            var count = db.TravelCosts.Count();
+
+            int skipNum = pageNum - 1;
+            skipNum = skipNum * 10;
+            var list = db.TravelCosts.Where(x => x.TravelId == travelId).Skip(skipNum).Take(10).ToList();
+            return new PagationViewModel<TravelCostDto>{
+                List = mapper.Map<List<TravelCostDto>>(list),
+                PagationModel = new PagationModel
+                {
+                    TotalItem = count,
+                    CurrentPage = pageNum,
+                    Url = url
+                }
+
+            };
+
+        }
+
         public TravelCostDto TravelCost(int? travelCostId, int travelId)
         {
             TravelCostDto travelCost;
