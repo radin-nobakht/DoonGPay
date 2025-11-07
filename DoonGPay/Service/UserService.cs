@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using DoonGPay.Adapter;
 using DoonGPay.Dto;
+using DoonGPay.Dto.Travel;
 using DoonGPay.Entity;
 using DoonGPay.Helpers;
 using DoonGPay.INteface;
+using DoonGPay.ViewModel;
+using System.Reflection.Metadata;
 using System.Security.Principal;
 namespace DoonGPay.Service
 {
@@ -31,13 +34,35 @@ namespace DoonGPay.Service
             db.Users.Add(model);
             db.SaveChanges();
         }
-        public List<UserDto> Users()
+        public PagationViewModel<UserDto> UserList(int pageNum, string url)
+        {
+
+            pageNum = pageNum == 0 ? 1 : pageNum;
+            var count = db.Users.Count();
+
+            int skipNum = pageNum - 1;
+            skipNum = skipNum * 5;
+            var list = db.Users.Skip(skipNum).Take(5).ToList();
+            return new PagationViewModel<UserDto>
+            {
+                List = mapper.Map<List<UserDto>>(list),
+                PagationModel = new PagationModel
+                {
+                    TotalItem = count,
+                    CurrentPage = pageNum,
+                    Url = url
+                }
+
+            };
+
+        }
+        public List<UserDto> User()
         {
             //List<string> ids = db.Users.ToList().Select(x => x.Name + " " + x.LName).ToList();
 
             var data = db.Users.ToList();
 
-            return mapper.Map<List<UserDto>>(data);
+            return mapper.Map<List<UserDto>>(data); ;
 
 
             //return data.Select(x => new UserDto

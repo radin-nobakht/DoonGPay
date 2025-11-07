@@ -1,5 +1,6 @@
 ﻿@using DoonGPay.Dto
-@model List<UserDto>
+@using DoonGPay.ViewModel
+@model PagationViewModel<UserDto>
 
 <style>
     body {
@@ -76,7 +77,6 @@
 
     th {
         background-color: #408ec6;
-        color: white;
         padding: 10px;
         border: 1px solid #1e2761;
         text-align: center;
@@ -133,9 +133,9 @@
         }
 
 </style>
-@* @await Component.InvokeAsync("Pagation", Model.PagationModel)
- *@
 <button class="btn btn-success mb-3" id="btnAdd">کاربر جدید</button>
+
+<partial name="~/Views/Pagination/Pagination.cshtml" model="Model.PagationModel" />
 
 <table class="table table-bordered text-center" id="userTable">
     <thead>
@@ -148,7 +148,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var user in Model)
+        @foreach (var user in Model.List)
         {
             <tr data-id="@user.Id">
                 <td><button class="btn btn-update btn-sm btn-edit" data-id="@user.Id">ویرایش</button></td>

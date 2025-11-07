@@ -1,5 +1,6 @@
 ﻿using DoonGPay.Dto;
 using DoonGPay.Entity;
+using DoonGPay.ViewModel;
 
 namespace DoonGPay.INteface
 {
@@ -7,9 +8,10 @@ namespace DoonGPay.INteface
     {
         void AddUser(UserDto user);
         void DeleteUser(int id);
-        List<UserDto> Users();
+        PagationViewModel<UserDto> UserList(int pageNum, string url);
         void UpdateUser(UserDto usersEntity);
         UserDto GetById(int id);
         void Save(UserDto user);
+        List<UserDto> User();
     }
 }

@@ -27,7 +27,7 @@ namespace DoonGPay.Controllers
         [HttpPost]
         public ActionResult Login(UserEntity entity)
         {
-            var model = userService.Users();
+            var model = userService.User();
             foreach (var i in model)
             {
                 if (i.FristName == entity.FristName && i.LastName == entity.LastName && i.PhoneNumber == entity.PhoneNumber)
@@ -60,10 +60,10 @@ namespace DoonGPay.Controllers
             });
         }
 
-        public IActionResult UserMangment()
+        public IActionResult UserMangment(int pageNum)
         {
        
-            return View(userService.Users());
+            return View(userService.UserList(pageNum, "/User/UserMangment?pageNum="));
         }
 
         [HttpGet]

@@ -11,7 +11,7 @@
     public class PagationModel
     {
         public int TotalItem { get; set; }
-        public int ItemInpage { get; set; } = 10;
+        public int ItemInpage { get; set; } = 5;
         public int TotalPage => (int)Math.Ceiling((decimal)TotalItem / ItemInpage);
         public int CurrentPage { get; set; } = 1;
         public int PageShow { get; set; } = 7;
