@@ -13,5 +13,6 @@ namespace DoonGPay.INteface
         UserDto GetById(int id);
         void Save(UserDto user);
         List<UserDto> User();
+        List<UserDto> Users();
     }
 }

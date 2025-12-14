@@ -34,6 +34,8 @@ namespace DoonGPay.Service
             db.Users.Add(model);
             db.SaveChanges();
         }
+        public List<UserDto> Users() => mapper.Map<List<UserDto>>(db.Users.ToList());
+        
         public PagationViewModel<UserDto> UserList(int pageNum, string url)
         {
 

@@ -66,6 +66,11 @@ namespace DoonGPay.Controllers
             return View(userService.UserList(pageNum, "/User/UserMangment?pageNum="));
         }
 
+        public JsonResult Users()
+        {
+            return Json(userService.Users());
+        }
+
         [HttpGet]
         public IActionResult AddOrEditUser(int? id)
         {

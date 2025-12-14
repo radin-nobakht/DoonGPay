@@ -1,0 +1,253 @@
+﻿@using DoonGPay.Dto
+@using DoonGPay.ViewModel
+@model PagationViewModel<UserDto>
+
+<link href="~/css/travel/travelstable.css" rel="stylesheet" />
+
+<style>
+    /* جدول کاربران */
+    table#userTable {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+        table#userTable th {
+            background-color: #408ec6; /* آبی روشن */
+            color: white;
+            padding: 10px;
+            border: 1px solid #1e2761;
+        }
+
+        table#userTable td {
+            padding: 8px;
+            border: 1px solid #1e2761;
+            color: #1e2761;
+        }
+
+    button.btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+        color: white;
+    }
+
+    button.btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: white;
+    }
+
+    table.table tbody tr:hover {
+        background-color: #f2f2f2;
+        transition: 0.2s ease-in-out;
+    }
+
+    /* استایل دکمه‌ها */
+    button.btn {
+        border-radius: 6px !important;
+        font-size: 13px !important;
+        padding: 6px 14px !important;
+        min-width: 70px;
+    }
+    tbody tr:nth-child(even) {
+        background-color: #e0e7ff; /* آبی خیلی روشن */
+    }
+
+    tbody tr:hover {
+        background-color: #d0e0ff;
+        transition: 0.2s ease-in-out;
+    }
+
+   
+
+    .btn-info {
+        background-color: #7a2048;
+        color: white;
+    }
+
+        .btn-info:hover {
+            background-color: #5e193d;
+        }
+
+    .btn-danger {
+        background-color: #1e2761;
+        color: white;
+    }
+
+        .btn-danger:hover {
+            background-color: #121a3a;
+        }
+
+    /* مودال */
+    .modal-content {
+        background-color: #f0f4ff;
+        color: #1e2761;
+        border-radius: 10px;
+        border: 1px solid #408ec6;
+    }
+
+    .modal-header {
+        background-color: #408ec6;
+        color: white;
+        border-bottom: 1px solid #1e2761;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #1e2761;
+    }
+
+    .modal-body input {
+        border: 1px solid #408ec6;
+        border-radius: 6px;
+        padding: 8px;
+        width: 100%;
+        margin-bottom: 10px;
+        color: #1e2761;
+    }
+
+        .modal-body input:focus {
+            outline: none;
+            border-color: #7a2048;
+            background-color: #e0e7ff;
+        }
+
+    .modal-footer .btn-primary {
+        background-color: #408ec6;
+        border: none;
+    }
+
+    button.btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        color: white;
+    }
+
+        .modal-footer .btn-primary:hover {
+            background-color: #1e2761;
+        }
+</style>
+
+<div>
+    <button class="btn btn-success mb-3 btnEditFriend" id="btnAdd">کاربر جدید</button>
+
+    <table class="table table-bordered text-center" id="userTable">
+        <thead>
+            <tr>
+                <th>نام</th>
+                <th>نام خانوادگی</th>
+                <th>شماره تماس</th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.List != null)
+            {
+                var row = 0;
+                foreach (var user in Model.List)
+                {
+                    row++;
+                    <tr data-id="@user.Id">
+                       
+                        <td>@user.FristName</td>
+                        <td>@user.LastName</td>
+                        <td>@user.PhoneNumber</td>
+                        <td>
+                            <button class="btn btn-info btn-sm btnEditFriend" data-id="@user.Id">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+
+                            <button class="btn btn-danger btn-sm btn-deleteFriend" data-id="@user.Id">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userModalLabel">افزودن / ویرایش کاربر</h5>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
+                    <input type="hidden" name="Id" id="Id" />
+                    <input type="text" name="Name" id="Name" placeholder="نام" required />
+                    <input type="text" name="LName" id="LName" placeholder="نام خانوادگی" required />
+                    <input type="text" name="PhoneNumber" id="PhoneNumber" placeholder="شماره تماس" required />
+                    <div class="text-danger" id="errorMessage" style="display:none;"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="userForm" class="btn btn-primary">ثبت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="~/Views/Pagination/Pagination.cshtml" model="Model.PagationModel" />
+@section Scripts {
+    <script>
+        $(function () {
+            $("#btnAdd").click(function () {
+                $("#userForm")[0].reset();
+                $("#Id").val(0);
+                $("#userModalLabel").text("افزودن کاربر");
+                $("#errorMessage").hide();
+                $("#userModal").modal("show");
+            });
+
+            $(".btn-edit").click(function () {
+                var id = $(this).data("id");
+                $.get("/User/AddOrEditUser", { id: id }, function (data) {
+                    $("#Id").val(data.id);
+                    $("#Name").val(data.name);
+                    $("#LName").val(data.lName);
+                    $("#PhoneNumber").val(data.phoneNumber);
+                    $("#userModalLabel").text("ویرایش کاربر");
+                    $("#errorMessage").hide();
+                    $("#userModal").modal("show");
+                });
+            });
+
+            $("#userForm").submit(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "/User/AddOrEditUser",
+                    type: "POST",
+                    data: $(this).serialize(),
+                    success: function (res) {
+                        if (res.success) {
+                            $("#userModal").modal("hide");
+                            location.reload();
+                        } else {
+                            $("#errorMessage").text(res.message).show();
+                        }
+                    },
+                    error: function () {
+                        $("#errorMessage").text("خطا در ثبت اطلاعات").show();
+                    }
+                });
+            });
+
+            $(".btn-delete").click(function () {
+                var row = $(this).closest("tr");
+                var id = $(this).data("id");
+                if (!confirm("آیا از حذف اطمینان دارید؟")) return;
+                $.post("/User/Delete", { id: id }, function (res) {
+                    if (res.success) {
+                        row.fadeOut(300, function () { $(this).remove(); });
+                    } else {
+                        alert("حذف ناموفق بود.");
+                    }
+                });
+            });
+        });
+    </script>
+}

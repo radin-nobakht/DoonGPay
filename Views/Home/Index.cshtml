@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "خانه";
+}
+
+<div>
+    <div>
+
+        <h1>به DoonGPay خوش امدید</h1>
+    </div>
+</div>
+<div>
+
+    <div>
+        <img src="~/image/copilot_20250930_071811.png" style="height:500px; margin-right:896px" />
+    </div>
+</div>
+
+<div id="tbl"></div>
+@section scripts
+{
+    <script>
+            $.ajax({
+            url: "/Home/Index2",
+            type: "Post",
+            success: function (result) {
+               
+
+                // نمایش/پنهان جدول دستی
+                var value = $("#Type").val();
+                if (value == 3 || value == 4 || value == 5) {
+                    $("#manual").show();
+                    $("#typeStr").text(value == 3 ? "نفرات" : value == 4 ? "درصد" : "مقدار");
+                } else {
+                    $("#manual").hide();
+                }
+            },
+            error: function () {
+                $("#errorMessage").text("خطا در بارگذاری فرم هزینه").show();
+            }
+        });
+                function table(){     
+                    $("#tbl").html(`<table>
+                    <thead>
+                        <tr>
+                            <th>نام</th>
+                            <th>نام خانوادگی</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Ali</td>
+                            <td>Nobakht</td>
+                        </tr>
+                        <tr>
+                            <td>Radin</td>
+                            <td>Nobakht</td>
+                        </tr>
+                    </tbody>
+                </table>`);
+        };
+    </script>
+}
